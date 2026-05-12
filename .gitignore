@@ -1,5 +1,6 @@
 .DS_Store
 *.pdf
+!uploads/final report/*.pdf
 screenshots/
 pdf-extractor.html
 pdf-text-only.html
