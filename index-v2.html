@@ -11,6 +11,37 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
+/* ── HELVETICA NEUE (real fonts from the report PDF) ───────────────────── */
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue_Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue_Italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue_Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue_Medium.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('uploads/font/web/Helvetica_Neue_Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
 /* ============================================================================
    CASTRO GROUP — RS26 DESIGN TOKENS
    Based on: uploads/brand guidelines/colors_and_type.css (May 2026)
@@ -438,6 +469,84 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .stagger.visible > *:nth-child(6) { opacity:1;transform:none;transition-delay:0.35s }
 .stagger.visible > *:nth-child(7) { opacity:1;transform:none;transition-delay:0.42s }
 .stagger.visible > *:nth-child(8) { opacity:1;transform:none;transition-delay:0.49s }
+
+/* ── HERO CHOREOGRAPHY — fires on page load via .revealed ───────────────── */
+#hero #kaleidoscope {
+  opacity: 0; transform: scale(0.62) rotate(-5deg);
+  transition: opacity 2.2s ease-out 0.2s, transform 2.4s cubic-bezier(0.22,1,0.36,1) 0.2s;
+  transform-origin: 65% 50%;
+}
+#hero.revealed #kaleidoscope { opacity: 1; transform: scale(1) rotate(0); }
+
+/* Hero eyebrow + quote slide from left, stats strip from below */
+.hero-eyebrow, .hero-quote {
+  opacity: 0; transform: translateX(-48px);
+  transition: opacity 0.95s cubic-bezier(0.22,1,0.36,1), transform 0.95s cubic-bezier(0.22,1,0.36,1);
+}
+#hero.revealed .hero-eyebrow { opacity: 0.7; transform: translateX(0); transition-delay: 0.15s; }
+#hero.revealed .hero-quote   { opacity: 0.7; transform: translateX(0); transition-delay: 1.10s; }
+.hero-stats {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.9s ease-out 1.30s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 1.30s;
+}
+#hero.revealed .hero-stats { opacity: 1; transform: translateY(0); }
+
+/* Word-by-word title reveal — each .hw drifts up with blur→clear */
+.hero-title .hw {
+  display: inline-block;
+  opacity: 0; transform: translateY(40px); filter: blur(12px);
+  transition:
+    opacity 1s cubic-bezier(0.22,1,0.36,1),
+    transform 1.05s cubic-bezier(0.22,1,0.36,1),
+    filter 0.8s ease-out;
+}
+#hero.revealed .hero-title .hw { opacity: 1; transform: translateY(0); filter: blur(0); }
+#hero.revealed .hero-title .hw:nth-of-type(1) { transition-delay: 0.30s; }
+#hero.revealed .hero-title .hw:nth-of-type(2) { transition-delay: 0.46s; }
+#hero.revealed .hero-title .hw:nth-of-type(3) { transition-delay: 0.64s; }
+#hero.revealed .hero-title .hw:nth-of-type(4) { transition-delay: 0.82s; }
+#hero.revealed .hero-title .hw:nth-of-type(5) { transition-delay: 1.00s; }
+
+/* ── CUSTOM CURSOR (Castro-orange ball) ─────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  html, body { cursor: none; }
+  a, button, label, input, textarea, select,
+  [onclick], [role="button"],
+  .kpi-card, .photo-card, .lang-btn,
+  .nav-links a, .rail-section, .esg-badge { cursor: none; }
+}
+.cursor-orb {
+  position: fixed; top: 0; left: 0;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--cg-orange);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  transition:
+    width 0.22s cubic-bezier(0.22,1,0.36,1),
+    height 0.22s cubic-bezier(0.22,1,0.36,1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.25s ease;
+  will-change: transform;
+  opacity: 0;
+}
+.cursor-orb.ready { opacity: 1; }
+.cursor-orb.hover {
+  width: 40px; height: 40px;
+  background: rgba(251,118,34,0.18);
+  box-shadow: 0 0 0 1.5px var(--cg-orange);
+}
+.cursor-orb.tap { width: 12px; height: 12px; background: var(--cg-orange); }
+@media (hover: none), (pointer: coarse) { .cursor-orb { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-orb, #hero #kaleidoscope, .hero-eyebrow, .hero-quote, .hero-stats, .hero-title .hw {
+    transition: none !important; transform: none !important;
+    opacity: 1 !important; filter: none !important;
+  }
+  html, body, a, button { cursor: auto !important; }
+}
 
 /* ── DOUBLE MATERIALITY MATRIX ────────────────────────────────────────── */
 .mm-section {
@@ -1102,7 +1211,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   <canvas id="kaleidoscope" aria-hidden="true"></canvas>
   <div class="hero-content">
     <p class="hero-eyebrow" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
-    <h1 class="hero-title" data-pt="Relatório de<br><strong>Sustentabilidade</strong><br>2025" data-en="<strong>Sustainability</strong><br>Report<br>2025">Relatório de<br><strong>Sustentabilidade</strong><br>2025</h1>
+    <h1 class="hero-title" data-pt="<span class='hw'>Relatório</span> <span class='hw'>de</span><br><span class='hw'><strong>Sustentabilidade</strong></span><br><span class='hw'>2025</span>" data-en="<span class='hw'><strong>Sustainability</strong></span><br><span class='hw'>Report</span><br><span class='hw'>2025</span>"><span class="hw">Relatório</span> <span class="hw">de</span><br><span class="hw"><strong>Sustentabilidade</strong></span><br><span class="hw">2025</span></h1>
     <p class="hero-quote" data-pt="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>" data-en="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>">«The best way to predict the future is to create it.»<br><span class="hero-quote-attr">— Peter Drucker</span></p>
   </div>
 
@@ -2219,6 +2328,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </footer>
 
+<!-- ── CURSOR ORB ── -->
+<div class="cursor-orb" aria-hidden="true"></div>
 
 <script>
 // ── LANGUAGE ──────────────────────────────────────────────────────────────
@@ -2304,11 +2415,11 @@ function initBalls() {
     ctx.clearRect(0, 0, W, H);
     discs.forEach(d => {
       if (!reduced) { d.x += d.vx; d.y += d.vy; }
-      const pad = d.r + 12;
-      if (d.x < -pad) d.x = W + pad;
-      if (d.x > W + pad) d.x = -pad;
-      if (d.y < -pad) d.y = H + pad;
-      if (d.y > H + pad) d.y = -pad;
+      // bounce off edges (was wrap-around)
+      if (d.x - d.r < 0) { d.x = d.r;       d.vx = Math.abs(d.vx); }
+      if (d.x + d.r > W) { d.x = W - d.r;   d.vx = -Math.abs(d.vx); }
+      if (d.y - d.r < 0) { d.y = d.r;       d.vy = Math.abs(d.vy); }
+      if (d.y + d.r > H) { d.y = H - d.r;   d.vy = -Math.abs(d.vy); }
       drawDisc(d);
     });
     if (running) frame = requestAnimationFrame(draw);
@@ -2442,6 +2553,45 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (el) window.scrollTo({top: el.offsetTop - 60, behavior: 'smooth'});
   });
 });
+
+// ── HERO REVEAL — choreograph the cover entrance on page load ─────────────
+window.addEventListener('load', () => {
+  requestAnimationFrame(() => {
+    const heroEl = document.getElementById('hero');
+    if (heroEl) heroEl.classList.add('revealed');
+  });
+});
+
+// ── CUSTOM CURSOR (Castro-orange ball) ────────────────────────────────────
+(function initCursor() {
+  const orb = document.querySelector('.cursor-orb');
+  if (!orb) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  let tx = -100, ty = -100, cx = -100, cy = -100;
+  let raf = null;
+  function loop() {
+    cx += (tx - cx) * 0.35;
+    cy += (ty - cy) * 0.35;
+    orb.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+    raf = requestAnimationFrame(loop);
+  }
+  document.addEventListener('mousemove', (e) => {
+    tx = e.clientX; ty = e.clientY;
+    if (!orb.classList.contains('ready')) orb.classList.add('ready');
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.addEventListener('mouseleave', () => orb.classList.remove('ready'));
+  document.addEventListener('mouseenter', () => orb.classList.add('ready'));
+  document.addEventListener('mousedown',  () => orb.classList.add('tap'));
+  document.addEventListener('mouseup',    () => orb.classList.remove('tap'));
+  const hoverSel = 'a, button, label, [onclick], [role="button"], .kpi-card, .photo-card, .lang-btn, .nav-links a, .rail-section, .esg-badge, input, textarea, select';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest && e.target.closest(hoverSel)) orb.classList.add('hover');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest && e.target.closest(hoverSel)) orb.classList.remove('hover');
+  });
+})();
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 window.addEventListener('load', initBalls);
