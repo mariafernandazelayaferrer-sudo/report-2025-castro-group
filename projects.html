@@ -167,11 +167,12 @@ nav {
 }
 .proj-cert-badge {
   position: absolute;
-  bottom: 12px; right: 12px;
-  height: 56px; width: auto;
+  bottom: 10px; right: 10px;
+  height: 32px; width: auto;
   z-index: 3;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.12));
 }
+.proj-card { position: relative; }
 .proj-media-placeholder {
   width: 100%; height: 100%;
   display: grid; place-items: center;
@@ -333,8 +334,7 @@ footer a:hover { text-decoration: underline; }
 
       <article class="proj-card">
         <div class="proj-media">
-          <img src="uploads/projects/BUZ.jpg" alt="La Movida" loading="lazy">
-          <img class="proj-cert-badge" src="uploads/leed/LEED_Gold-2026.svg" alt="LEED Gold 2026" loading="lazy">
+          <img src="uploads/projects/BUZ.jpg" alt="La Movida — edifício em Matosinhos" loading="lazy">
         </div>
         <div class="proj-body">
           <div class="proj-name">La Movida</div>
@@ -345,6 +345,7 @@ footer a:hover { text-decoration: underline; }
             <li><span class="key" data-pt="Gestão" data-en="Management">Gestão</span><span>CG</span></li>
           </ul>
           <span class="proj-badge cert-emit" data-pt="LEED Gold emitido" data-en="LEED Gold issued">LEED Gold emitido</span>
+          <img class="proj-cert-badge" src="uploads/leed/LEED_Gold-2026.svg" alt="LEED Gold" loading="lazy">
         </div>
       </article>
 
@@ -419,7 +420,7 @@ footer a:hover { text-decoration: underline; }
       </article>
 
       <article class="proj-card">
-        <div class="proj-media"><img src="uploads/projects/ALDI.jpg" alt="ALDI" loading="lazy"></div>
+        <div class="proj-media"><img src="uploads/projects/ALDI.jpg" alt="ALDI" loading="lazy" style="object-position:center 80%;"></div>
         <div class="proj-body">
           <div class="proj-name">ALDI</div>
           <div class="proj-loc">Matosinhos, Porto</div>

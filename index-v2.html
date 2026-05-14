@@ -103,7 +103,7 @@ body {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px; height: 60px;
+  padding: 0 48px; height: 76px;
   background: rgba(216, 213, 204, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cg-border);
@@ -117,7 +117,7 @@ nav.over-dark .nav-wordmark,
 nav.over-dark .nav-year { color: #fff; }
 
 .nav-left { display: flex; align-items: center; gap: 20px; }
-.nav-logo { height: 34px; width: auto; display: block; }
+.nav-logo { height: 48px; width: auto; display: block; }
 nav.over-dark .nav-logo { filter: brightness(0) invert(1); }
 .nav-sep { width: 1px; height: 18px; background: var(--cg-border); }
 nav.over-dark .nav-sep { background: rgba(255,255,255,0.2); }
@@ -472,8 +472,8 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 
 /* ── HERO CHOREOGRAPHY — fires on page load via .revealed ───────────────── */
 #hero #kaleidoscope {
-  opacity: 0; transform: scale(0.62) rotate(-5deg);
-  transition: opacity 2.2s ease-out 0.2s, transform 2.4s cubic-bezier(0.22,1,0.36,1) 0.2s;
+  opacity: 0; transform: scale(0.55) rotate(-6deg);
+  transition: opacity 2.2s ease-out 1.85s, transform 2.4s cubic-bezier(0.22,1,0.36,1) 1.85s;
   transform-origin: 65% 50%;
 }
 #hero.revealed #kaleidoscope { opacity: 1; transform: scale(1) rotate(0); }
@@ -481,31 +481,51 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 /* Hero eyebrow + quote slide from left, stats strip from below */
 .hero-eyebrow, .hero-quote {
   opacity: 0; transform: translateX(-48px);
-  transition: opacity 0.95s cubic-bezier(0.22,1,0.36,1), transform 0.95s cubic-bezier(0.22,1,0.36,1);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
 }
-#hero.revealed .hero-eyebrow { opacity: 0.7; transform: translateX(0); transition-delay: 0.15s; }
-#hero.revealed .hero-quote   { opacity: 0.7; transform: translateX(0); transition-delay: 1.10s; }
+#hero.revealed .hero-eyebrow { opacity: 0.7; transform: translateX(0); transition-delay: 0.10s; }
+#hero.revealed .hero-quote   { opacity: 0.7; transform: translateX(0); transition-delay: 2.40s; }
 .hero-stats {
   opacity: 0; transform: translateY(28px);
-  transition: opacity 0.9s ease-out 1.30s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 1.30s;
+  transition: opacity 0.9s ease-out 2.65s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 2.65s;
 }
 #hero.revealed .hero-stats { opacity: 1; transform: translateY(0); }
 
-/* Word-by-word title reveal — each .hw drifts up with blur→clear */
+/* Word-by-word title reveal — each line enters from its own direction */
 .hero-title .hw {
   display: inline-block;
-  opacity: 0; transform: translateY(40px); filter: blur(12px);
+  opacity: 0;
   transition:
-    opacity 1s cubic-bezier(0.22,1,0.36,1),
-    transform 1.05s cubic-bezier(0.22,1,0.36,1),
-    filter 0.8s ease-out;
+    opacity 0.9s cubic-bezier(0.22,1,0.36,1),
+    transform 1s cubic-bezier(0.22,1,0.36,1),
+    filter 0.7s ease-out;
+  filter: blur(8px);
 }
-#hero.revealed .hero-title .hw { opacity: 1; transform: translateY(0); filter: blur(0); }
-#hero.revealed .hero-title .hw:nth-of-type(1) { transition-delay: 0.30s; }
-#hero.revealed .hero-title .hw:nth-of-type(2) { transition-delay: 0.46s; }
-#hero.revealed .hero-title .hw:nth-of-type(3) { transition-delay: 0.64s; }
-#hero.revealed .hero-title .hw:nth-of-type(4) { transition-delay: 0.82s; }
-#hero.revealed .hero-title .hw:nth-of-type(5) { transition-delay: 1.00s; }
+.hero-title .hw-l { transform: translateX(-90px); }
+.hero-title .hw-t { transform: translateY(-90px); }
+.hero-title .hw-r { transform: translateX(110px) scale(0.4); }
+
+#hero.revealed .hero-title .hw {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate(0,0);
+}
+/* Line 1 — "Relatório" / "de" or "Sustainability" — from left, staggered */
+#hero.revealed .hero-title .hw-l       { transition-delay: 0.30s; }
+#hero.revealed .hero-title .hw-l.hw-l2 { transition-delay: 0.42s; }
+/* Line 2 — middle word — from above */
+#hero.revealed .hero-title .hw-t       { transition-delay: 0.78s; }
+/* Line 3 — the year — comes from the right and zooms past 1 to settle */
+#hero.revealed .hero-title .hw-r {
+  animation: hw-zoom 1.15s cubic-bezier(0.34,1.56,0.64,1) 1.10s forwards;
+  /* keep transition off so the keyframe controls everything */
+  transition: filter 0.7s ease-out 1.10s;
+}
+@keyframes hw-zoom {
+  0%   { opacity: 0; transform: translateX(110px) scale(0.4); }
+  55%  { opacity: 1; transform: translateX(0)     scale(1.28); }
+  100% { opacity: 1; transform: translateX(0)     scale(1); }
+}
 
 /* ── CUSTOM CURSOR (Castro-orange ball) ─────────────────────────────────── */
 @media (hover: hover) and (pointer: fine) {
@@ -546,6 +566,82 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
     opacity: 1 !important; filter: none !important;
   }
   html, body, a, button { cursor: auto !important; }
+}
+
+/* ── DATA MODAL (click any KPI/metric card to dive in) ─────────────────── */
+.kpi-card, .metric-card { cursor: pointer; position: relative; }
+.kpi-card::after, .metric-card::after {
+  content: '↗';
+  position: absolute; top: 14px; right: 14px;
+  font-size: 11px; font-weight: 700;
+  color: var(--cg-mid);
+  opacity: 0.32;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.kpi-card:hover::after, .metric-card:hover::after { opacity: 1; transform: translate(2px,-2px); }
+
+.data-modal-overlay {
+  position: fixed; inset: 0; z-index: 5000;
+  background: rgba(20,24,42,0.72);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+.data-modal-overlay.open { display: flex; opacity: 1; }
+.data-modal {
+  background: var(--cg-bone);
+  border-radius: 4px;
+  max-width: 640px; width: 100%;
+  max-height: 88vh; overflow-y: auto;
+  padding: 44px 44px 38px;
+  position: relative;
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.32);
+}
+.data-modal-overlay.open .data-modal { transform: translateY(0) scale(1); }
+.data-modal-close {
+  position: absolute; top: 14px; right: 16px;
+  width: 36px; height: 36px;
+  background: transparent; border: none;
+  font-size: 22px; color: var(--cg-mid);
+  cursor: pointer; line-height: 1;
+  border-radius: 50%;
+}
+.data-modal-close:hover { background: rgba(0,0,0,0.06); color: var(--cg-ink); }
+.data-modal-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 2px;
+  margin-bottom: 22px;
+  background: var(--cg-tag-orange-bg); color: var(--cg-tag-orange-fg);
+}
+.data-modal-title {
+  font-size: 26px; font-weight: 300; line-height: 1.2;
+  color: var(--cg-ink); margin-bottom: 8px;
+}
+.data-modal-value {
+  font-size: 52px; font-weight: 300; line-height: 1; letter-spacing: -0.02em;
+  color: var(--cg-ink); margin: 18px 0 10px;
+}
+.data-modal-value .kpi-unit, .data-modal-value small { font-size: 18px; color: var(--cg-mid); }
+.data-modal-sub { font-size: 13px; color: var(--cg-mid); margin-bottom: 22px; line-height: 1.55; }
+.data-modal-body { font-size: 14px; line-height: 1.7; color: var(--cg-ink); }
+.data-modal-delta {
+  display: inline-block; margin-top: 18px;
+  font-size: 12px; font-weight: 600;
+  padding: 8px 14px; border-radius: 24px;
+  background: var(--cg-bone); border: 1px solid var(--cg-border);
+  color: var(--cg-ink);
+}
+@media (max-width: 640px) {
+  .data-modal { padding: 32px 22px; max-height: 92vh; }
+  .data-modal-title { font-size: 22px; }
+  .data-modal-value { font-size: 40px; }
 }
 
 /* ── DOUBLE MATERIALITY MATRIX ────────────────────────────────────────── */
@@ -637,20 +733,30 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   z-index: 5;
 }
 .mm-point .mm-tip {
-  position: absolute; left: 50%; bottom: calc(100% + 10px);
+  position: absolute; left: 50%; bottom: calc(100% + 6px);
   transform: translateX(-50%);
-  background: #0d0d22; color: #fff;
-  padding: 8px 12px; border-radius: 2px;
-  font-size: 11px; line-height: 1.4; white-space: nowrap;
-  border: 1px solid rgba(255,255,255,0.12);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.15s var(--cg-ease);
+  color: #fff;
+  font-size: 10px; line-height: 1.3; white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
-.mm-point .mm-tip strong { font-weight: 600; margin-right: 6px; }
+.mm-point .mm-tip strong { font-weight: 700; }
 .mm-point .mm-tip span {
-  color: rgba(255,255,255,0.58); font-weight: 400; font-size: 10px;
+  display: inline-block;
+  margin-left: 8px;
+  background: rgba(13,13,34,0.94);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 10px; border-radius: 2px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 400; font-size: 10px;
+  opacity: 0;
+  transition: opacity 0.2s var(--cg-ease);
+  text-shadow: none;
 }
-.mm-point:hover .mm-tip { opacity: 1; }
+.mm-point:hover .mm-tip span { opacity: 1; }
+.mm-point:hover { z-index: 10; }
 @media (max-width: 1024px) {
   .mm-section { padding: 72px 32px; }
   .mm-grid { height: 440px; }
@@ -708,7 +814,20 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .pf-row-dot {
   width: 5px; height: 5px; border-radius: 50%;
   background: var(--cg-green);
+  opacity: 0; transform: scale(0.3);
+  transition: opacity 0.35s ease-out, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
 }
+.pf-row-dots.revealed .pf-row-dot { opacity: 1; transform: scale(1); }
+.pf-row-dots.revealed .pf-row-dot:nth-child(1)  { transition-delay: 0.00s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(2)  { transition-delay: 0.05s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(3)  { transition-delay: 0.10s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(4)  { transition-delay: 0.15s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(5)  { transition-delay: 0.20s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(6)  { transition-delay: 0.25s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(7)  { transition-delay: 0.30s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(8)  { transition-delay: 0.35s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(9)  { transition-delay: 0.40s; }
+.pf-row-dots.revealed .pf-row-dot:nth-child(10) { transition-delay: 0.45s; }
 .pf-row-label {
   font-size: 12px; line-height: 1.45;
   color: rgba(255,255,255,0.78);
@@ -852,6 +971,33 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   color: var(--cg-ink); margin-bottom: 56px;
 }
 .mvv-section h2 strong { font-weight: 700; }
+.mvv-cards-only {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+  max-width: 1100px;
+  margin-left: auto; margin-right: auto;
+}
+.mvv-cards-only .mvv-card {
+  background: var(--cg-bone);
+  padding: 32px 28px;
+  border-radius: 2px;
+  border: 1px solid var(--cg-border);
+  display: block;
+}
+.mvv-cards-only .mvv-card-tag {
+  display: block;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.mvv-cards-only .mvv-card p {
+  font-size: 14px; line-height: 1.65; color: var(--cg-ink); margin: 0;
+}
+@media (max-width: 900px) {
+  .mvv-cards-only { grid-template-columns: 1fr; gap: 14px; }
+}
 .mvv-layout {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -1166,6 +1312,65 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .kpi-row, .metrics-grid { grid-template-columns: 1fr; }
   .chapter-band { padding: 48px 20px; padding-right: 20px; }
   footer { padding-right: 20px; }
+
+  /* CEO + HOS grids stack on mobile */
+  .ceo-grid, .hos-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .hos-grid > div:last-child { text-align: left !important; }
+  .hos-grid > div:last-child > div:first-child { margin-left: 0 !important; }
+
+  /* Empresas / Fundos / Cidades grids stack */
+  .kpi-row[style*="repeat(5"] { grid-template-columns: 1fr !important; }
+  div.stagger[style*="repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+  div.stagger[style*="repeat(5,1fr)"] { grid-template-columns: 1fr !important; }
+
+  /* CTP chart container — keep readable */
+  div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; gap: 32px !important; }
+  div.stagger[style*="repeat(4,1fr)"] { grid-template-columns: 1fr !important; }
+
+  /* Portfolio macro: stack categories */
+  .pf-macro { grid-template-columns: 1fr; gap: 40px; }
+
+  /* Trajectory SVG: smaller bars need readable labels — already handled by viewBox scaling */
+  /* Footer: stack columns */
+  footer > div > div { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+  /* Hero animation on small screens — reduce travel distance so words don't push offscreen */
+  .hero-title .hw-l { transform: translateX(-40px); }
+  .hero-title .hw-t { transform: translateY(-48px); }
+  .hero-title .hw-r { transform: translateX(50px) scale(0.5); }
+  @keyframes hw-zoom {
+    0%   { opacity: 0; transform: translateX(50px) scale(0.5); }
+    55%  { opacity: 1; transform: translateX(0)    scale(1.18); }
+    100% { opacity: 1; transform: translateX(0)    scale(1); }
+  }
+
+  /* Larger tap targets */
+  .kpi-card, .metric-card { padding: 20px 18px; }
+  .data-modal-overlay { padding: 12px; }
+
+  /* Logo: keep it visible but not oversized on phones */
+  .nav-logo { height: 32px; }
+
+  /* Hero stats stack — keep size manageable */
+  .hero-stat { padding: 16px 18px; }
+
+  /* Materiality plot legibility */
+  .mm-head { grid-template-columns: 1fr !important; }
+  .mm-legend { flex-wrap: wrap; gap: 12px; }
+  .mm-grid { height: 360px; }
+  .mm-point .mm-tip { font-size: 9px; }
+}
+
+@media (max-width: 380px) {
+  .hero-title { font-size: 30px !important; }
+  .data-modal-value { font-size: 36px; }
+  .nav-logo { height: 28px; }
+  nav { padding: 0 12px; height: 52px; padding-right: 12px; }
+  .section { padding: 48px 16px; padding-right: 16px; }
+  .hero-content { padding: 116px 16px 28px; }
 }
 </style>
 </head>
@@ -1211,7 +1416,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   <canvas id="kaleidoscope" aria-hidden="true"></canvas>
   <div class="hero-content">
     <p class="hero-eyebrow" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
-    <h1 class="hero-title" data-pt="<span class='hw'>Relatório</span> <span class='hw'>de</span><br><span class='hw'><strong>Sustentabilidade</strong></span><br><span class='hw'>2025</span>" data-en="<span class='hw'><strong>Sustainability</strong></span><br><span class='hw'>Report</span><br><span class='hw'>2025</span>"><span class="hw">Relatório</span> <span class="hw">de</span><br><span class="hw"><strong>Sustentabilidade</strong></span><br><span class="hw">2025</span></h1>
+    <h1 class="hero-title" data-pt="<span class='hw hw-l'>Relatório</span> <span class='hw hw-l hw-l2'>de</span><br><span class='hw hw-t'><strong>Sustentabilidade</strong></span><br><span class='hw hw-r'>2025</span>" data-en="<span class='hw hw-l'><strong>Sustainability</strong></span><br><span class='hw hw-t'>Report</span><br><span class='hw hw-r'>2025</span>"><span class="hw hw-l">Relatório</span> <span class="hw hw-l hw-l2">de</span><br><span class="hw hw-t"><strong>Sustentabilidade</strong></span><br><span class="hw hw-r">2025</span></h1>
     <p class="hero-quote" data-pt="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>" data-en="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>">«The best way to predict the future is to create it.»<br><span class="hero-quote-attr">— Peter Drucker</span></p>
   </div>
 
@@ -1299,7 +1504,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       </div>
       <div>
         <div style="font-size:22px;font-weight:300;line-height:1.5;color:var(--cg-ink);border-left:3px solid var(--cg-navy);padding-left:28px;font-style:italic;" data-pt="Criar valor é a nossa estratégia. Criar impacto positivo é a nossa ambição. Concretizar ambos é o nosso compromisso." data-en="Creating value is our strategy. Creating positive impact is our ambition. Delivering both is our commitment.">Criar valor é a nossa estratégia. Criar impacto positivo é a nossa ambição. Concretizar ambos é o nosso compromisso.</div>
-        <p class="body" style="margin-top:24px;" data-pt="O ano de 2025 marcou um ciclo de transformação e concretização no Castro Group. Entre os marcos alcançados, destaca-se a entrada em operação do nosso primeiro edifício com certificação LEED® Gold (La Movida), a criação do departamento People Team, o lançamento da marca La Movida pela 2gether Spaces, a consolidação da Política de Sustentabilidade, a implementação do Código de Conduta dos Fornecedores e a realização interna da Análise de Dupla Materialidade." data-en="The year 2025 marked a cycle of transformation and delivery at Castro Group. Milestones include the operation launch of our first LEED® Gold certified building (La Movida), the creation of the People Team department, the launch of the La Movida brand by 2gether Spaces, consolidation of the Sustainability Policy, implementation of the Supplier Code of Conduct and internal Double Materiality Analysis.">O ano de 2025 marcou um ciclo de transformação e concretização no Castro Group. Entre os marcos alcançados, destaca-se a entrada em operação do nosso primeiro edifício com certificação LEED® Gold (La Movida), a criação do departamento People Team, o lançamento da marca La Movida pela 2gether Spaces, a consolidação da Política de Sustentabilidade, a implementação do Código de Conduta dos Fornecedores e a realização interna da Análise de Dupla Materialidade.</p>
+        <p class="body" style="margin-top:24px;" data-pt="O ano de 2025 marcou um ciclo de transformação e concretização no Castro Group. Entre os marcos alcançados, destaca-se a entrada em operação do nosso primeiro edifício com certificação LEED® Gold (La Movida), a criação do departamento People Team e o lançamento da marca BUZ pela 2gether Spaces." data-en="The year 2025 marked a cycle of transformation and delivery at Castro Group. Milestones include the operation launch of our first LEED® Gold certified building (La Movida), the creation of the People Team department and the launch of the BUZ brand by 2gether Spaces.">O ano de 2025 marcou um ciclo de transformação e concretização no Castro Group. Entre os marcos alcançados, destaca-se a entrada em operação do nosso primeiro edifício com certificação LEED® Gold (La Movida), a criação do departamento People Team e o lançamento da marca BUZ pela 2gether Spaces.</p>
       </div>
     </div>
   </div>
@@ -1311,8 +1516,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="eyebrow fade-up" data-pt="Mensagem da Head of Sustainability" data-en="Message from the Head of Sustainability">Mensagem da Head of Sustainability</p>
     <div class="hos-grid fade-up" style="display:grid;grid-template-columns:2fr 1fr;gap:80px;align-items:start;">
       <div>
-        <div style="font-size:22px;font-weight:300;line-height:1.5;color:var(--cg-ink);border-left:3px solid var(--cg-cyan);padding-left:28px;font-style:italic;" data-pt="2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. As decisões que tomamos hoje são os alicerces do futuro que estamos a construir." data-en="2025 was a year of delivery and maturity. We enter 2026 with a clear agenda: environmental certifications, the 2030 climate plan and sustainability embedded as an operating principle. The decisions we make today are the foundations of the future we are building.">2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. As decisões que tomamos hoje são os alicerces do futuro que estamos a construir.</div>
-        <p class="body" style="margin-top:24px;" data-pt="Em 2025 consolidámos a estrutura ESG do Castro Group: o primeiro edifício LEED® Gold em operação (La Movida), a análise interna de Dupla Materialidade, a criação do People Team e a publicação do Código de Conduta dos Fornecedores. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025." data-en="In 2025 we consolidated the ESG structure of Castro Group: the first LEED® Gold building in operation (La Movida), the internal Double Materiality Analysis, the creation of the People Team and the publication of the Supplier Code of Conduct. The Climate Transition Plan sets the trajectory to 2030 — a 40% reduction in Scope 1+2 emissions versus the 2025 baseline.">Em 2025 consolidámos a estrutura ESG do Castro Group: o primeiro edifício LEED® Gold em operação (La Movida), a análise interna de Dupla Materialidade, a criação do People Team e a publicação do Código de Conduta dos Fornecedores. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025.</p>
+        <div style="font-size:22px;font-weight:300;line-height:1.5;color:var(--cg-ink);border-left:3px solid var(--cg-cyan);padding-left:28px;font-style:italic;" data-pt="As decisões que tomamos hoje são os alicerces do futuro que estamos a construir." data-en="The decisions we make today are the foundations of the future we are building.">As decisões que tomamos hoje são os alicerces do futuro que estamos a construir.</div>
+        <p class="body" style="margin-top:24px;" data-pt="2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025." data-en="2025 was a year of delivery and maturity. We enter 2026 with a clear agenda: environmental certifications, the 2030 climate plan and sustainability embedded as an operating principle. The Climate Transition Plan sets the trajectory to 2030 — a 40% reduction in Scope 1+2 emissions versus the 2025 baseline.">2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025.</p>
       </div>
       <div style="text-align:right;">
         <div style="width:200px;height:200px;overflow:hidden;border-radius:50%;margin:0 0 20px auto;background:var(--cg-putty);">
@@ -1351,13 +1556,13 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Construção" data-en="Construction">Construção</div>
         <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Build</div>
-        <div class="kpi-desc" data-pt="Design & gestão de projeto + produção (alvará classe 9, BIM)" data-en="Design & project management + production (class 9 licence, BIM)">Design & gestão de projeto + produção (alvará classe 9, BIM)</div>
+        <div class="kpi-desc" data-pt="Design & gestão de projeto + produção" data-en="Design & project management + production">Design & gestão de projeto + produção</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Operação" data-en="Operations">Operação</div>
         <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">2gether Spaces</div>
-        <div class="kpi-desc" data-pt="Property as a service · marca La Movida · flex offices, coliving" data-en="Property as a service · La Movida brand · flex offices, coliving">Property as a service · marca La Movida · flex offices, coliving</div>
+        <div class="kpi-desc" data-pt="Property as a service · marca BUZ pela 2gether · flex offices, coliving" data-en="Property as a service · BUZ pela 2gether brand · flex offices, coliving">Property as a service · marca BUZ pela 2gether · flex offices, coliving</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
@@ -1377,7 +1582,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       <div style="background:var(--cg-bone);padding:28px 24px;">
         <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">FII · JAN 2025</div>
         <div style="font-size:18px;font-weight:600;color:var(--cg-ink);">Fuse Valley FII</div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="Fundo fechado · Bem-Estar + Inovação · Matosinhos" data-en="Closed-end fund · Wellbeing + Innovation · Matosinhos">Fundo fechado · Bem-Estar + Inovação · Matosinhos</div>
+        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="Fundo fechado" data-en="Closed-end fund">Fundo fechado</div>
       </div>
       <div style="background:var(--cg-bone);padding:28px 24px;">
         <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · APR 2025</div>
@@ -1394,37 +1599,18 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="mvv-eyebrow" data-pt="Missão · Visão · Valores" data-en="Mission · Vision · Values">Missão · Visão · Valores</p>
     <h2 data-pt="O que nos <strong>move</strong>" data-en="What <strong>drives us</strong>">O que nos <strong>move</strong></h2>
 
-    <div class="mvv-layout">
-      <div class="mvv-diagram fade-up">
-        <svg viewBox="0 0 600 720" role="img" aria-labelledby="mvv-svg-title">
-          <title id="mvv-svg-title">Diagrama Missão, Visão e Valores</title>
-          <!-- Missão (rust, top) -->
-          <circle cx="300" cy="260" r="220" fill="#CC512C" opacity="0.94"/>
-          <!-- Valores (orange, bottom) -->
-          <circle cx="300" cy="460" r="220" fill="#FB7622" opacity="0.94"/>
-          <!-- Visão (gray, intersection) -->
-          <ellipse cx="300" cy="360" rx="92" ry="58" fill="#8A8E96" opacity="0.96"/>
-
-          <!-- Labels -->
-          <text x="300" y="170" text-anchor="middle" fill="#fff" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600">Missão</text>
-          <text x="300" y="370" text-anchor="middle" fill="#fff" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" font-weight="600">Visão</text>
-          <text x="300" y="585" text-anchor="middle" fill="#fff" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="600">Valores</text>
-        </svg>
+    <div class="mvv-cards-only stagger">
+      <div class="mvv-card mvv-missao">
+        <div class="mvv-card-tag">Missão</div>
+        <p data-pt="Revolucionar e prosperar no <em>real estate business</em>, com base nos princípios fundamentais de localização, inovação, sustentabilidade e flexibilidade." data-en="To revolutionise and prosper in the <em>real estate business</em>, grounded in the core principles of location, innovation, sustainability and flexibility.">Revolucionar e prosperar no <em>real estate business</em>, com base nos princípios fundamentais de localização, inovação, sustentabilidade e flexibilidade.</p>
       </div>
-
-      <div class="mvv-cards stagger">
-        <div class="mvv-card mvv-missao">
-          <div class="mvv-card-tag">Missão</div>
-          <p data-pt="Revolucionar e prosperar no <em>real estate business</em>, com base nos princípios fundamentais de localização, inovação, sustentabilidade e flexibilidade." data-en="To revolutionise and prosper in the <em>real estate business</em>, grounded in the core principles of location, innovation, sustainability and flexibility.">Revolucionar e prosperar no <em>real estate business</em>, com base nos princípios fundamentais de localização, inovação, sustentabilidade e flexibilidade.</p>
-        </div>
-        <div class="mvv-card mvv-visao">
-          <div class="mvv-card-tag">Visão</div>
-          <p data-pt="Desenvolver ativos imobiliários e serviços de referência que proporcionem ao cliente e à comunidade experiências sensoriais e emocionais e que, simultaneamente, promovam um futuro mais sustentável." data-en="To develop benchmark real estate assets and services that deliver sensory and emotional experiences to clients and communities while promoting a more sustainable future.">Desenvolver ativos imobiliários e serviços de referência que proporcionem ao cliente e à comunidade experiências sensoriais e emocionais e que, simultaneamente, promovam um futuro mais sustentável.</p>
-        </div>
-        <div class="mvv-card mvv-valores">
-          <div class="mvv-card-tag">Valores</div>
-          <p data-pt="Excelência, compromisso, inovação, responsabilidade ambiental, social e cultural." data-en="Excellence, commitment, innovation, and environmental, social and cultural responsibility.">Excelência, compromisso, inovação, responsabilidade ambiental, social e cultural.</p>
-        </div>
+      <div class="mvv-card mvv-visao">
+        <div class="mvv-card-tag">Visão</div>
+        <p data-pt="Desenvolver ativos imobiliários e serviços de referência que proporcionem ao cliente e à comunidade experiências sensoriais e emocionais e que, simultaneamente, promovam um futuro mais sustentável." data-en="To develop benchmark real estate assets and services that deliver sensory and emotional experiences to clients and communities while promoting a more sustainable future.">Desenvolver ativos imobiliários e serviços de referência que proporcionem ao cliente e à comunidade experiências sensoriais e emocionais e que, simultaneamente, promovam um futuro mais sustentável.</p>
+      </div>
+      <div class="mvv-card mvv-valores">
+        <div class="mvv-card-tag">Valores</div>
+        <p data-pt="Excelência, compromisso, inovação, responsabilidade ambiental, social e cultural." data-en="Excellence, commitment, innovation, and environmental, social and cultural responsibility.">Excelência, compromisso, inovação, responsabilidade ambiental, social e cultural.</p>
       </div>
     </div>
   </div>
@@ -1475,7 +1661,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:rgba(255,255,255,0.7);" data-pt="Portfólio de Projetos" data-en="Project Portfolio">Portfólio de Projetos</p>
     <h2 class="heading fade-up" style="color:#fff;" data-pt="19 ativos<br><strong>+ 4 landbank</strong>" data-en="19 assets<br><strong>+ 4 landbank</strong>">19 ativos<br><strong>+ 4 landbank</strong></h2>
-    <p class="body" style="color:rgba(255,255,255,0.7);max-width:560px;margin-top:-32px;margin-bottom:48px;" data-pt="GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido em 2025 (La Movida)." data-en="Total GFA 257,050 m² · 95.8% aligned with certification strategy · 1st LEED Gold issued in 2025 (La Movida).">GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido em 2025 (La Movida).</p>
+    <p class="body" style="color:rgba(255,255,255,0.7);max-width:560px;margin-top:-32px;margin-bottom:48px;" data-pt="GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido (La Movida)." data-en="Total GFA 257,050 m² · 95.8% aligned with certification strategy · 1st LEED Gold issued (La Movida).">GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido (La Movida).</p>
 
     <div class="pf-macro stagger">
       <!-- Ativos em operação -->
@@ -1608,11 +1794,11 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 
     <div class="arte-grid stagger">
       <div class="arte-card hero">
-        <img src="uploads/artworks/9.jpg" alt="Intervenção Coletivo RUA — composição urbana" loading="lazy" decoding="async">
+        <img src="uploads/artworks/9.jpg" alt="Projeto Ruído — Coletivo RUA · La Movida" loading="lazy" decoding="async">
         <div class="arte-card-caption">
           <div class="arte-card-author">Coletivo RUA · 2025</div>
-          <div class="arte-card-title" data-pt="Composição urbana" data-en="Urban composition">Composição urbana</div>
-          <div class="arte-card-meta" data-pt="Projeto Ruído · intervenção mural" data-en="Ruído Project · mural intervention">Projeto Ruído · intervenção mural</div>
+          <div class="arte-card-title">Projeto Ruído</div>
+          <div class="arte-card-meta" data-pt="La Movida, Matosinhos" data-en="La Movida, Matosinhos">La Movida, Matosinhos</div>
         </div>
       </div>
       <div class="arte-card">
@@ -1631,23 +1817,102 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         </div>
       </div>
       <div class="arte-card">
-        <img src="uploads/artworks/CASTRO GROUP 4K.jpg" alt="Mural Coletivo RUA" loading="lazy" decoding="async">
+        <img src="uploads/artworks/CASTRO GROUP 4K.jpg" alt="Projeto Ruído — Coletivo RUA · SPARK" loading="lazy" decoding="async">
         <div class="arte-card-caption">
           <div class="arte-card-author">Coletivo RUA · 2025</div>
           <div class="arte-card-title">Projeto Ruído</div>
-          <div class="arte-card-meta" data-pt="La Movida, Matosinhos" data-en="La Movida, Matosinhos">La Movida, Matosinhos</div>
+          <div class="arte-card-meta" data-pt="SPARK, Matosinhos" data-en="SPARK, Matosinhos">SPARK, Matosinhos</div>
         </div>
       </div>
       <div class="arte-card">
-        <img src="uploads/artworks/2.jpg" alt="Mural Coletivo RUA — retrato" loading="lazy" decoding="async">
+        <img src="uploads/artworks/2.jpg" alt="Projeto Ruído — Coletivo RUA · SPARK" loading="lazy" decoding="async">
         <div class="arte-card-caption">
           <div class="arte-card-author">Coletivo RUA · 2025</div>
-          <div class="arte-card-title" data-pt="Retrato pixelado" data-en="Pixelated portrait">Retrato pixelado</div>
-          <div class="arte-card-meta" data-pt="Projeto Ruído · detalhe" data-en="Ruído Project · detail">Projeto Ruído · detalhe</div>
+          <div class="arte-card-title">Projeto Ruído</div>
+          <div class="arte-card-meta" data-pt="SPARK, Matosinhos" data-en="SPARK, Matosinhos">SPARK, Matosinhos</div>
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ── PAUSA STAGE — closing contemplative pause before footer ─────────── -->
+<section class="pausa-stage" aria-label="Pausa contemplativa">
+  <!-- Background sphere grid: 25 spheres cycling through 5 flag colors -->
+  <div class="pausa-grid" aria-hidden="true">
+    <span class="pausa-sphere" style="--delay:-1.2s"></span>
+    <span class="pausa-sphere" style="--delay:-4.8s"></span>
+    <span class="pausa-sphere" style="--delay:-9.4s"></span>
+    <span class="pausa-sphere" style="--delay:-13.1s"></span>
+    <span class="pausa-sphere" style="--delay:-2.5s"></span>
+    <span class="pausa-sphere" style="--delay:-15.7s"></span>
+    <span class="pausa-sphere" style="--delay:-6.3s"></span>
+    <span class="pausa-sphere" style="--delay:-11.2s"></span>
+    <span class="pausa-sphere" style="--delay:-0.4s"></span>
+    <span class="pausa-sphere" style="--delay:-17.0s"></span>
+    <span class="pausa-sphere" style="--delay:-7.9s"></span>
+    <span class="pausa-sphere" style="--delay:-14.3s"></span>
+    <span class="pausa-sphere" style="--delay:-3.1s"></span>
+    <span class="pausa-sphere" style="--delay:-10.6s"></span>
+    <span class="pausa-sphere" style="--delay:-5.2s"></span>
+    <span class="pausa-sphere" style="--delay:-12.4s"></span>
+    <span class="pausa-sphere" style="--delay:-8.5s"></span>
+    <span class="pausa-sphere" style="--delay:-16.1s"></span>
+    <span class="pausa-sphere" style="--delay:-2.0s"></span>
+    <span class="pausa-sphere" style="--delay:-11.8s"></span>
+    <span class="pausa-sphere" style="--delay:-4.0s"></span>
+    <span class="pausa-sphere" style="--delay:-14.9s"></span>
+    <span class="pausa-sphere" style="--delay:-7.2s"></span>
+    <span class="pausa-sphere" style="--delay:-9.0s"></span>
+    <span class="pausa-sphere" style="--delay:-1.6s"></span>
+  </div>
+
+  <div class="pausa-orbit-wrap">
+    <svg class="pausa-orbit-svg" viewBox="0 0 800 800" role="img" aria-labelledby="pausa-embed-title">
+      <title id="pausa-embed-title">Castro Group · The best way to predict the future is to create it. — Peter Drucker</title>
+      <defs>
+        <path id="pe-cg-outer"  d="M 400 400 m -360 0 a 360 360 0 1 1 720 0 a 360 360 0 1 1 -720 0" fill="none"/>
+        <path id="pe-dr-outer"  d="M 400 400 m -295 0 a 295 295 0 1 1 590 0 a 295 295 0 1 1 -590 0" fill="none"/>
+        <path id="pe-cg-middle" d="M 400 400 m -235 0 a 235 235 0 1 1 470 0 a 235 235 0 1 1 -470 0" fill="none"/>
+        <path id="pe-dr-inner"  d="M 400 400 m -175 0 a 175 175 0 1 1 350 0 a 175 175 0 1 1 -350 0" fill="none"/>
+        <path id="pe-cg-inner"  d="M 400 400 m -115 0 a 115 115 0 1 1 230 0 a 115 115 0 1 1 -230 0" fill="none"/>
+      </defs>
+      <g class="ring-g ring-cg-outer">
+        <text class="ring-text ring-text-cg">
+          <textPath href="#pe-cg-outer" textLength="2230" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
+        </text>
+      </g>
+      <g class="ring-g ring-dr-outer">
+        <text class="ring-text ring-text-dr">
+          <textPath href="#pe-dr-outer" textLength="1830" lengthAdjust="spacing" data-pt="The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  " data-en="The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  ">The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  </textPath>
+        </text>
+      </g>
+      <g class="ring-g ring-cg-middle">
+        <text class="ring-text ring-text-cg ring-text-cg-mid">
+          <textPath href="#pe-cg-middle" textLength="1460" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
+        </text>
+      </g>
+      <g class="ring-g ring-dr-inner">
+        <text class="ring-text ring-text-dr ring-text-dr-inner">
+          <textPath href="#pe-dr-inner" textLength="1090" lengthAdjust="spacing" data-pt="The best way to predict the future is to create it.  —  Peter Drucker  ·  " data-en="The best way to predict the future is to create it.  —  Peter Drucker  ·  ">The best way to predict the future is to create it.  —  Peter Drucker  ·  </textPath>
+        </text>
+      </g>
+      <g class="ring-g ring-cg-inner">
+        <text class="ring-text ring-text-cg ring-text-cg-inner">
+          <textPath href="#pe-cg-inner" textLength="710" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
+        </text>
+      </g>
+      <g class="pausa-center-flag">
+        <circle cx="384" cy="400" r="4" fill="#2E4791"/>
+        <circle cx="392" cy="400" r="4" fill="#FB7622"/>
+        <circle cx="400" cy="400" r="4" fill="#0E99D8"/>
+        <circle cx="408" cy="400" r="4" fill="#33B67A"/>
+        <circle cx="416" cy="400" r="4" fill="#CC512C"/>
+      </g>
+    </svg>
+  </div>
+
+  <p class="pausa-tagline" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
 </section>
 
 <!-- ── DOUBLE MATERIALITY MATRIX (between chapter 01 and chapter 02) ─── -->
@@ -1903,7 +2168,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Certificação" data-en="Certification">Certificação</div>
         <div class="metric-big">95,8<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="GFA alinhado com estratégia" data-en="GFA aligned with strategy">GFA alinhado com estratégia</div>
-        <div class="metric-desc-text" data-pt="257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido em 2025 — La Movida. SPARK e The Breeze em fase final." data-en="257,050 m² total GFA (19 assets, excl. landbank). 1st LEED Gold issued in 2025 — La Movida. SPARK and The Breeze in final phase.">257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido em 2025 — La Movida. SPARK e The Breeze em fase final.</div>
+        <div class="metric-desc-text" data-pt="257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido — La Movida. SPARK e The Breeze em fase final." data-en="257,050 m² total GFA (19 assets, excl. landbank). 1st LEED Gold issued — La Movida. SPARK and The Breeze in final phase.">257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido — La Movida. SPARK e The Breeze em fase final.</div>
         <div class="bar-track"><div class="bar-fill" data-w="96" style="background:var(--cg-esg-governance)"></div></div>
       </div>
       <div class="metric-card dark">
@@ -1918,13 +2183,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         <div class="metric-big" style="font-size:24px;line-height:1.2;" data-pt="Dupla Materialidade" data-en="Double Materiality">Dupla Materialidade</div>
         <div class="metric-desc-text" style="margin-top:16px;" data-pt="1.ª análise interna realizada em 2025. Prioritários: E1.1 Energia/Emissões, S1.2 Condições de Trabalho, G1.1 Segurança e Qualidade dos Edifícios. Externa prevista em 2026." data-en="1st internal analysis completed in 2025. Priorities: E1.1 Energy/Emissions, S1.2 Working Conditions, G1.1 Building Safety & Quality. External planned 2026.">1.ª análise interna realizada em 2025. Prioritários: E1.1 Energia/Emissões, S1.2 Condições de Trabalho, G1.1 Segurança e Qualidade dos Edifícios. Externa prevista em 2026.</div>
         <div class="bar-track"><div class="bar-fill" data-w="65" style="background:var(--cg-esg-governance)"></div></div>
-      </div>
-      <div class="metric-card dark">
-        <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Emissões Scope 3" data-en="Scope 3 Emissions">Emissões Scope 3</div>
-        <div class="metric-big">13.482</div>
-        <div class="metric-unit">TonCO₂e (98,6% <span data-pt="do total" data-en="of total">do total</span>)</div>
-        <div class="metric-desc-text" data-pt="Compras, transportes e resíduos (Cat. 1+4+5): 13.313,3 TonCO₂e (98,7% Scope 3). Operação terceiros (Cat. 13): 137,2 TonCO₂e. Deslocações: 22,6 TonCO₂e. Viagens: 9,1 TonCO₂e." data-en="Purchases, transport, waste (Cat. 1+4+5): 13,313.3 TonCO₂e (98.7% Scope 3). Third-party ops (Cat. 13): 137.2 TonCO₂e. Commuting: 22.6 TonCO₂e. Travel: 9.1 TonCO₂e.">Compras, transportes e resíduos (Cat. 1+4+5): 13.313,3 TonCO₂e (98,7% Scope 3). Operação terceiros (Cat. 13): 137,2 TonCO₂e. Deslocações: 22,6 TonCO₂e. Viagens: 9,1 TonCO₂e.</div>
-        <div class="bar-track"><div class="bar-fill" data-w="99" style="background:var(--cg-esg-governance)"></div></div>
       </div>
       <div class="metric-card dark">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Digitalização" data-en="Digitalisation">Digitalização</div>
@@ -1996,7 +2254,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         </div>
       </div>
       <div style="background:var(--cg-bone);padding:32px 24px 24px;border-radius:2px;border:1px solid var(--cg-border);">
-        <svg viewBox="0 0 720 330" style="width:100%;height:360px;" preserveAspectRatio="xMidYMid meet" aria-label="Emissions reduction trajectory 2025-2030">
+        <svg viewBox="0 0 760 380" style="width:100%;height:auto;max-height:420px;display:block;" preserveAspectRatio="xMidYMid meet" aria-label="Emissions reduction trajectory 2025-2030">
           <defs>
             <linearGradient id="ctp-grad-v2" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"  stop-color="#9E8FD4"/>
@@ -2005,53 +2263,68 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
               <stop offset="100%" stop-color="#33B67A"/>
             </linearGradient>
           </defs>
-          <line x1="40" y1="30"  x2="700" y2="30"  stroke="#C7C4BA" stroke-width="1"/>
-          <line x1="40" y1="92"  x2="700" y2="92"  stroke="#C7C4BA" stroke-width="1"/>
-          <line x1="40" y1="155" x2="700" y2="155" stroke="#C7C4BA" stroke-width="1"/>
-          <line x1="40" y1="217" x2="700" y2="217" stroke="#C7C4BA" stroke-width="1"/>
-          <line x1="40" y1="280" x2="700" y2="280" stroke="#1A1F2E" stroke-width="1"/>
-          <text x="34" y="33"  text-anchor="end" font-size="9" fill="#6B7280" font-family="Helvetica,Arial">220</text>
-          <text x="34" y="95"  text-anchor="end" font-size="9" fill="#6B7280" font-family="Helvetica,Arial">165</text>
-          <text x="34" y="158" text-anchor="end" font-size="9" fill="#6B7280" font-family="Helvetica,Arial">110</text>
-          <text x="34" y="220" text-anchor="end" font-size="9" fill="#6B7280" font-family="Helvetica,Arial">55</text>
-          <text x="34" y="283" text-anchor="end" font-size="9" fill="#6B7280" font-family="Helvetica,Arial">0</text>
-          <!-- target line 118.7 -->
-          <line x1="40" y1="145" x2="700" y2="145" stroke="#2E4791" stroke-width="2" stroke-dasharray="6 6" opacity="0.75"/>
-          <text x="700" y="139" text-anchor="end" font-size="9" font-weight="700" fill="#2E4791" font-family="Helvetica,Arial">META 2030 · ≤118,7 TonCO₂e</text>
-          <!-- 2025 BASE 197.9 -->
-          <rect x="80"  y="55"  width="80" height="225" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="120" y="49"  text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">73,0</text>
-          <text x="120" y="268" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">124,8</text>
-          <text x="120" y="304" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">2025 BASE</text>
-          <!-- 2026 182.0 -->
-          <rect x="190" y="73" width="80" height="207" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="230" y="67" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">67,1</text>
-          <text x="230" y="268" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">114,9</text>
-          <text x="230" y="304" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">2026</text>
-          <!-- 2027 166.1 -->
-          <rect x="300" y="91" width="80" height="189" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="340" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">61,3</text>
-          <text x="340" y="268" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">104,9</text>
-          <text x="340" y="304" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">2027</text>
-          <!-- 2028 150.3 -->
-          <rect x="410" y="109" width="80" height="171" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="450" y="103" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">55,4</text>
-          <text x="450" y="268" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">94,9</text>
-          <text x="450" y="304" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">2028</text>
-          <!-- 2029 134.4 -->
-          <rect x="520" y="127" width="80" height="153" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="560" y="121" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">49,5</text>
-          <text x="560" y="265" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">85,0</text>
-          <text x="560" y="304" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">2029</text>
-          <!-- 2030 META 118.7 -->
-          <rect x="630" y="145" width="80" height="135" rx="36" fill="url(#ctp-grad-v2)"/>
-          <text x="670" y="139" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">43,6</text>
-          <text x="670" y="263" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Helvetica,Arial">75,1</text>
-          <text x="670" y="304" text-anchor="middle" font-size="10" font-weight="700" fill="var(--cg-green)" font-family="Helvetica,Arial">2030 META</text>
+          <!-- horizontal gridlines (chart area: x 60→740, y 40→300, height 260 = 220 TonCO₂e) -->
+          <line x1="60" y1="40"  x2="740" y2="40"  stroke="#C7C4BA" stroke-width="1"/>
+          <line x1="60" y1="100" x2="740" y2="100" stroke="#C7C4BA" stroke-width="1"/>
+          <line x1="60" y1="160" x2="740" y2="160" stroke="#C7C4BA" stroke-width="1"/>
+          <line x1="60" y1="220" x2="740" y2="220" stroke="#C7C4BA" stroke-width="1"/>
+          <line x1="60" y1="280" x2="740" y2="280" stroke="#1A1F2E" stroke-width="1.5"/>
+          <text x="54" y="44"  text-anchor="end" font-size="11" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">220</text>
+          <text x="54" y="104" text-anchor="end" font-size="11" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">165</text>
+          <text x="54" y="164" text-anchor="end" font-size="11" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">110</text>
+          <text x="54" y="224" text-anchor="end" font-size="11" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">55</text>
+          <text x="54" y="284" text-anchor="end" font-size="11" font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">0</text>
+          <text x="20" y="160" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial" transform="rotate(-90 20 160)">TonCO₂e</text>
+          <!-- META 2030 target line: 118.7 → y = 280 - 118.7*(260/220) = 280 - 140.2 = 139.8 -->
+          <line x1="60" y1="140" x2="740" y2="140" stroke="#2E4791" stroke-width="2.2" stroke-dasharray="8 5" opacity="0.85"/>
+          <rect x="500" y="124" width="240" height="22" fill="#fff" stroke="#2E4791" stroke-width="1" rx="2"/>
+          <text x="620" y="139" text-anchor="middle" font-size="11" font-weight="700" fill="#2E4791" font-family="Helvetica,Arial">META 2030 · ≤118,7 TonCO₂e</text>
+
+          <!-- Bars. Each: x = colStart, y = 280 - val*(260/220), width 78. Stacked: top=Scope2, bottom=Scope1. -->
+          <!-- 2025 BASE: total 197.9 (S1 124.8 + S2 73.1) — top of bar y = 280 - 197.9*260/220 = 280 - 234 = 46 -->
+          <rect x="80"  y="46"  width="78" height="234" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="119" y="35"  text-anchor="middle" font-size="14" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">197,9</text>
+          <text x="119" y="92"  text-anchor="middle" font-size="11" font-weight="700" fill="#fff"     font-family="Helvetica,Arial">S2 73,1</text>
+          <text x="119" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"     font-family="Helvetica,Arial">S1 124,8</text>
+          <text x="119" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">2025</text>
+          <text x="119" y="320" text-anchor="middle" font-size="9"  font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">ANO-BASE</text>
+
+          <!-- 2026: 182.0 (≈ −8%). y = 280 - 182*260/220 = 280 - 215 = 65 -->
+          <rect x="190" y="65"  width="78" height="215" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="229" y="54"  text-anchor="middle" font-size="14" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">182,0</text>
+          <text x="229" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#6B7280" font-family="Helvetica,Arial">2026</text>
+          <text x="229" y="320" text-anchor="middle" font-size="9"  font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">−8%</text>
+
+          <!-- 2027: 166.1 (≈ −16%). y = 280 - 166.1*260/220 = 280 - 196.3 = 84 -->
+          <rect x="300" y="84"  width="78" height="196" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="339" y="73"  text-anchor="middle" font-size="14" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">166,1</text>
+          <text x="339" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#6B7280" font-family="Helvetica,Arial">2027</text>
+          <text x="339" y="320" text-anchor="middle" font-size="9"  font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">−16%</text>
+
+          <!-- 2028: 150.3 (≈ −24%). y = 280 - 150.3*260/220 = 280 - 177.6 = 102 -->
+          <rect x="410" y="102" width="78" height="178" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="449" y="91"  text-anchor="middle" font-size="14" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">150,3</text>
+          <text x="449" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#6B7280" font-family="Helvetica,Arial">2028</text>
+          <text x="449" y="320" text-anchor="middle" font-size="9"  font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">−24%</text>
+
+          <!-- 2029: 134.4 (≈ −32%). y = 280 - 134.4*260/220 = 280 - 158.8 = 121 -->
+          <rect x="520" y="121" width="78" height="159" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="559" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">134,4</text>
+          <text x="559" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#6B7280" font-family="Helvetica,Arial">2029</text>
+          <text x="559" y="320" text-anchor="middle" font-size="9"  font-weight="600" fill="#6B7280" font-family="Helvetica,Arial">−32%</text>
+
+          <!-- 2030 META: 118.7 (≈ −40%). y = 280 - 118.7*260/220 = 280 - 140.3 = 140 -->
+          <rect x="630" y="140" width="78" height="140" rx="34" fill="url(#ctp-grad-v2)"/>
+          <text x="669" y="129" text-anchor="middle" font-size="14" font-weight="700" fill="#33B67A" font-family="Helvetica,Arial">118,7</text>
+          <text x="669" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#33B67A" font-family="Helvetica,Arial">2030</text>
+          <text x="669" y="320" text-anchor="middle" font-size="9"  font-weight="700" fill="#33B67A" font-family="Helvetica,Arial">META −40%</text>
+
+          <!-- axis caption -->
+          <text x="400" y="362" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1F2E" font-family="Helvetica,Arial">Trajetória de redução · Scope 1 + Scope 2</text>
         </svg>
         <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--cg-border);">
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--cg-mid);"><span style="width:12px;height:8px;background:#9E8FD4;border-radius:2px;"></span>Scope 1 (TonCO₂e)</span>
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--cg-mid);"><span style="width:12px;height:8px;background:#33B67A;border-radius:2px;"></span>Scope 2 (TonCO₂e)</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:#33B67A;border-radius:2px;display:inline-block;"></span>Scope 1 (TonCO₂e)</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:#9E8FD4;border-radius:2px;display:inline-block;"></span>Scope 2 (TonCO₂e)</span>
           <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--cg-mid);"><span style="width:18px;height:2px;border-top:2px dashed #2E4791;"></span><span data-pt="Meta 2030 (−40%)" data-en="2030 target (−40%)">Meta 2030 (−40%)</span></span>
         </div>
       </div>
@@ -2092,7 +2365,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       <div style="background:var(--cg-putty);padding:28px 24px;">
         <div style="display:inline-block;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:4px 8px;border-radius:2px;background:#CDEBD8;color:var(--cg-esg-economic);margin-bottom:10px;" data-pt="Emitido" data-en="Issued">Emitido</div>
         <div style="font-size:36px;font-weight:300;line-height:1;color:var(--cg-ink);">1</div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:10px;line-height:1.5;" data-pt="LEED Gold em 2025 (La Movida — BD+C: NC)" data-en="LEED Gold in 2025 (La Movida — BD+C: NC)">LEED Gold em 2025 (La Movida — BD+C: NC)</div>
+        <div style="font-size:11px;color:var(--cg-mid);margin-top:10px;line-height:1.5;" data-pt="LEED Gold (La Movida — BD+C: NC)" data-en="LEED Gold (La Movida — BD+C: NC)">LEED Gold (La Movida — BD+C: NC)</div>
       </div>
       <div style="background:var(--cg-putty);padding:28px 24px;">
         <div style="display:inline-block;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:4px 8px;border-radius:2px;background:#CFE9F6;color:var(--cg-tag-cyan-fg);margin-bottom:10px;" data-pt="Em Curso" data-en="In Progress">Em Curso</div>
@@ -2167,23 +2440,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       </div>
     </div>
 
-    <!-- Fernanda's closing letter -->
-    <div class="fade-up" style="margin-top:64px;padding:48px;background:var(--cg-navy);border-radius:2px;color:#fff;">
-      <div style="font-size:9px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:20px;" data-pt="Considerações Finais · Head of Sustainability" data-en="Closing Remarks · Head of Sustainability">Considerações Finais · Head of Sustainability</div>
-      <p style="font-size:18px;font-weight:300;line-height:1.7;color:#fff;font-style:italic;border-left:3px solid rgba(255,255,255,0.6);padding-left:24px;margin-bottom:24px;" data-pt="«2025 foi um ano de concretização e maturidade para o Castro Group em matéria de sustentabilidade. Entramos em 2026, a reta final até à nossa meta partilhada de 2030, com uma agenda clara: o primeiro certificado LEED, os projetos em construção e desenvolvimento com estratégia de sustentabilidade definida, o Plano de Ação Climático para redução de emissões, soluções de automatização de dados ESG e a análise de dupla materialidade interna realizada. As decisões que tomamos hoje são os alicerces do futuro sustentável que estamos a construir.»" data-en="«2025 was a year of delivery and maturity for Castro Group on sustainability. We enter 2026, the final stretch to our shared 2030 goal, with a clear agenda: the first LEED certificate, the construction and development projects with defined sustainability strategy, the Climate Action Plan for emissions reduction, ESG data automation solutions and the internal double materiality analysis completed. The decisions we make today are the foundations of the sustainable future we are building.»">«2025 foi um ano de concretização e maturidade para o Castro Group em matéria de sustentabilidade. Entramos em 2026, a reta final até à nossa meta partilhada de 2030, com uma agenda clara: o primeiro certificado LEED, os projetos em construção e desenvolvimento com estratégia de sustentabilidade definida, o Plano de Ação Climático para redução de emissões, soluções de automatização de dados ESG e a análise de dupla materialidade interna realizada. As decisões que tomamos hoje são os alicerces do futuro sustentável que estamos a construir.»</p>
-      <div style="display:flex;align-items:center;gap:16px;padding-left:24px;">
-        <div style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:var(--cg-putty);flex-shrink:0;border:1px solid rgba(255,255,255,0.15);">
-          <img src="uploads/quotes/fernanda.jpg" alt="Fernanda Zelaya" loading="lazy" decoding="async" width="54" height="54" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div>
-          <div style="font-size:14px;font-weight:600;color:#fff;">Fernanda Zelaya</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:3px;display:flex;align-items:center;gap:8px;">
-            <span data-pt="Head of Sustainability, Castro Group" data-en="Head of Sustainability, Castro Group">Head of Sustainability, Castro Group</span>
-            <a href="https://www.linkedin.com/in/mfzelaya/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:2px;background:var(--cg-cyan);color:#fff;text-decoration:none;font-size:9px;font-weight:700;">in</a>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -2218,85 +2474,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </svg>
 </section>
 
-<!-- ── PAUSA STAGE — closing contemplative pause before footer ─────────── -->
-<section class="pausa-stage" aria-label="Pausa contemplativa">
-  <!-- Background sphere grid: 25 spheres cycling through 5 flag colors -->
-  <div class="pausa-grid" aria-hidden="true">
-    <span class="pausa-sphere" style="--delay:-1.2s"></span>
-    <span class="pausa-sphere" style="--delay:-4.8s"></span>
-    <span class="pausa-sphere" style="--delay:-9.4s"></span>
-    <span class="pausa-sphere" style="--delay:-13.1s"></span>
-    <span class="pausa-sphere" style="--delay:-2.5s"></span>
-    <span class="pausa-sphere" style="--delay:-15.7s"></span>
-    <span class="pausa-sphere" style="--delay:-6.3s"></span>
-    <span class="pausa-sphere" style="--delay:-11.2s"></span>
-    <span class="pausa-sphere" style="--delay:-0.4s"></span>
-    <span class="pausa-sphere" style="--delay:-17.0s"></span>
-    <span class="pausa-sphere" style="--delay:-7.9s"></span>
-    <span class="pausa-sphere" style="--delay:-14.3s"></span>
-    <span class="pausa-sphere" style="--delay:-3.1s"></span>
-    <span class="pausa-sphere" style="--delay:-10.6s"></span>
-    <span class="pausa-sphere" style="--delay:-5.2s"></span>
-    <span class="pausa-sphere" style="--delay:-12.4s"></span>
-    <span class="pausa-sphere" style="--delay:-8.5s"></span>
-    <span class="pausa-sphere" style="--delay:-16.1s"></span>
-    <span class="pausa-sphere" style="--delay:-2.0s"></span>
-    <span class="pausa-sphere" style="--delay:-11.8s"></span>
-    <span class="pausa-sphere" style="--delay:-4.0s"></span>
-    <span class="pausa-sphere" style="--delay:-14.9s"></span>
-    <span class="pausa-sphere" style="--delay:-7.2s"></span>
-    <span class="pausa-sphere" style="--delay:-9.0s"></span>
-    <span class="pausa-sphere" style="--delay:-1.6s"></span>
-  </div>
-
-  <div class="pausa-orbit-wrap">
-    <svg class="pausa-orbit-svg" viewBox="0 0 800 800" role="img" aria-labelledby="pausa-embed-title">
-      <title id="pausa-embed-title">Castro Group · The best way to predict the future is to create it. — Peter Drucker</title>
-      <defs>
-        <path id="pe-cg-outer"  d="M 400 400 m -360 0 a 360 360 0 1 1 720 0 a 360 360 0 1 1 -720 0" fill="none"/>
-        <path id="pe-dr-outer"  d="M 400 400 m -295 0 a 295 295 0 1 1 590 0 a 295 295 0 1 1 -590 0" fill="none"/>
-        <path id="pe-cg-middle" d="M 400 400 m -235 0 a 235 235 0 1 1 470 0 a 235 235 0 1 1 -470 0" fill="none"/>
-        <path id="pe-dr-inner"  d="M 400 400 m -175 0 a 175 175 0 1 1 350 0 a 175 175 0 1 1 -350 0" fill="none"/>
-        <path id="pe-cg-inner"  d="M 400 400 m -115 0 a 115 115 0 1 1 230 0 a 115 115 0 1 1 -230 0" fill="none"/>
-      </defs>
-      <g class="ring-g ring-cg-outer">
-        <text class="ring-text ring-text-cg">
-          <textPath href="#pe-cg-outer" textLength="2230" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
-        </text>
-      </g>
-      <g class="ring-g ring-dr-outer">
-        <text class="ring-text ring-text-dr">
-          <textPath href="#pe-dr-outer" textLength="1830" lengthAdjust="spacing" data-pt="The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  " data-en="The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  ">The best way to predict the future is to create it.  —  Peter Drucker  ·  The best way to predict the future is to create it.  —  Peter Drucker  ·  </textPath>
-        </text>
-      </g>
-      <g class="ring-g ring-cg-middle">
-        <text class="ring-text ring-text-cg ring-text-cg-mid">
-          <textPath href="#pe-cg-middle" textLength="1460" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
-        </text>
-      </g>
-      <g class="ring-g ring-dr-inner">
-        <text class="ring-text ring-text-dr ring-text-dr-inner">
-          <textPath href="#pe-dr-inner" textLength="1090" lengthAdjust="spacing" data-pt="The best way to predict the future is to create it.  —  Peter Drucker  ·  " data-en="The best way to predict the future is to create it.  —  Peter Drucker  ·  ">The best way to predict the future is to create it.  —  Peter Drucker  ·  </textPath>
-        </text>
-      </g>
-      <g class="ring-g ring-cg-inner">
-        <text class="ring-text ring-text-cg ring-text-cg-inner">
-          <textPath href="#pe-cg-inner" textLength="710" lengthAdjust="spacing">CASTRO GROUP  ·  CASTRO GROUP  ·  CASTRO GROUP  ·  </textPath>
-        </text>
-      </g>
-      <g class="pausa-center-flag">
-        <circle cx="384" cy="400" r="4" fill="#2E4791"/>
-        <circle cx="392" cy="400" r="4" fill="#FB7622"/>
-        <circle cx="400" cy="400" r="4" fill="#0E99D8"/>
-        <circle cx="408" cy="400" r="4" fill="#33B67A"/>
-        <circle cx="416" cy="400" r="4" fill="#CC512C"/>
-      </g>
-    </svg>
-  </div>
-
-  <p class="pausa-tagline" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
-</section>
-
 <!-- FOOTER -->
 <footer style="background:var(--cg-dark-ink);padding:72px 80px 40px;color:#fff;">
   <div style="max-width:1240px;margin:0 auto;">
@@ -2327,6 +2504,19 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     </div>
   </div>
 </footer>
+
+<!-- ── DATA MODAL — click any KPI or metric card to expand ── -->
+<div class="data-modal-overlay" id="data-modal" role="dialog" aria-modal="true" aria-labelledby="dm-title" aria-hidden="true">
+  <div class="data-modal">
+    <button class="data-modal-close" type="button" aria-label="Fechar" onclick="closeDataModal()">×</button>
+    <span class="data-modal-tag" id="dm-tag"></span>
+    <h3 class="data-modal-title" id="dm-title"></h3>
+    <div class="data-modal-value" id="dm-value"></div>
+    <div class="data-modal-sub" id="dm-sub"></div>
+    <div class="data-modal-body" id="dm-body"></div>
+    <div class="data-modal-delta" id="dm-delta" hidden></div>
+  </div>
+</div>
 
 <!-- ── CURSOR ORB ── -->
 <div class="cursor-orb" aria-hidden="true"></div>
@@ -2390,8 +2580,8 @@ function initBalls() {
       r: radius,
       stripeWidth, gap, stripeCount,
       color: `rgba(${c[0]},${c[1]},${c[2]},${alpha.toFixed(3)})`,
-      vx: (Math.random() - 0.5) * 0.46,                   // ~75% faster
-      vy: (Math.random() - 0.5) * 0.32
+      vx: (Math.random() - 0.5) * 0.78,                   // bumped per request — a touch faster, still calm
+      vy: (Math.random() - 0.5) * 0.54
     });
   }
 
@@ -2492,6 +2682,83 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up, .stagger, section').forEach(el => io.observe(el));
+
+// ── DATA MODAL — click a KPI/metric card to see it enlarged ─────────────
+function _setNode(targetId, sourceEl) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  while (target.firstChild) target.removeChild(target.firstChild);
+  if (sourceEl) {
+    const clone = sourceEl.cloneNode(true);
+    clone.removeAttribute('class');
+    clone.removeAttribute('style');
+    while (clone.firstChild) target.appendChild(clone.firstChild);
+  }
+}
+function openDataModal(card) {
+  const modal = document.getElementById('data-modal');
+  if (!modal) return;
+  const tagEl   = card.querySelector('.kpi-tag, .metric-pill, .metric-tag-pill');
+  const valEl   = card.querySelector('.metric-big, .kpi-num');
+  const subEl   = card.querySelector('.metric-unit, .kpi-desc');
+  const bodyEl  = card.querySelector('.metric-desc-text');
+  const deltaEl = card.querySelector('.kpi-delta');
+
+  document.getElementById('dm-tag').textContent  = tagEl ? tagEl.textContent.trim() : '';
+  document.getElementById('dm-title').textContent = tagEl ? tagEl.textContent.trim() : '';
+  _setNode('dm-value', valEl);
+  _setNode('dm-sub',   subEl);
+  _setNode('dm-body',  bodyEl);
+
+  const dmDelta = document.getElementById('dm-delta');
+  if (deltaEl) {
+    while (dmDelta.firstChild) dmDelta.removeChild(dmDelta.firstChild);
+    const dClone = deltaEl.cloneNode(true);
+    while (dClone.firstChild) dmDelta.appendChild(dClone.firstChild);
+    dmDelta.hidden = false;
+  } else {
+    dmDelta.hidden = true;
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeDataModal() {
+  const modal = document.getElementById('data-modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+(function wireDataModal() {
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.kpi-card, .metric-card');
+    if (card && !card.closest('.data-modal')) {
+      openDataModal(card);
+      return;
+    }
+    const overlay = document.getElementById('data-modal');
+    if (e.target === overlay) closeDataModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDataModal();
+  });
+})();
+
+// Portfolio asset row dots — sequentially reveal L→R when each row enters viewport
+(function setupPfRowDots() {
+  const rows = document.querySelectorAll('.pf-row-dots');
+  if (!rows.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('revealed');
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+  rows.forEach(r => obs.observe(r));
+})();
 
 // Hero counters animate when stats strip enters viewport — staggered L→R
 (function setupHeroStatsTrigger() {
