@@ -645,6 +645,34 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   html, body, a, button { cursor: auto !important; }
 }
 
+/* ── BACK-TO-TOP BUTTON (always available after scrolling) ─────────────── */
+.back-to-top {
+  position: fixed; right: 24px; bottom: 24px;
+  z-index: 300;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--cg-ink); color: #fff;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; line-height: 1;
+  opacity: 0; transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+}
+.back-to-top.visible {
+  opacity: 0.92; transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover { opacity: 1; background: var(--cg-navy); }
+.back-to-top:focus-visible {
+  outline: 2px solid var(--cg-orange); outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .back-to-top { right: 14px; bottom: 14px; width: 40px; height: 40px; font-size: 16px; }
+}
+
 /* ── DATA MODAL (click any KPI/metric card to dive in) ─────────────────── */
 .kpi-card, .metric-card { cursor: pointer; position: relative; }
 .kpi-card::after, .metric-card::after {
@@ -1020,9 +1048,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .names-orbit-center {
   fill: #fff;
 }
-@media (prefers-reduced-motion: reduce) {
-  .names-ring-outer, .names-ring-middle, .names-ring-inner { animation: none; }
-}
+/* (Brand-rotation animations kept on under reduced-motion — María's call) */
 @media (max-width: 640px) {
   .names-orbit { padding: 72px 20px 64px; }
   .names-text-outer, .names-text-middle { font-size: 12px; }
@@ -1207,11 +1233,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   color: var(--cg-mid);
   text-align: center;
 }
-@media (prefers-reduced-motion: reduce) {
-  .pausa-sphere,
-  .ring-cg-outer, .ring-cg-middle, .ring-cg-inner,
-  .ring-dr-outer, .ring-dr-inner { animation: none; }
-}
+/* (Pausa-stage rotations and sphere color cycle kept on under reduced-motion) */
 @media (max-width: 1024px) {
   .pausa-grid { padding: clamp(24px, 5vw, 80px); inset: 0 60px 0 0; }
   .ring-text-cg { font-size: 17px; letter-spacing: 0.26em; }
@@ -1270,9 +1292,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .orbit-center-mark { opacity: 0.95; }
 @keyframes orbit-spin     { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
 @keyframes orbit-spin-rev { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .orbit-outer-g, .orbit-inner-g { animation: none; }
-}
+/* (Drucker quote-orbit rotation kept on under reduced-motion) */
 
 /* ── ISOTYPE PEOPLE DOTS (social pillar) ───────────────────────────────── */
 .dot-people {
@@ -1401,7 +1421,15 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .hero-stat-label { font-size: 9px; margin-top: 0; letter-spacing: 0.16em; }
   .hero-flag a { padding: 20px 24px; }
   .kpi-row, .metrics-grid { grid-template-columns: 1fr; }
-  .chapter-band { padding: 48px 20px; padding-right: 20px; }
+  .chapter-band {
+    padding: 32px 20px; padding-right: 20px;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .chapter-band .num { font-size: 44px; line-height: 0.9; opacity: 0.85; }
+  .chapter-band h2 { font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; }
+  .chapter-band p { font-size: 12px; line-height: 1.65; margin-top: 10px; }
+  .chapter-band .eyebrow { font-size: 9px !important; }
   footer { padding-right: 20px; }
 
   /* CEO + HOS grids stack on mobile */
@@ -2637,6 +2665,9 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </div>
 
+<!-- ── BACK TO TOP ── -->
+<button class="back-to-top" type="button" aria-label="Voltar ao topo" onclick="scrollToTopSmooth()">↑</button>
+
 <!-- ── CURSOR ORB ── -->
 <div class="cursor-orb" aria-hidden="true"></div>
 
@@ -2804,6 +2835,21 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up, .stagger, section').forEach(el => io.observe(el));
+
+// ── BACK-TO-TOP — appears after a bit of scrolling, smooth-scrolls to 0 ──
+function scrollToTopSmooth() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+(function setupBackToTop() {
+  const btn = document.querySelector('.back-to-top');
+  if (!btn) return;
+  function toggle() {
+    if (window.scrollY > 400) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  }
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle();
+})();
 
 // ── DATA MODAL — click a KPI/metric card to see it enlarged ─────────────
 function _setNode(targetId, sourceEl) {
