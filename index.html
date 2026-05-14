@@ -48,6 +48,7 @@
   --purple:   #7c4ddb;     /* purple (muted from #8b5cf6) */
   --lavender: #9e8fd4;     /* lavender dots */
   --teal:     #00909a;     /* teal accent bar */
+  --orange:   #e8631a;     /* Castro orange — used for the custom cursor */
   --black:    #1a1a1a;
   --white:    #f9f7f4;
   --mid:      #6b7280;
@@ -941,122 +942,86 @@ nav, footer, .section-wrap { padding-right: max(48px, var(--side-pad, 80px)); }
 
 /* Hero choreography — fires on page load via JS adding .revealed */
 #hero #dot-canvas {
-  opacity: 0; transform: scale(0.78);
-  transition: opacity 1.6s ease-out 0.3s, transform 1.8s cubic-bezier(0.22,1,0.36,1) 0.3s;
-  transform-origin: 70% 50%;
+  opacity: 0; transform: scale(0.62) rotate(-5deg);
+  transition: opacity 2.2s ease-out 0.2s, transform 2.4s cubic-bezier(0.22,1,0.36,1) 0.2s;
+  transform-origin: 65% 50%;
 }
-#hero.revealed #dot-canvas { opacity: 1; transform: scale(1); }
+#hero.revealed #dot-canvas { opacity: 1; transform: scale(1) rotate(0); }
 
 /* Teal sidebar wipes top→bottom after the canvas blooms */
 #hero::before {
   transform: scaleY(0); transform-origin: top;
-  transition: transform 1.1s cubic-bezier(0.65,0,0.35,1) 0.85s;
+  transition: transform 1.1s cubic-bezier(0.65,0,0.35,1) 0.9s;
 }
 #hero.revealed::before { transform: scaleY(1); }
 
-/* ── PILAR PAUSE STAGE (full-bleed color reveal, Pearce/Tribeca style) ── */
-.pause-stage {
-  position: relative; overflow: hidden;
-  min-height: 92vh;
-  display: flex; align-items: center;
-  padding: 120px 80px;
-  isolation: isolate;
-  background: #1a1a1a;
-}
-.pause-stage::before {
-  content: ''; position: absolute; inset: 0; z-index: -2;
-  background: var(--purple);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 1.3s cubic-bezier(0.76,0,0.24,1);
-}
-.pause-stage.visible::before { transform: scaleX(1); }
-.pause-stage::after {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  background:
-    radial-gradient(ellipse 80% 60% at 85% 30%, rgba(158,143,212,0.45) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 15% 80%, rgba(0,173,184,0.18) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 1.4s ease-out 0.8s;
-}
-.pause-stage.visible::after { opacity: 1; }
-
-.pause-grid {
-  display: grid; grid-template-columns: 0.95fr 1.05fr;
-  gap: 64px; width: 100%; max-width: 1280px; margin: 0 auto;
-  align-items: center;
-  position: relative; z-index: 2;
-}
-.pause-numeral {
-  font-family: 'Instrument Serif', serif; font-style: italic;
-  font-size: clamp(180px, 24vw, 340px);
-  line-height: 0.78; letter-spacing: -0.04em;
-  color: #fff;
-  margin-left: -10px;
-  display: block;
-}
-.pause-eyebrow {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 0.34em; text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 22px;
-  display: flex; align-items: center; gap: 14px;
-}
-.pause-eyebrow::before { content:''; width: 36px; height: 1px; background: rgba(255,255,255,0.5); }
-.pause-tag {
+/* Word-by-word reveal for the hero title (blur→clear, drift up) */
+.hero-title .hw {
   display: inline-block;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--purple); background: #fff;
-  padding: 8px 14px;
-  margin-bottom: 32px;
+  opacity: 0; transform: translateY(38px); filter: blur(10px);
+  transition:
+    opacity 0.95s cubic-bezier(0.22,1,0.36,1),
+    transform 1s cubic-bezier(0.22,1,0.36,1),
+    filter 0.75s ease-out;
 }
-.pause-title {
-  font-size: clamp(36px, 4.4vw, 60px);
-  font-weight: 300; line-height: 1.05;
-  color: #fff;
-  margin-bottom: 22px;
-}
-.pause-title strong { font-weight: 700; }
-.pause-sub {
-  font-size: 15px; line-height: 1.75;
-  color: rgba(255,255,255,0.78);
-  max-width: 440px;
-  margin-bottom: 36px;
-}
-.pause-continue {
-  font-size: 9px; font-weight: 600;
-  letter-spacing: 0.28em; text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  display: inline-flex; align-items: center; gap: 12px;
-}
-.pause-continue::after { content:''; width: 28px; height: 1px; background: rgba(255,255,255,0.4); }
-
-/* floating orbs echo the hero canvas */
-.pause-orb { position: absolute; border-radius: 50%; pointer-events: none; z-index: 1; }
-.pause-orb.o1 { width: 24px; height: 24px; top: 22%; right: 8%;  background: var(--cyan); opacity: 0.85; }
-.pause-orb.o2 { width: 16px; height: 16px; top: 38%; right: 22%; background: var(--lavender); }
-.pause-orb.o3 { width: 38px; height: 38px; top: 56%; right: 14%; background: rgba(255,255,255,0.15); }
-.pause-orb.o4 { width: 12px; height: 12px; top: 18%; right: 32%; background: var(--green); }
-.pause-orb { opacity: 0; transform: scale(0.4); transition: opacity 0.8s ease-out, transform 1s cubic-bezier(0.22,1,0.36,1); }
-.pause-stage.visible .pause-orb { opacity: 1; transform: scale(1); }
-.pause-stage.visible .pause-orb.o1 { transition-delay: 0.85s; }
-.pause-stage.visible .pause-orb.o2 { transition-delay: 1.00s; }
-.pause-stage.visible .pause-orb.o3 { transition-delay: 1.15s; }
-.pause-stage.visible .pause-orb.o4 { transition-delay: 1.30s; opacity: 0.9; }
-
-@media (max-width: 900px) {
-  .pause-grid { grid-template-columns: 1fr; gap: 24px; }
-  .pause-stage { min-height: 70vh; padding: 100px 32px; }
-  .pause-numeral { font-size: 36vw; }
-}
+#hero.revealed .hero-title .hw { opacity: 1; transform: translateY(0); filter: blur(0); }
+#hero.revealed .hero-title .hw:nth-of-type(1) { transition-delay: 0.20s; }
+#hero.revealed .hero-title .hw:nth-of-type(2) { transition-delay: 0.34s; }
+#hero.revealed .hero-title .hw:nth-of-type(3) { transition-delay: 0.50s; }
+#hero.revealed .hero-title .hw:nth-of-type(4) { transition-delay: 0.66s; }
+#hero.revealed .hero-title .hw:nth-of-type(5) { transition-delay: 0.84s; }
+#hero.revealed .hero-title .hw:nth-of-type(6) { transition-delay: 1.02s; }
 
 @media (prefers-reduced-motion: reduce) {
   .slide-left, .slide-right, #hero #dot-canvas, #hero::before,
-  .pause-stage::before, .pause-stage::after, .pause-orb {
+  .hero-title .hw {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+    filter: none !important;
   }
+}
+
+/* ── CUSTOM CURSOR (Castro-orange ball) ─────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  html, body { cursor: none; }
+  a, button, label, input, textarea, select,
+  [onclick], [role="button"], .esg-badge,
+  .kpi-card, .metric-card, .photo-card, .lang-btn,
+  .nav-links a, .rail-section { cursor: none; }
+}
+.cursor-orb {
+  position: fixed; top: 0; left: 0;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--orange);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  transition:
+    width 0.22s cubic-bezier(0.22,1,0.36,1),
+    height 0.22s cubic-bezier(0.22,1,0.36,1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.25s ease;
+  box-shadow: 0 0 0 0 rgba(232,99,26,0);
+  will-change: transform;
+  opacity: 0;
+}
+.cursor-orb.ready { opacity: 1; }
+.cursor-orb.hover {
+  width: 38px; height: 38px;
+  background: rgba(232,99,26,0.18);
+  box-shadow: 0 0 0 1.5px var(--orange);
+}
+.cursor-orb.tap {
+  width: 12px; height: 12px;
+  background: var(--orange);
+}
+@media (hover: none), (pointer: coarse) { .cursor-orb { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-orb { transition: none; }
+  html, body, a, button { cursor: auto !important; }
 }
 
 /* ── TWEAKS PANEL ── */
@@ -1279,7 +1244,7 @@ nav, footer, .section-wrap { padding-right: max(48px, var(--side-pad, 80px)); }
   <div class="hero-left">
     <div>
       <p class="hero-report-tag slide-left delay-1" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
-      <h1 class="hero-title slide-left delay-2" data-pt="<strong>Criar</strong> hoje<br>um futuro<br>sustentável" data-en="<strong>Creating</strong><br>a sustainable<br>tomorrow"><strong>Criar</strong> hoje<br>um futuro<br>sustentável</h1>
+      <h1 class="hero-title" data-pt="<span class='hw'><strong>Criar</strong></span> <span class='hw'>hoje</span><br><span class='hw'>um</span> <span class='hw'>futuro</span><br><span class='hw'>sustentável</span>" data-en="<span class='hw'><strong>Creating</strong></span><br><span class='hw'>a</span> <span class='hw'>sustainable</span><br><span class='hw'>tomorrow</span>"><span class="hw"><strong>Criar</strong></span> <span class="hw">hoje</span><br><span class="hw">um</span> <span class="hw">futuro</span><br><span class="hw">sustentável</span></h1>
       <p class="hero-quote slide-left delay-3" data-pt="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>" data-en="«The best way to predict the future is to create it.»<br><span class='hero-quote-attr'>— Peter Drucker</span>">«The best way to predict the future is to create it.»<br><span class="hero-quote-attr">— Peter Drucker</span></p>
     </div>
     <div class="hero-stats stagger slide-left delay-5" id="hero-stats">
@@ -1517,25 +1482,8 @@ nav, footer, .section-wrap { padding-right: max(48px, var(--side-pad, 80px)); }
   </div>
 </section>
 
-<!-- ── PAUSE: PILAR 02 (full-bleed reveal between Ambiental and Social) ── -->
-<section class="pause-stage" id="pause-social" aria-label="Pilar 02 — Social">
-  <span class="pause-orb o1"></span>
-  <span class="pause-orb o2"></span>
-  <span class="pause-orb o3"></span>
-  <span class="pause-orb o4"></span>
-  <div class="pause-grid">
-    <div>
-      <span class="pause-numeral slide-left delay-2">02</span>
-    </div>
-    <div>
-      <p class="pause-eyebrow slide-right delay-1" data-pt="Pilar 02 de 04" data-en="Pillar 02 of 04">Pilar 02 de 04</p>
-      <span class="pause-tag slide-right delay-2" data-pt="Social" data-en="Social">Social</span>
-      <h2 class="pause-title slide-right delay-3" data-pt="As pessoas no<br><strong>centro de tudo</strong>" data-en="People at the<br><strong>heart of everything</strong>">As pessoas no<br><strong>centro de tudo</strong></h2>
-      <p class="pause-sub slide-right delay-4" data-pt="57 colaboradores, 5 empresas, uma cultura assente em equilíbrio, formação e impacto comunitário." data-en="57 employees, 5 companies, a culture grounded in balance, training and community impact.">57 colaboradores, 5 empresas, uma cultura assente em equilíbrio, formação e impacto comunitário.</p>
-      <span class="pause-continue slide-right delay-5" data-pt="Continuar" data-en="Continue">Continuar</span>
-    </div>
-  </div>
-</section>
+<!-- dot divider -->
+<div class="dot-divider"><span>· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</span></div>
 
 <!-- ── SOCIAL ── -->
 <section id="social">
@@ -2197,6 +2145,9 @@ nav, footer, .section-wrap { padding-right: max(48px, var(--side-pad, 80px)); }
   </div>
 </div>
 
+<!-- ── CURSOR ORB ── -->
+<div class="cursor-orb" aria-hidden="true"></div>
+
 <!-- ── TWEAKS ── -->
 <div id="tweaks-panel">
   <button class="tp-close" onclick="closeTweaks()">✕</button>
@@ -2528,10 +2479,11 @@ function initDotCanvas() {
     dots.forEach(d => {
       d.a += (d.ta - d.a) * 0.02;
       if (!reduced) { d.x += d.vx; d.y += d.vy; }
-      if (d.x < -d.r) d.x = canvas.width + d.r;
-      if (d.x > canvas.width + d.r) d.x = -d.r;
-      if (d.y < -d.r) d.y = canvas.height + d.r;
-      if (d.y > canvas.height + d.r) d.y = -d.r;
+      // bounce off edges (was wrap-around)
+      if (d.x - d.r < 0)             { d.x = d.r;                d.vx = Math.abs(d.vx); }
+      if (d.x + d.r > canvas.width)  { d.x = canvas.width - d.r; d.vx = -Math.abs(d.vx); }
+      if (d.y - d.r < 0)             { d.y = d.r;                d.vy = Math.abs(d.vy); }
+      if (d.y + d.r > canvas.height) { d.y = canvas.height - d.r; d.vy = -Math.abs(d.vy); }
       ctx.globalAlpha = d.a;
       ctx.fillStyle = d.c;
       ctx.beginPath();
@@ -2614,6 +2566,39 @@ window.addEventListener('load', () => {
     document.querySelectorAll('#hero .slide-left, #hero .slide-right').forEach(el => el.classList.add('visible'));
   });
 });
+
+// ── CUSTOM CURSOR (Castro-orange ball) ──────────────────────────────────────
+(function initCursor() {
+  const orb = document.querySelector('.cursor-orb');
+  if (!orb) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  let tx = -100, ty = -100, cx = -100, cy = -100;
+  let raf = null;
+  function loop() {
+    // Smooth follow with light lerp so the orb has a slight trail
+    cx += (tx - cx) * 0.35;
+    cy += (ty - cy) * 0.35;
+    orb.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+    raf = requestAnimationFrame(loop);
+  }
+  document.addEventListener('mousemove', (e) => {
+    tx = e.clientX; ty = e.clientY;
+    if (!orb.classList.contains('ready')) orb.classList.add('ready');
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.addEventListener('mouseleave', () => orb.classList.remove('ready'));
+  document.addEventListener('mouseenter', () => orb.classList.add('ready'));
+  document.addEventListener('mousedown',  () => orb.classList.add('tap'));
+  document.addEventListener('mouseup',    () => orb.classList.remove('tap'));
+  // Hover-expand on interactive elements (event delegation so dynamically-added cards work too)
+  const hoverSelector = 'a, button, label, [onclick], [role="button"], .esg-badge, .kpi-card, .metric-card, .photo-card, .lang-btn, .nav-links a, .rail-section, input, textarea, select';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest && e.target.closest(hoverSelector)) orb.classList.add('hover');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest && e.target.closest(hoverSelector)) orb.classList.remove('hover');
+  });
+})();
 
 // ── COUNTER ───────────────────────────────────────────────────────────────────
 function animateCount(el) {
