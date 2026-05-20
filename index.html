@@ -8,6 +8,7 @@
 <meta property="og:title" content="Castro Group — Relatório de Sustentabilidade 2025">
 <meta property="og:description" content="Criar valor é a nossa estratégia. Criar impacto positivo é a nossa ambição.">
 <meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -43,6 +44,17 @@
   --cg-dark:        #2E4791;
   --cg-dark-deep:   #1F3170;
   --cg-dark-ink:    #14182A;
+
+  /* PILLAR SECTION BGS (dark surfaces) */
+  --cg-pillar-eco:  #142E1F;  /* deep forest green · pilar Ambiental */
+  --cg-pillar-gov:  #181C2E;  /* deep navy-black · pilar Governança */
+  --cg-pillar-econ: #2A1812;  /* deep rust · pilar Económico */
+
+  /* DERIVED STATES */
+  --cg-text-body:    #3A3F4D;   /* body copy — softer than --cg-ink */
+  --cg-orange-deep:  #E36410;   /* hover/pressed state for orange CTAs */
+  --cg-bone-hover:   #F4F1EA;   /* hover bg on bone cards */
+  --cg-border-mid:   #B0ADA4;   /* border on hover/focus over bone */
 
   /* TAGS */
   --cg-tag-orange-bg: #FBE3D2; --cg-tag-orange-fg: #B0451A;
@@ -110,7 +122,7 @@ nav.over-dark .nav-sep { background: rgba(255,255,255,0.2); }
   text-transform: uppercase;
   transition: background 0.2s var(--cg-ease), transform 0.2s var(--cg-ease);
 }
-.nav-pdf:hover { background: #E36410; transform: translateY(-1px); }
+.nav-pdf:hover { background: var(--cg-orange-deep); transform: translateY(-1px); }
 .nav-pdf svg { width: 12px; height: 12px; }
 nav.over-dark .nav-pdf { background: rgba(255,255,255,0.92); color: var(--cg-navy); }
 .nav-year { font-size: 10px; letter-spacing: 0.12em; opacity: 0.5; color: var(--cg-ink); }
@@ -148,7 +160,8 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   padding: 120px 80px 60px;
   display: flex; flex-direction: column;
   justify-content: center;
-  max-width: 1100px;
+  width: 100%; max-width: 1240px;
+  margin: 0 auto;
 }
 .hero-eyebrow {
   font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
@@ -176,27 +189,84 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   font-size: 10px; letter-spacing: 0.08em; opacity: 0.9;
 }
 
-/* Hero stats strip — chapter rail handles chapter navigation now */
-.hero-stats {
+/* Hero stats — row of 5, rotating spotlight, integrated with hero bg, no recuadro */
+.hero-mega-wrap {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  background: var(--cg-bone);
-  border-top: 1px solid var(--cg-border);
-  border-bottom: 1px solid var(--cg-border);
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.9s ease-out 2.65s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 2.65s;
 }
-.hero-stat {
-  padding: 24px 28px;
-  border-right: 1px solid var(--cg-border);
+#hero.revealed .hero-mega-wrap { opacity: 1; transform: translateY(0); }
+.hero-stats-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 32px 80px 48px;
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  background: transparent;
 }
-.hero-stat:last-child { border-right: none; }
-.hero-stat-val {
-  font-size: 36px; font-weight: 300; color: var(--cg-ink);
-  line-height: 1; letter-spacing: -0.02em;
+.hero-stats-row::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 80px; right: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cg-border) 12%, var(--cg-border) 88%, transparent);
+  opacity: 0.6;
 }
-.hero-stat-label {
-  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--cg-mid);
-  margin-top: 10px;
+.hero-stat-cell {
+  position: relative;
+  padding: 18px 20px 12px 24px;
+  cursor: pointer;
+  border-left: 1px solid transparent;
+  transition: border-color 0.5s var(--cg-ease);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  min-height: 110px;
+}
+.hero-stat-cell:first-child { padding-left: 0; }
+.hero-stat-cell.active,
+.hero-stat-cell:hover { border-left-color: rgba(251,118,34,0.45); }
+.hero-stat-cell:first-child.active,
+.hero-stat-cell:first-child:hover { border-left-color: transparent; }
+.hero-stat-cell-val {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  font-size: clamp(34px, 3.4vw, 52px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--cg-ink);
+  opacity: 0.42;
+  transform-origin: left center;
+  transition:
+    opacity 0.55s var(--cg-ease),
+    transform 0.7s cubic-bezier(0.34, 1.5, 0.64, 1),
+    color 0.55s var(--cg-ease),
+    font-weight 0.4s var(--cg-ease);
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+}
+.hero-stat-cell.active .hero-stat-cell-val,
+.hero-stat-cell:hover .hero-stat-cell-val {
+  opacity: 1;
+  color: var(--cg-orange);
+  transform: scale(1.55);
+  font-weight: 200;
+}
+.hero-stat-cell-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cg-mid);
+  margin-top: 22px;
+  opacity: 0.62;
+  transition: opacity 0.45s var(--cg-ease), color 0.45s var(--cg-ease);
+}
+.hero-stat-cell.active .hero-stat-cell-label,
+.hero-stat-cell:hover .hero-stat-cell-label {
+  opacity: 1;
+  color: var(--cg-ink);
 }
 
 /* ── ESG SHORTCUT STRIP (jumps to each pillar from the top) ────────────── */
@@ -239,7 +309,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   position: relative;
   transition: background 0.2s ease, transform 0.2s ease;
 }
-.esg-shortcut-tile:hover { background: #fafaf6; }
+.esg-shortcut-tile:hover { background: var(--cg-bone-hover); }
 .esg-shortcut-tile::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0;
   width: 4px; background: var(--accent, var(--cg-mid));
@@ -310,15 +380,18 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   letter-spacing: -0.01em;
 }
 .heading strong { font-weight: 700; }
-.body { font-size: 14px; line-height: 1.85; color: #3A3F4D; }
+.body { font-size: 14px; line-height: 1.85; color: var(--cg-text-body); }
 
 /* Full-bleed colored band between chapters (RS26 signature) */
 .chapter-band {
   width: 100%;
   padding: 52px 80px;
+  border-radius: 0;
+}
+.chapter-band-inner {
+  max-width: 1240px; margin: 0 auto;
   display: grid; grid-template-columns: auto 1fr;
   gap: 40px; align-items: center;
-  border-radius: 0;
 }
 .chapter-band.orange  { background: var(--cg-orange); }
 .chapter-band.cyan    { background: var(--cg-cyan); }
@@ -351,7 +424,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   background: var(--cg-bone); padding: 36px 28px;
   cursor: pointer; transition: background 0.2s; position: relative;
 }
-.kpi-card:hover { background: #f5f3ec; }
+.kpi-card:hover { background: var(--cg-bone-hover); }
 .kpi-stripe {
   position: absolute; left: 0; top: 36px;
   width: 3px; height: 28px;
@@ -386,7 +459,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .metric-card.light {
   border: 1px solid var(--cg-border); background: var(--cg-bone);
 }
-.metric-card.light:hover { background: #f4f1ea; border-color: #b0ada4; }
+.metric-card.light:hover { background: var(--cg-bone-hover); border-color: var(--cg-border-mid); }
 .metric-pill {
   display: inline-block; font-size: 8px; font-weight: 700;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -420,7 +493,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 .photo-card {
   position: relative; overflow: hidden; cursor: zoom-in;
-  background: #222; aspect-ratio: 4/5;
+  background: var(--cg-dark-ink); aspect-ratio: 4/5;
 }
 .photo-card.wide { grid-column: span 2; aspect-ratio: 8/5; }
 .photo-card.tall { grid-row: span 2; aspect-ratio: 4/10; }
@@ -469,6 +542,57 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   vertical-align: middle;
 }
 
+/* ── GLOSSARY (hover/tap for definition — terms from PDF footnotes) ─────── */
+.gloss {
+  position: relative;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+  text-decoration: none;
+}
+.gloss::after {
+  content: attr(data-def);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--cg-dark-ink);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  width: max-content;
+  max-width: 320px;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--cg-ease), transform 0.25s var(--cg-ease);
+  z-index: 50;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.3);
+}
+.gloss::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--cg-dark-ink);
+  opacity: 0;
+  transition: opacity 0.2s var(--cg-ease);
+  z-index: 50;
+}
+.gloss:hover::after, .gloss:focus::after,
+.gloss.gloss--open::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.gloss:hover::before, .gloss:focus::before,
+.gloss.gloss--open::before { opacity: 1; }
+
 /* ── ARTE NOS ESPAÇOS ──────────────────────────────────────────────────── */
 .arte-grid {
   display: grid; grid-template-columns: 2fr 1fr 1fr;
@@ -477,7 +601,8 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 .arte-card {
   position: relative; overflow: hidden;
-  background: #222;
+  background: var(--cg-dark-ink);
+  cursor: zoom-in;
 }
 .arte-card.hero { grid-row: span 2; }
 .arte-card img {
@@ -485,6 +610,56 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   transition: transform 0.6s ease;
 }
 .arte-card:hover img { transform: scale(1.03); }
+
+/* Lightbox for arte photos (full-screen view, faithful to PDF spreads) */
+.arte-lightbox {
+  position: fixed; inset: 0; z-index: 6000;
+  display: none;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 4vh 4vw 3vh;
+  gap: 22px;
+  background: rgba(20, 24, 42, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.arte-lightbox.is-open { display: flex; }
+.arte-lightbox-img {
+  max-width: 92vw;
+  max-height: 78vh;
+  object-fit: contain;
+  box-shadow: 0 32px 80px -16px rgba(0,0,0,0.6);
+  cursor: zoom-out;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.4s var(--cg-ease), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.arte-lightbox.is-open .arte-lightbox-img { opacity: 1; transform: scale(1); }
+.arte-lightbox-caption {
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.2s;
+  max-width: 92vw;
+}
+.arte-lightbox.is-open .arte-lightbox-caption { opacity: 1; }
+.arte-lightbox-caption .meta {
+  display: block; font-size: 9px; opacity: 0.6;
+  margin-top: 6px; letter-spacing: 0.16em;
+}
+.arte-lightbox-close {
+  position: absolute; top: 24px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  color: #fff;
+  font-size: 18px; cursor: pointer;
+  display: grid; place-items: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.arte-lightbox-close:hover { background: rgba(255,255,255,0.12); transform: rotate(90deg); }
 .arte-card-caption {
   position: absolute; bottom: 0; left: 0; right: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.78), transparent 80%);
@@ -540,11 +715,6 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 #hero.revealed .hero-eyebrow { opacity: 0.7; transform: translateX(0); transition-delay: 0.10s; }
 #hero.revealed .hero-quote   { opacity: 0.7; transform: translateX(0); transition-delay: 2.40s; }
-.hero-stats {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.9s ease-out 2.65s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 2.65s;
-}
-#hero.revealed .hero-stats { opacity: 1; transform: translateY(0); }
 
 /* Word-by-word title reveal — each line enters from its own direction */
 .hero-title .hw {
@@ -719,6 +889,10 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   background: var(--cg-bone); border: 1px solid var(--cg-border);
   color: var(--cg-ink);
 }
+.data-modal-delta[hidden] { display: none; }
+/* When the empresas/fases card has no numeric value, hide the empty value slot */
+.data-modal-value:empty { display: none; margin: 0; }
+.data-modal-body:empty { display: none; }
 @media (max-width: 640px) {
   .data-modal { padding: 32px 22px; max-height: 92vh; }
   .data-modal-title { font-size: 22px; }
@@ -921,15 +1095,22 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 .pf-row-meta { display: flex; flex-direction: column; gap: 4px; }
 .pf-row-dots {
-  display: flex; gap: 3px; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: nowrap;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  width: 100%;
+  min-height: 14px;
 }
 .pf-row-dot {
-  width: 5px; height: 5px; border-radius: 50%;
+  width: clamp(7px, 0.7vw, 10px);
+  height: clamp(7px, 0.7vw, 10px);
+  border-radius: 50%;
   background: var(--cg-green);
   opacity: 0; transform: scale(0.3);
   transition: opacity 0.35s ease-out, transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  flex-shrink: 0;
 }
 .pf-row-dots.revealed .pf-row-dot { opacity: 1; transform: scale(1); }
 .pf-row-dots.revealed .pf-row-dot:nth-child(1)  { transition-delay: 0.00s; }
@@ -957,20 +1138,35 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: var(--cg-cyan); margin-right: 6px; vertical-align: 0;
 }
-/* Minimalist count — was a 56px green circle, now a thin numeral aligned with the label */
+/* Count — big green circle with the number inside (faithful to PDF reference) */
 .pf-row-num {
-  font-size: clamp(26px, 2.4vw, 32px);
-  font-weight: 300;
-  color: var(--cg-green);
+  width: clamp(48px, 4.4vw, 64px);
+  height: clamp(48px, 4.4vw, 64px);
+  border-radius: 50%;
+  background: var(--cg-green);
+  color: #fff;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  text-align: right;
-  min-width: 40px;
-  padding-left: 16px;
-  border-left: 1px solid rgba(255,255,255,0.12);
+  margin-left: 18px;
+  transition: transform 0.45s var(--cg-ease-spring, cubic-bezier(0.34,1.56,0.64,1)),
+              box-shadow 0.35s var(--cg-ease);
+  box-shadow: 0 0 0 0 rgba(51,182,122,0);
 }
-.pf-row-num.lg { font-size: clamp(30px, 2.8vw, 38px); color: #fff; }
+.pf-row-num.lg {
+  width: clamp(56px, 5.2vw, 76px);
+  height: clamp(56px, 5.2vw, 76px);
+  font-size: clamp(22px, 2.4vw, 32px);
+}
+.pf-row:hover .pf-row-num {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(51,182,122,0.18);
+}
 .pf-landbank-row {
   display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
 }
@@ -1005,7 +1201,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   border-radius: 2px;
   transition: transform 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
 }
-.pf-full-link:hover { transform: translateX(4px); background: #E36410; }
+.pf-full-link:hover { transform: translateX(4px); background: var(--cg-orange-deep); }
 .pf-full-link .arrow { font-size: 18px; line-height: 1; }
 @media (max-width: 1024px) {
   .pf-macro { grid-template-columns: 1fr; gap: 40px; }
@@ -1059,26 +1255,26 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   fill: #fff;
 }
-.names-text-outer  { font-size: 15px; font-weight: 400; letter-spacing: 0.04em; opacity: 0.92; }
-.names-text-middle { font-size: 15px; font-weight: 400; letter-spacing: 0.04em; opacity: 0.78; }
-.names-text-inner  { font-size: 13px; font-weight: 400; letter-spacing: 0.02em; opacity: 0.64; }
+.names-text-outer  { font-size: 13px; font-weight: 400; letter-spacing: 0.08em; opacity: 0.92; }
+.names-text-middle { font-size: 13px; font-weight: 400; letter-spacing: 0.08em; opacity: 0.82; }
+.names-text-inner  { font-size: 11px; font-weight: 400; letter-spacing: 0.08em; opacity: 0.70; }
 .names-orbit-center {
   fill: #fff;
 }
 /* (Brand-rotation animations kept on under reduced-motion — María's call) */
 @media (max-width: 640px) {
   .names-orbit { padding: 72px 20px 64px; }
-  .names-text-outer, .names-text-middle { font-size: 12px; }
-  .names-text-inner { font-size: 10px; }
+  .names-text-outer, .names-text-middle { font-size: 11px; letter-spacing: 0.06em; }
+  .names-text-inner { font-size: 9px; letter-spacing: 0.06em; }
 }
 
 /* ── MISSÃO · VISÃO · VALORES (Venn diagram, pg.24 of PDF) ─────────────── */
 .mvv-section {
   background: var(--cg-bone);
-  padding: 96px 80px;
+  padding: 72px 80px 56px;
 }
 .mvv-inner {
-  max-width: 1180px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
 }
 .mvv-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
@@ -1105,12 +1301,26 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   border-radius: 2px;
   border: 1px solid var(--cg-border);
   display: block;
+  position: relative;
 }
+.mvv-cards-only .mvv-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent, var(--cg-mid));
+}
+.mvv-cards-only .mvv-missao  { --accent: var(--cg-rust); }
+.mvv-cards-only .mvv-visao   { --accent: var(--cg-cyan); }
+.mvv-cards-only .mvv-valores { --accent: var(--cg-orange); }
+.mvv-cards-only .mvv-visao .mvv-card-tag { color: var(--cg-cyan); }
 .mvv-cards-only .mvv-card-tag {
   display: block;
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--cg-border);
 }
 .mvv-cards-only .mvv-card p {
   font-size: 14px; line-height: 1.65; color: var(--cg-ink); margin: 0;
@@ -1394,11 +1604,13 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .section { padding: 80px 32px; padding-right: 80px; }
   .hero-content { padding: 110px 32px 48px; }
   .hero-flag { grid-template-columns: 1fr; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .hero-stat:nth-child(2n) { border-right: none; }
+  .hero-stats-row { padding: 28px 32px 40px; }
+  .hero-stats-row::before { left: 32px; right: 32px; }
+  .hero-stat-cell { padding: 14px 12px 8px 16px; min-height: 90px; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-  .chapter-band { grid-template-columns: 1fr; padding: 64px 32px; padding-right: 80px; gap: 24px; }
+  .chapter-band { padding: 64px 32px; padding-right: 80px; }
+  .chapter-band-inner { grid-template-columns: 1fr; gap: 24px; }
   footer { padding-right: 80px; }
 }
 @media (max-width: 640px) {
@@ -1427,30 +1639,27 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .section { padding: 56px 20px; padding-right: 20px; }
   .hero-content { padding: 128px 20px 32px; } /* +32 to account for top rail */
   .hero-title { font-size: 36px !important; }
-  /* Minimalist transparent stats strip on mobile */
-  .hero-stats {
-    grid-template-columns: 1fr;
-    background: transparent;
-    border-top: 1px solid var(--cg-border-soft);
-    border-bottom: 1px solid var(--cg-border-soft);
+  /* Hero stats row on mobile — stack vertically, smaller numbers */
+  .hero-stats-row {
+    grid-template-columns: 1fr 1fr;
+    padding: 24px 20px 32px;
+    gap: 4px;
   }
-  .hero-stat {
-    padding: 12px 20px;
-    border-right: none;
-    border-bottom: 1px solid var(--cg-border-soft);
-    display: flex; align-items: baseline; gap: 14px;
-    background: transparent;
+  .hero-stats-row::before { left: 20px; right: 20px; }
+  .hero-stat-cell {
+    padding: 12px 10px 6px 14px;
+    min-height: 76px;
   }
-  .hero-stat:last-child { border-bottom: none; }
-  .hero-stat-val { font-size: 22px; flex-shrink: 0; min-width: 48px; }
-  .hero-stat-label { font-size: 9px; margin-top: 0; letter-spacing: 0.16em; }
+  .hero-stat-cell:first-child { padding-left: 14px; }
+  .hero-stat-cell-val { font-size: clamp(28px, 8vw, 38px); }
+  .hero-stat-cell.active .hero-stat-cell-val { transform: scale(1.35); }
+  .hero-stat-cell-label { font-size: 8px; margin-top: 12px; letter-spacing: 0.18em; }
   .hero-flag a { padding: 20px 24px; }
   .kpi-row, .metrics-grid { grid-template-columns: 1fr; }
   .chapter-band {
     padding: 32px 20px; padding-right: 20px;
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
+  .chapter-band-inner { grid-template-columns: 1fr; gap: 8px; }
   .chapter-band .num { font-size: 44px; line-height: 0.9; opacity: 0.85; }
   .chapter-band h2 { font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; }
   .chapter-band p { font-size: 12px; line-height: 1.65; margin-top: 10px; }
@@ -1498,9 +1707,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   /* Logo: keep it visible but not oversized on phones */
   .nav-logo { height: 32px; }
 
-  /* Hero stats stack — keep size manageable */
-  .hero-stat { padding: 16px 18px; }
-
   /* Materiality plot legibility */
   .mm-head { grid-template-columns: 1fr !important; }
   .mm-legend { flex-wrap: wrap; gap: 12px; }
@@ -1525,11 +1731,11 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   <div class="nav-left">
     <img src="assets/brand/Castro_group_black.svg" alt="Castro Group" class="nav-logo">
     <div class="nav-sep"></div>
-    <span class="nav-wordmark" data-pt="Relatório de Sustentabilidade" data-en="Sustainability Report">Relatório de Sustentabilidade</span>
+    <span class="nav-wordmark" data-pt="Relatório de Sustentabilidade 2025" data-en="Sustainability Report 2025">Relatório de Sustentabilidade 2025</span>
   </div>
   <div class="nav-right">
     <span class="nav-year">2025</span>
-    <a class="nav-pdf" href="uploads/final report/RS26_identidade_12maio.pdf" download aria-label="Descarregar PDF">
+    <a class="nav-pdf" href="uploads/final report/RS_CASTRO-GROUP.pdf" download aria-label="Descarregar PDF">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/>
       </svg>
@@ -1559,31 +1765,32 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 <section id="hero">
   <canvas id="kaleidoscope" aria-hidden="true"></canvas>
   <div class="hero-content">
-    <p class="hero-eyebrow" data-pt="Castro Group · Relatório de Sustentabilidade 2025" data-en="Castro Group · Sustainability Report 2025">Castro Group · Relatório de Sustentabilidade 2025</p>
     <h1 class="hero-title" data-pt="<span class='hw hw-l'>Relatório</span> <span class='hw hw-l hw-l2'>de</span><br><span class='hw hw-t'><strong>Sustentabilidade</strong></span><br><span class='hw hw-r'>2025</span>" data-en="<span class='hw hw-l'><strong>Sustainability</strong></span><br><span class='hw hw-t'>Report</span><br><span class='hw hw-r'>2025</span>"><span class="hw hw-l">Relatório</span> <span class="hw hw-l hw-l2">de</span><br><span class="hw hw-t"><strong>Sustentabilidade</strong></span><br><span class="hw hw-r">2025</span></h1>
   </div>
 
   <div>
-    <div class="hero-stats stagger" id="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="cnt" data-n="57">0</span></div>
-        <div class="hero-stat-label" data-pt="Colaboradores" data-en="Employees">Colaboradores</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="cnt" data-n="5">0</span></div>
-        <div class="hero-stat-label" data-pt="Empresas" data-en="Companies">Empresas</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="cnt" data-n="3">0</span></div>
-        <div class="hero-stat-label" data-pt="Fundos geridos" data-en="Managed funds">Fundos geridos</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="cnt" data-n="19">0</span></div>
-        <div class="hero-stat-label" data-pt="Ativos em carteira" data-en="Portfolio assets">Ativos em carteira</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val"><span class="cnt" data-n="8">0</span></div>
-        <div class="hero-stat-label" data-pt="Cidades" data-en="Cities">Cidades</div>
+    <div class="hero-mega-wrap" id="hero-mega-wrap">
+      <div class="hero-stats-row" id="hero-stats-row" aria-label="Indicadores macro 2025">
+        <div class="hero-stat-cell" data-idx="0">
+          <div class="hero-stat-cell-val">57</div>
+          <div class="hero-stat-cell-label" data-pt="Colaboradores" data-en="Employees">Colaboradores</div>
+        </div>
+        <div class="hero-stat-cell" data-idx="1">
+          <div class="hero-stat-cell-val">5</div>
+          <div class="hero-stat-cell-label" data-pt="Empresas" data-en="Companies">Empresas</div>
+        </div>
+        <div class="hero-stat-cell" data-idx="2">
+          <div class="hero-stat-cell-val">3</div>
+          <div class="hero-stat-cell-label" data-pt="Fundos geridos" data-en="Managed funds">Fundos geridos</div>
+        </div>
+        <div class="hero-stat-cell" data-idx="3">
+          <div class="hero-stat-cell-val">19</div>
+          <div class="hero-stat-cell-label" data-pt="Ativos em carteira" data-en="Portfolio assets">Ativos em carteira</div>
+        </div>
+        <div class="hero-stat-cell" data-idx="4">
+          <div class="hero-stat-cell-val">8</div>
+          <div class="hero-stat-cell-label" data-pt="Cidades" data-en="Cities">Cidades</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1652,16 +1859,18 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
      CHAPTER 01 — CASTRO GROUP (Orange pillar)
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="castro" class="chapter-band orange">
-  <div class="num">01</div>
-  <div>
-    <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 01" data-en="Chapter 01">Capítulo 01</p>
-    <h2 data-pt="<strong>Castro</strong> Group" data-en="<strong>Castro</strong> Group"><strong>Castro</strong> Group</h2>
-    <p data-pt="O Castro Group é uma holding com 5 empresas operativas, 3 fundos de investimento sob gestão e 19 ativos em carteira distribuídos por 8 cidades. Esta secção apresenta a estrutura, o ciclo de negócios e o portfólio de projetos." data-en="Castro Group is a holding with 5 operating companies, 3 managed investment funds and 19 portfolio assets across 8 cities. This section presents the structure, business cycle and project portfolio.">O Castro Group é uma holding com 5 empresas operativas, 3 fundos de investimento sob gestão e 19 ativos em carteira distribuídos por 8 cidades. Esta secção apresenta a estrutura, o ciclo de negócios e o portfólio de projetos.</p>
+  <div class="chapter-band-inner">
+    <div class="num">01</div>
+    <div>
+      <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 01" data-en="Chapter 01">Capítulo 01</p>
+      <h2 data-pt="<strong>Castro</strong> Group" data-en="<strong>Castro</strong> Group"><strong>Castro</strong> Group</h2>
+      <p data-pt="O Castro Group é uma holding com 5 empresas operativas, 3 fundos de investimento sob gestão e 19 ativos em carteira distribuídos por 8 cidades. Esta secção apresenta a estrutura, o ciclo de negócios e o portfólio de projetos." data-en="Castro Group is a holding with 5 operating companies, 3 managed investment funds and 19 portfolio assets across 8 cities. This section presents the structure, business cycle and project portfolio.">O Castro Group é uma holding com 5 empresas operativas, 3 fundos de investimento sob gestão e 19 ativos em carteira distribuídos por 8 cidades. Esta secção apresenta a estrutura, o ciclo de negócios e o portfólio de projetos.</p>
+    </div>
   </div>
 </section>
 
 <!-- CEO MESSAGE -->
-<section class="section bone">
+<section class="section bone" style="padding-bottom:24px;">
   <div class="section-inner">
     <p class="eyebrow fade-up" data-pt="Mensagem do CEO" data-en="CEO Message">Mensagem do CEO</p>
     <div class="ceo-grid fade-up" style="display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start;">
@@ -1682,13 +1891,13 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 </section>
 
 <!-- HEAD OF SUSTAINABILITY MESSAGE (mirror layout of CEO) -->
-<section class="section bone">
+<section class="section bone" style="padding-top:0;">
   <div class="section-inner">
-    <p class="eyebrow fade-up" data-pt="Mensagem da Head of Sustainability" data-en="Message from the Head of Sustainability">Mensagem da Head of Sustainability</p>
+    <p class="eyebrow fade-up" style="display:flex;flex-direction:row-reverse;justify-content:flex-start;" data-pt="Mensagem da Head of Sustainability" data-en="Message from the Head of Sustainability">Mensagem da Head of Sustainability</p>
     <div class="hos-grid fade-up" style="display:grid;grid-template-columns:2fr 1fr;gap:80px;align-items:start;">
       <div>
-        <div style="font-size:22px;font-weight:300;line-height:1.5;color:var(--cg-ink);border-left:3px solid var(--cg-cyan);padding-left:28px;font-style:italic;" data-pt="As decisões que tomamos hoje são os alicerces do futuro que estamos a construir." data-en="The decisions we make today are the foundations of the future we are building.">As decisões que tomamos hoje são os alicerces do futuro que estamos a construir.</div>
-        <p class="body" style="margin-top:24px;" data-pt="2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025." data-en="2025 was a year of delivery and maturity. We enter 2026 with a clear agenda: environmental certifications, the 2030 climate plan and sustainability embedded as an operating principle. The Climate Transition Plan sets the trajectory to 2030 — a 40% reduction in Scope 1+2 emissions versus the 2025 baseline.">2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025.</p>
+        <div style="font-size:22px;font-weight:300;line-height:1.5;color:var(--cg-ink);border-right:3px solid var(--cg-cyan);padding-right:28px;font-style:italic;text-align:right;" data-pt="As decisões que tomamos hoje são os alicerces do futuro que estamos a construir." data-en="The decisions we make today are the foundations of the future we are building.">As decisões que tomamos hoje são os alicerces do futuro que estamos a construir.</div>
+        <p class="body" style="margin-top:24px;text-align:right;" data-pt="2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025." data-en="2025 was a year of delivery and maturity. We enter 2026 with a clear agenda: environmental certifications, the 2030 climate plan and sustainability embedded as an operating principle. The Climate Transition Plan sets the trajectory to 2030 — a 40% reduction in Scope 1+2 emissions versus the 2025 baseline.">2025 foi um ano de concretização e maturidade. Entramos em 2026 com uma agenda clara: certificações ambientais, plano climático para 2030 e a integração da sustentabilidade como princípio operacional. O Plano de Transição Climática define a trajetória até 2030 — uma redução de 40% nas emissões Scope 1+2 face ao baseline de 2025.</p>
       </div>
       <div style="text-align:right;">
         <div style="width:200px;height:200px;overflow:hidden;border-radius:50%;margin:0 0 20px auto;background:var(--cg-putty);">
@@ -1711,54 +1920,148 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="eyebrow fade-up" data-pt="Estrutura do Grupo" data-en="Group Structure">Estrutura do Grupo</p>
     <h2 class="heading fade-up" data-pt="5 empresas + 3 fundos<br><strong>num só ecossistema</strong>" data-en="5 companies + 3 funds<br><strong>in a single ecosystem</strong>">5 empresas + 3 fundos<br><strong>num só ecossistema</strong></h2>
     <div class="kpi-row stagger" style="grid-template-columns:repeat(5,1fr);">
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="empresa">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)">SGPS</div>
-        <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Group SGPS</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Group SGPS</div>
         <div class="kpi-desc" data-pt="Holding · gestão integrada das participadas" data-en="Holding · integrated management of subsidiaries">Holding · gestão integrada das participadas</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Castro Group SGPS, S.A. é a holding do Grupo. Centraliza as participações sociais das empresas participadas, otimiza o acesso a financiamentos interempresas e partilha de forma integrada serviços de gestão e suporte.</p>
+          <h4>Missão</h4>
+          <p>Gerir e potenciar as empresas que compõem o Grupo, garantindo coordenação, consistência e rigor na execução, com impacto positivo no ambiente, nas pessoas e nas comunidades.</p>
+          <h4>Atuação</h4>
+          <ul>
+            <li>Gestão integrada do universo Castro Group (5 empresas + 3 fundos)</li>
+            <li>Serviços partilhados de gestão e suporte</li>
+            <li>Atuação transversal nas fases do ciclo de negócio imobiliário</li>
+          </ul>
+        </div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="empresa">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</div>
-        <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Red</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Red</div>
         <div class="kpi-desc" data-pt="Promoção imobiliária · BTS · residencial premium" data-en="Real estate development · BTS · premium residential">Promoção imobiliária · BTS · residencial premium</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Empresa mais antiga do Grupo, berço da atividade de promoção imobiliária. Constituirá a terceira SIC do Castro Group, com foco na promoção predominantemente orientada para o modelo Build to Sell.</p>
+          <h4>Foco</h4>
+          <ul>
+            <li>Residencial premium · segmento atrativo e em expansão</li>
+            <li>Residencial médio · alta procura e escassez de oferta</li>
+            <li>Qualidade superior a preços competitivos</li>
+          </ul>
+          <h4>Princípios</h4>
+          <p>Excelência, rigor e sustentabilidade. Modelo Build to Sell, com atividade de rendimento apenas residual.</p>
+        </div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="empresa">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Construção" data-en="Construction">Construção</div>
-        <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Build</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">Castro Build</div>
         <div class="kpi-desc" data-pt="Design & gestão de projeto + produção" data-en="Design & project management + production">Design & gestão de projeto + produção</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Pilar fundamental do Grupo, concentra uma parte significativa da estrutura de pessoas. Equipa multidisciplinar que acompanha e impulsiona o negócio imobiliário em todas as suas fases.</p>
+          <h4>Atuação</h4>
+          <ul>
+            <li>Design e gestão de projeto</li>
+            <li>Produção e execução de obra</li>
+            <li>Assistência pós-venda</li>
+          </ul>
+        </div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="empresa">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Operação" data-en="Operations">Operação</div>
-        <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">2gether Spaces</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">2gether Spaces</div>
         <div class="kpi-desc" data-pt="Property as a service · marca BUZ pela 2gether · flex offices, coliving" data-en="Property as a service · BUZ pela 2gether brand · flex offices, coliving">Property as a service · marca BUZ pela 2gether · flex offices, coliving</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Empresa do Castro Group focada em criar espaços funcionais, dinâmicos e inspiradores. Atua na operação dos lugares idealizados e construídos pelo Grupo, com base no conceito Property as a Service.</p>
+          <h4>Modelos</h4>
+          <ul>
+            <li>Coliving · habitação partilhada all-inclusive</li>
+            <li>Smart living · habitação inteligente e conectada</li>
+            <li>Coworking · espaços partilhados e flexíveis</li>
+            <li>Flex offices · escritórios com contratos flexíveis</li>
+          </ul>
+          <h4>Marca</h4>
+          <p>Lançamento em 2025 da marca BUZ pela 2gether, materializando a tendência de servitização do imobiliário.</p>
+        </div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="empresa">
         <div class="kpi-stripe" style="background:var(--cg-orange)"></div>
         <div class="kpi-tag" style="color:var(--cg-orange)" data-pt="Gestão de Fundos" data-en="Fund Management">Gestão de Fundos</div>
-        <div style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">NEXA SGOIC</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.2;color:var(--cg-ink);margin-bottom:6px;">NEXA SGOIC</div>
         <div class="kpi-desc" data-pt="Sociedade gestora regulada CMVM · autorização grande dimensão (ago/2025)" data-en="CMVM-regulated manager · large-entity authorisation (Aug/2025)">Sociedade gestora regulada CMVM · autorização grande dimensão (ago/2025)</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Constituída em 2024 como entidade independente. Sociedade gestora de organismos de investimento coletivo, regulada pela CMVM. Defende os interesses dos investidores das sociedades que administra com base em transparência e integridade.</p>
+          <h4>Marcos 2024–2025</h4>
+          <ul>
+            <li>Out/2024 · Início de gestão de Castro Capital SIC</li>
+            <li>Jan/2025 · Constituição do Fuse Valley FII (fundo fechado)</li>
+            <li>Abr/2025 · Início de gestão de Icon SIC</li>
+            <li>Ago/2025 · Autorização CMVM como sociedade gestora de grande dimensão</li>
+          </ul>
+          <h4>Mandato</h4>
+          <p>Gestão das SIC do Grupo (gestão do património no interesse dos acionistas) e administração — serviços jurídicos, financeiros e fiscais.</p>
+        </div>
       </div>
     </div>
 
     <!-- Fundos -->
     <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);" class="stagger">
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · OCT 2024</div>
-        <div style="font-size:18px;font-weight:600;color:var(--cg-ink);">Castro Capital SIC</div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="13 ativos · BTR residencial premium · gestão 360º" data-en="13 assets · BTR premium residential · 360° management">13 ativos · BTR residencial premium · gestão 360º</div>
+      <div class="pf-detail-card" data-detail="fundo" style="background:var(--cg-bone);padding:28px 24px;position:relative;">
+        <div class="pf-detail-tag" style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · OCT 2024</div>
+        <div class="pf-detail-title" style="font-size:18px;font-weight:600;color:var(--cg-ink);">Castro Capital SIC</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="13 ativos · BTR residencial premium · gestão 360º" data-en="13 assets · BTR premium residential · 360° management">13 ativos · BTR residencial premium · gestão 360º</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Sociedade de Investimento Coletivo gerida pela NEXA SGOIC desde outubro de 2024. Foco em ativos residenciais premium em modelo Build-to-Rent (BTR).</p>
+          <h4>Estrutura</h4>
+          <ul>
+            <li>Veículo: SIC Imobiliária Fechada, S.A.</li>
+            <li>Início da gestão NEXA: Out/2024</li>
+            <li>Carteira: 13 ativos · residencial premium</li>
+            <li>Gestão 360º (jurídica, financeira, fiscal)</li>
+          </ul>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">FII · JAN 2025</div>
-        <div style="font-size:18px;font-weight:600;color:var(--cg-ink);">Fuse Valley FII</div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="Fundo fechado" data-en="Closed-end fund">Fundo fechado</div>
+      <div class="pf-detail-card" data-detail="fundo" style="background:var(--cg-bone);padding:28px 24px;position:relative;">
+        <div class="pf-detail-tag" style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">FII · JAN 2025</div>
+        <div class="pf-detail-title" style="font-size:18px;font-weight:600;color:var(--cg-ink);">Fuse Valley FII</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="Fundo fechado" data-en="Closed-end fund">Fundo fechado</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>Fundo de Investimento Imobiliário fechado, de subscrição particular, constituído em janeiro de 2025. Centrado no desenvolvimento do projeto Fuse Valley em Matosinhos.</p>
+          <h4>Estrutura</h4>
+          <ul>
+            <li>Tipo: Fundo de Investimento Imobiliário (FII)</li>
+            <li>Forma: contratual · fechado · subscrição particular</li>
+            <li>Constituição: Jan/2025</li>
+            <li>Sociedade gestora: NEXA SGOIC</li>
+          </ul>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · APR 2025</div>
-        <div style="font-size:18px;font-weight:600;color:var(--cg-ink);">Icon SIC</div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="10 ativos · 3 desenvolvimento + 3 alienação + 4 landbank" data-en="10 assets · 3 development + 3 sale + 4 landbank">10 ativos · 3 desenvolvimento + 3 alienação + 4 landbank</div>
+      <div class="pf-detail-card" data-detail="fundo" style="background:var(--cg-bone);padding:28px 24px;position:relative;">
+        <div class="pf-detail-tag" style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · APR 2025</div>
+        <div class="pf-detail-title" style="font-size:18px;font-weight:600;color:var(--cg-ink);">Icon SIC</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);margin-top:8px;line-height:1.5;" data-pt="10 ativos · 3 desenvolvimento + 3 alienação + 4 landbank" data-en="10 assets · 3 development + 3 sale + 4 landbank">10 ativos · 3 desenvolvimento + 3 alienação + 4 landbank</div>
+        <div class="kpi-detail" hidden>
+          <h4>Sobre</h4>
+          <p>SIC Imobiliária Fechada cuja gestão a NEXA SGOIC assumiu em abril de 2025. Carteira diversificada combinando ativos em desenvolvimento, alienação e reserva fundiária.</p>
+          <h4>Carteira</h4>
+          <ul>
+            <li>3 ativos em desenvolvimento</li>
+            <li>3 ativos em alienação</li>
+            <li>4 ativos landbank (reserva fundiária)</li>
+          </ul>
+          <h4>Marco 2025</h4>
+          <p>Gestão assumida pela NEXA em Abr/2025, consolidando o portefólio gerido pela sociedade gestora do Grupo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1788,40 +2091,104 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 </section>
 
 <!-- CICLO DE NEGÓCIOS — 5 fases -->
-<section class="section putty-2">
+<section class="section putty-2" style="padding-top:0;">
   <div class="section-inner">
-    <p class="eyebrow fade-up" data-pt="Ciclo de Negócios" data-en="Business Cycle">Ciclo de Negócios</p>
+    <p class="eyebrow fade-up" style="margin-top:32px;" data-pt="Ciclo de Negócios" data-en="Business Cycle">Ciclo de Negócios</p>
     <h2 class="heading fade-up" data-pt="5 fases<br><strong>do conceito ao fim de vida</strong>" data-en="5 phases<br><strong>from concept to end-of-life</strong>">5 fases<br><strong>do conceito ao fim de vida</strong></h2>
     <div class="stagger" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);">
-      <div style="background:var(--cg-bone);padding:24px 18px;position:relative;">
+      <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">01</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Oportunidade" data-en="Opportunity">Oportunidade</div>
-        <div style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Identificação e análise de viabilidade. Definição do modelo: venda ou rendimento." data-en="Identification and feasibility analysis. Business model: sale or rental.">Identificação e análise de viabilidade. Definição do modelo: venda ou rendimento.</div>
+        <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">01</div>
+        <div class="pf-detail-title" style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Oportunidade" data-en="Opportunity">Oportunidade</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Identificação e análise de viabilidade. Definição do modelo: venda ou rendimento." data-en="Identification and feasibility analysis. Business model: sale or rental.">Identificação e análise de viabilidade. Definição do modelo: venda ou rendimento.</div>
+        <div class="kpi-detail" hidden>
+          <h4>Descrição</h4>
+          <p>O ciclo de negócio tem início com a identificação sistemática de oportunidades de investimento, criteriosamente avaliadas pela equipa. As oportunidades alinhadas com a estratégia avançam para as fases seguintes.</p>
+          <h4>Atividades</h4>
+          <ul>
+            <li>Prospeção ativa de terrenos ou ativos que respondem aos critérios definidos</li>
+            <li>Análise rigorosa de viabilidade imobiliária</li>
+            <li>Definição do modelo de negócio: venda ou rendimento</li>
+            <li>Decisão crítica de prosseguir (go/no-go)</li>
+          </ul>
+          <h4>Stakeholders</h4>
+          <p>Proprietários de terrenos e edifícios · Bancos e instituições financeiras · Investidores · Asseguradoras · Equipas de projeto · Consultores · Autoridades públicas · Comunidade local.</p>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:24px 18px;position:relative;">
+      <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">02</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</div>
-        <div style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Conceito, programa, licenciamento e planeamento antecipado do fim de vida." data-en="Concept, programme, licensing and early end-of-life planning.">Conceito, programa, licenciamento e planeamento antecipado do fim de vida.</div>
+        <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">02</div>
+        <div class="pf-detail-title" style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Conceito, programa, licenciamento e planeamento antecipado do fim de vida." data-en="Concept, programme, licensing and early end-of-life planning.">Conceito, programa, licenciamento e planeamento antecipado do fim de vida.</div>
+        <div class="kpi-detail" hidden>
+          <h4>Descrição</h4>
+          <p>Definição e otimização do conceito do projeto e do programa imobiliário. A solução é orientada às necessidades do mercado e aos objetivos estratégicos do Grupo.</p>
+          <h4>Atividades</h4>
+          <ul>
+            <li>Definição do conceito e programa imobiliário</li>
+            <li>Planeamento antecipado do fim de vida do ativo (impacto ambiental)</li>
+            <li>Processo de licenciamento</li>
+            <li>Acompanhamento da ocupação e fit-out dos espaços</li>
+          </ul>
+          <h4>Stakeholders</h4>
+          <p>Bancos e instituições financeiras · Equipas de projeto, gestão e construção · Consultores · Gestores de projeto · Autoridades públicas e entidades de licenciamento.</p>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:24px 18px;position:relative;">
+      <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">03</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Construção" data-en="Construction">Construção</div>
-        <div style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Execução conforme especificações + assistência pós-venda. BIM integrado." data-en="Execution per specifications + post-sale support. BIM integrated.">Execução conforme especificações + assistência pós-venda. BIM integrado.</div>
+        <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">03</div>
+        <div class="pf-detail-title" style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Construção" data-en="Construction">Construção</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Execução conforme especificações + assistência pós-venda. BIM integrado." data-en="Execution per specifications + post-sale support. BIM integrated.">Execução conforme especificações + assistência pós-venda. BIM integrado.</div>
+        <div class="kpi-detail" hidden>
+          <h4>Descrição</h4>
+          <p>Execução em estrita conformidade com especificações técnicas e orçamentos estabelecidos, com equipa multidisciplinar focada na obra. Inclui assistência pós-venda como compromisso continuado com clientes.</p>
+          <h4>Atividades</h4>
+          <ul>
+            <li>Execução conforme especificações técnicas e orçamentos</li>
+            <li>Garantia dos prazos estipulados</li>
+            <li>Comissionamento (commissioning) técnico</li>
+            <li>Assistência pós-venda</li>
+          </ul>
+          <h4>Stakeholders</h4>
+          <p>Equipas de projeto · Consultores · Fornecedores · Empreiteiros e subempreiteiros · Empresas de transporte e logística · Técnicos de comissionamento · Autoridades de fiscalização · Asseguradoras · Comunidade local.</p>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:24px 18px;position:relative;">
+      <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">04</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Gestão de Ativos" data-en="Asset Management">Gestão de Ativos</div>
-        <div style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Comercialização, ocupação, manutenção e gestão de comunidades." data-en="Sale, occupancy, maintenance and community management.">Comercialização, ocupação, manutenção e gestão de comunidades.</div>
+        <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">04</div>
+        <div class="pf-detail-title" style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Gestão de Ativos" data-en="Asset Management">Gestão de Ativos</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Comercialização, ocupação, manutenção e gestão de comunidades." data-en="Sale, occupancy, maintenance and community management.">Comercialização, ocupação, manutenção e gestão de comunidades.</div>
+        <div class="kpi-detail" hidden>
+          <h4>Descrição</h4>
+          <p>Comercialização dos ativos destinados à venda e acompanhamento contínuo da ocupação. Gestão, monitorização e manutenção ao longo do ciclo de utilização, preservando o valor do ativo.</p>
+          <h4>Atividades</h4>
+          <ul>
+            <li>Comercialização e gestão de ocupação</li>
+            <li>Monitorização e manutenção dos ativos</li>
+            <li>Criação e gestão de comunidades de ocupantes</li>
+            <li>Otimização do desempenho dos ativos a longo prazo</li>
+          </ul>
+          <h4>Stakeholders</h4>
+          <p>Ocupantes dos edifícios · Proprietários · Investidores · Empresas de gestão e manutenção · Parceiros comerciais · Bancos · Empresas de seguros.</p>
+        </div>
       </div>
-      <div style="background:var(--cg-bone);padding:24px 18px;position:relative;">
+      <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
-        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">05</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Fim de Ciclo" data-en="End of Life">Fim de Ciclo</div>
-        <div style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Reconversão, reabilitação ou demolição responsável. Abordagem circular." data-en="Conversion, retrofit or responsible demolition. Circular approach.">Reconversão, reabilitação ou demolição responsável. Abordagem circular.</div>
+        <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">05</div>
+        <div class="pf-detail-title" style="font-size:14px;font-weight:600;color:var(--cg-ink);margin-bottom:8px;" data-pt="Fim de Ciclo" data-en="End of Life">Fim de Ciclo</div>
+        <div class="pf-detail-sub" style="font-size:11px;color:var(--cg-mid);line-height:1.5;" data-pt="Reconversão, reabilitação ou demolição responsável. Abordagem circular." data-en="Conversion, retrofit or responsible demolition. Circular approach.">Reconversão, reabilitação ou demolição responsável. Abordagem circular.</div>
+        <div class="kpi-detail" hidden>
+          <h4>Descrição</h4>
+          <p>O ciclo conclui-se com a fase de fim de vida do ativo, momento em que o projeto regressa à análise inicial — agora informado pelo planeamento de fim de vida feito na fase de Desenvolvimento, fechando o ciclo de forma circular.</p>
+          <h4>Opções</h4>
+          <ul>
+            <li>Reconversão · adaptação a novo uso</li>
+            <li>Reabilitação · renovação para extensão de vida útil</li>
+            <li>Demolição responsável · com triagem e valorização de resíduos</li>
+          </ul>
+          <h4>Princípio</h4>
+          <p>Abordagem circular: o fim de vida alimenta uma nova oportunidade. Em 2025, 97,8% dos resíduos de construção do Grupo foram valorizados.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1832,7 +2199,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:rgba(255,255,255,0.7);" data-pt="Portfólio de Projetos" data-en="Project Portfolio">Portfólio de Projetos</p>
     <h2 class="heading fade-up" style="color:#fff;" data-pt="19 ativos<br><strong>+ 4 landbank</strong>" data-en="19 assets<br><strong>+ 4 landbank</strong>">19 ativos<br><strong>+ 4 landbank</strong></h2>
-    <p class="body" style="color:rgba(255,255,255,0.7);max-width:560px;margin-top:-32px;margin-bottom:48px;" data-pt="GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido (La Movida)." data-en="Total GFA 257,050 m² · 95.8% aligned with certification strategy · 1st LEED Gold issued (La Movida).">GFA total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado LEED Gold emitido (La Movida).</p>
+    <p class="body" style="color:rgba(255,255,255,0.7);max-width:560px;margin-top:-32px;margin-bottom:48px;" data-pt="<span data-gloss=&quot;GFA&quot;>GFA</span> total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado <span data-gloss=&quot;LEED&quot;>LEED</span> Gold emitido (La Movida)." data-en="Total <span data-gloss=&quot;GFA&quot;>GFA</span> 257,050 m² · 95.8% aligned with certification strategy · 1st <span data-gloss=&quot;LEED&quot;>LEED</span> Gold issued (La Movida)."><span data-gloss="GFA">GFA</span> total 257.050 m² · 95,8% alinhado com estratégia de certificação · 1.º certificado <span data-gloss="LEED">LEED</span> Gold emitido (La Movida).</p>
 
     <div class="pf-macro stagger">
       <!-- Ativos em operação -->
@@ -1959,16 +2326,15 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 <!-- ARTE NOS ESPAÇOS -->
 <section class="section bone">
   <div class="section-inner">
-    <p class="eyebrow fade-up" data-pt="Arte nos Espaços · Bordalo II + Coletivo RUA" data-en="Art in our Spaces · Bordalo II + Coletivo RUA">Arte nos Espaços · Bordalo II + Coletivo RUA</p>
+    <p class="eyebrow fade-up" data-pt="Arte nos Espaços · Bordalo II + Coletivo RUA + Projeto Ruído" data-en="Art in our Spaces · Bordalo II + Coletivo RUA + Projeto Ruído">Arte nos Espaços · Bordalo II + Coletivo RUA + Projeto Ruído</p>
     <h2 class="heading fade-up" data-pt="Arte como<br><strong>infraestrutura social</strong>" data-en="Art as<br><strong>social infrastructure</strong>">Arte como<br><strong>infraestrutura social</strong></h2>
-    <p class="body fade-up" style="max-width:680px;margin-top:-32px;margin-bottom:8px;" data-pt="Em 2025, o Castro Group passou de doação monetária para incorporação direta de obras de arte nos projetos. Investimento total: 78.000€ — a Girafa de Bordalo II (escultura 10×6×4m de resíduos) no SPARK e o Projeto Ruído do Coletivo RUA no SPARK e em La Movida." data-en="In 2025, Castro Group shifted from monetary donation to direct incorporation of artworks in its projects. Total investment: €78,000 — Bordalo II's Giraffe (10×6×4m waste sculpture) at SPARK and Coletivo RUA's Ruído Project at SPARK and La Movida.">Em 2025, o Castro Group passou de doação monetária para incorporação direta de obras de arte nos projetos. Investimento total: 78.000€ — a Girafa de Bordalo II (escultura 10×6×4m de resíduos) no SPARK e o Projeto Ruído do Coletivo RUA no SPARK e em La Movida.</p>
+    <p class="body fade-up" style="max-width:680px;margin-top:-32px;margin-bottom:8px;" data-pt="Em 2025, o Castro Group passou de doação monetária para incorporação direta de obras de arte nos projetos. Investimento total: 78.000€ — a Girafa de Bordalo II (escultura 10×6×4m de resíduos) no SPARK, intervenções do Coletivo RUA no SPARK e o Projeto Ruído em La Movida." data-en="In 2025, Castro Group shifted from monetary donation to direct incorporation of artworks in its projects. Total investment: €78,000 — Bordalo II's Giraffe (10×6×4m waste sculpture) at SPARK, Coletivo RUA interventions at SPARK and Projeto Ruído at La Movida.">Em 2025, o Castro Group passou de doação monetária para incorporação direta de obras de arte nos projetos. Investimento total: 78.000€ — a Girafa de Bordalo II (escultura 10×6×4m de resíduos) no SPARK, intervenções do Coletivo RUA no SPARK e o Projeto Ruído em La Movida.</p>
 
     <div class="arte-grid stagger">
       <div class="arte-card hero">
-        <img src="uploads/artworks/9.jpg" alt="Projeto Ruído — Coletivo RUA · La Movida" loading="lazy" decoding="async">
+        <img src="uploads/artworks/9.jpg" alt="Projeto Ruído · La Movida" loading="lazy" decoding="async">
         <div class="arte-card-caption">
-          <div class="arte-card-author">Coletivo RUA · 2025</div>
-          <div class="arte-card-title">Projeto Ruído</div>
+          <div class="arte-card-author">Projeto Ruído · 2025</div>
           <div class="arte-card-meta" data-pt="La Movida, Matosinhos" data-en="La Movida, Matosinhos">La Movida, Matosinhos</div>
         </div>
       </div>
@@ -1988,24 +2354,32 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         </div>
       </div>
       <div class="arte-card">
-        <img src="uploads/artworks/CASTRO GROUP 4K.jpg" alt="Projeto Ruído — Coletivo RUA · SPARK" loading="lazy" decoding="async">
+        <img src="uploads/artworks/CASTRO GROUP 4K.jpg" alt="Coletivo RUA · SPARK" loading="lazy" decoding="async">
         <div class="arte-card-caption">
           <div class="arte-card-author">Coletivo RUA · 2025</div>
-          <div class="arte-card-title">Projeto Ruído</div>
           <div class="arte-card-meta" data-pt="SPARK, Matosinhos" data-en="SPARK, Matosinhos">SPARK, Matosinhos</div>
         </div>
       </div>
       <div class="arte-card">
-        <img src="uploads/artworks/2.jpg" alt="Projeto Ruído — Coletivo RUA · SPARK" loading="lazy" decoding="async">
+        <img src="uploads/artworks/2.jpg" alt="Coletivo RUA · SPARK" loading="lazy" decoding="async">
         <div class="arte-card-caption">
           <div class="arte-card-author">Coletivo RUA · 2025</div>
-          <div class="arte-card-title">Projeto Ruído</div>
           <div class="arte-card-meta" data-pt="SPARK, Matosinhos" data-en="SPARK, Matosinhos">SPARK, Matosinhos</div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Arte lightbox (full-screen view) -->
+<div class="arte-lightbox" id="arte-lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
+  <button type="button" class="arte-lightbox-close" id="arte-lightbox-close" aria-label="Fechar">✕</button>
+  <img class="arte-lightbox-img" id="arte-lightbox-img" alt="">
+  <div class="arte-lightbox-caption" id="arte-lightbox-caption">
+    <span id="arte-lightbox-author"></span>
+    <span class="meta" id="arte-lightbox-meta"></span>
+  </div>
+</div>
 
 <!-- ── DOUBLE MATERIALITY RADIAL MAP (NEXA-style, replaces scatter plot) ─── -->
 <section class="mm-section" aria-label="Análise de Dupla Materialidade">
@@ -2014,7 +2388,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       <div class="mm-radial-head">
         <p class="mm-eyebrow" data-pt="Análise de Dupla Materialidade · 2025" data-en="Double Materiality Analysis · 2025">Análise de Dupla Materialidade · 2025</p>
         <h2 data-pt="11 temas ESG. <strong>Um mapa.</strong>" data-en="11 ESG topics. <strong>One map.</strong>">11 temas ESG. <strong>Um mapa.</strong></h2>
-        <p class="mm-sub" data-pt="Cada raio é um tema ESG. A distância do centro indica a materialidade combinada (Impacto × Financeira). Hover sobre qualquer raio para destacar." data-en="Each spoke is an ESG topic. Distance from center indicates combined materiality (Impact × Financial). Hover any spoke to highlight.">Cada raio é um tema ESG. A distância do centro indica a materialidade combinada (Impacto × Financeira). Hover sobre qualquer raio para destacar.</p>
+        <p class="mm-sub" data-pt="Cada raio é um tema ESG. A distância do centro indica a materialidade combinada (Impacto × Financeira)." data-en="Each spoke is an ESG topic. Distance from center indicates combined materiality (Impact × Financial).">Cada raio é um tema ESG. A distância do centro indica a materialidade combinada (Impacto × Financeira).</p>
         <div class="mm-legend">
           <span class="mm-legend-item"><span class="mm-legend-dot" style="background:var(--cg-green)"></span><span data-pt="Ambiental" data-en="Environmental">Ambiental</span></span>
           <span class="mm-legend-item"><span class="mm-legend-dot" style="background:var(--cg-esg-social)"></span><span data-pt="Social" data-en="Social">Social</span></span>
@@ -2030,54 +2404,79 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
      CHAPTER 02 — SITUAÇÃO ATUAL (Cyan pillar)
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="situacao" class="chapter-band cyan">
-  <div class="num">02</div>
-  <div>
-    <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 02" data-en="Chapter 02">Capítulo 02</p>
-    <h2 data-pt="Situação <strong>Atual</strong>" data-en="Current <strong>Situation</strong>">Situação <strong>Atual</strong></h2>
-    <p data-pt="Desempenho ESG de 2025 nos quatro pilares — Environmental, Social, Governance e Economic — alinhado com o referencial VSME e com base na primeira Análise de Dupla Materialidade interna." data-en="2025 ESG performance across the four pillars — Environmental, Social, Governance and Economic — aligned with the VSME standard and based on the first internal Double Materiality Analysis.">Desempenho ESG de 2025 nos quatro pilares — Environmental, Social, Governance e Economic — alinhado com o referencial VSME e com base na primeira Análise de Dupla Materialidade interna.</p>
+  <div class="chapter-band-inner">
+    <div class="num">02</div>
+    <div>
+      <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 02" data-en="Chapter 02">Capítulo 02</p>
+      <h2 data-pt="Situação <strong>Atual</strong>" data-en="Current <strong>Situation</strong>">Situação <strong>Atual</strong></h2>
+      <p data-pt="Desempenho <span data-gloss=&quot;ESG&quot;>ESG</span> de 2025 nos quatro pilares — Environmental, Social, Governance e Economic — alinhado com o referencial <span data-gloss=&quot;VSME&quot;>VSME</span> e com base na primeira Análise de Dupla Materialidade interna." data-en="2025 <span data-gloss=&quot;ESG&quot;>ESG</span> performance across the four pillars — Environmental, Social, Governance and Economic — aligned with the <span data-gloss=&quot;VSME&quot;>VSME</span> standard and based on the first internal Double Materiality Analysis.">Desempenho <span data-gloss="ESG">ESG</span> de 2025 nos quatro pilares — Environmental, Social, Governance e Economic — alinhado com o referencial <span data-gloss="VSME">VSME</span> e com base na primeira Análise de Dupla Materialidade interna.</p>
+    </div>
   </div>
 </section>
 
-<!-- OVERVIEW KPIs (corrected data) -->
+<!-- DESEMPENHO ESG · macro goals one per pillar (PDF p.52-53) -->
 <section class="section">
   <div class="section-inner">
-    <p class="eyebrow fade-up" data-pt="Indicadores Chave 2025" data-en="Key Indicators 2025">Indicadores Chave 2025</p>
+    <p class="eyebrow fade-up" data-pt="Métricas e Metas · 2025–2030" data-en="Metrics &amp; Targets · 2025–2030">Métricas e Metas · 2025–2030</p>
     <h2 class="heading fade-up" data-pt="Desempenho ESG<br><strong>em destaque</strong>" data-en="ESG Performance<br><strong>highlights</strong>">Desempenho ESG<br><strong>em destaque</strong></h2>
-    <div class="kpi-row stagger">
-      <div class="kpi-card">
+    <div class="kpi-row stagger" style="grid-template-columns:repeat(3,1fr);">
+      <div class="kpi-card" data-detail="pilar-meta">
         <div class="kpi-stripe" style="background:var(--cg-green)"></div>
-        <div class="kpi-tag" style="color:var(--cg-green)" data-pt="Ambiental" data-en="Environmental">Ambiental</div>
-        <div class="kpi-num">197,9<span class="kpi-unit"> TonCO₂e</span></div>
-        <div class="kpi-desc" data-pt="Emissões Scope 1+2 em 2025 (ano-base do Plano de Transição)" data-en="Scope 1+2 emissions 2025 (Climate Plan baseline)">Emissões Scope 1+2 em 2025 (ano-base do Plano de Transição)</div>
-        <div class="kpi-delta" style="color:var(--cg-green)" data-pt="Meta 2030: ≤118,7 TonCO₂e (−40%)" data-en="2030 target: ≤118.7 TonCO₂e (−40%)">Meta 2030: ≤118,7 TonCO₂e (−40%)</div>
+        <div class="kpi-tag" style="color:var(--cg-green)" data-pt="Ambiental · Meta macro" data-en="Environmental · Macro target">Ambiental · Meta macro</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.3;color:var(--cg-ink);margin:8px 0 10px;" data-pt="Plano de ação climático" data-en="Climate action plan">Plano de ação climático</div>
+        <div class="kpi-desc" data-pt="Reduzir as emissões de Scope 1 e 2 em 40% até 2030 e alcançar a neutralidade até 2050. Promover a resiliência da carteira através de boas práticas ESG e análise de riscos físicos e de transição." data-en="Reduce Scope 1+2 emissions by 40% by 2030 and reach neutrality by 2050. Promote portfolio resilience via ESG best practices and physical/transition risk analysis.">Reduzir as emissões de Scope 1 e 2 em 40% até 2030 e alcançar a neutralidade até 2050. Promover a resiliência da carteira através de boas práticas ESG e análise de riscos físicos e de transição.</div>
+        <div class="kpi-delta" style="color:var(--cg-green)" data-pt="2025: 197,9 TonCO₂e → 2030: ≤118,7 TonCO₂e" data-en="2025: 197.9 TonCO₂e → 2030: ≤118.7 TonCO₂e">2025: 197,9 TonCO₂e → 2030: ≤118,7 TonCO₂e</div>
+        <div class="kpi-detail" hidden>
+          <h4>Os 5 objetivos</h4>
+          <ul>
+            <li>Reduzir emissões de Scope 1 e 2 em 40% até 2030, face a 2025</li>
+            <li>Reduzir emissões de Scope 3 (% e ano a definir em 2026)</li>
+            <li>Reduzir impacto em poluição, biodiversidade e água</li>
+            <li>Avaliar produtos e fornecedores em Economia Circular</li>
+            <li>Avaliar riscos climáticos físicos e de transição dos ativos</li>
+          </ul>
+          <h4>KPIs principais</h4>
+          <p>Emissões Scope 1+2+3 [TonCO₂e] · % de redução anual · % de GFA com análise de riscos físicos · % de GFA com análise de risco de transição.</p>
+        </div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="pilar-meta">
         <div class="kpi-stripe" style="background:var(--cg-esg-social)"></div>
-        <div class="kpi-tag" style="color:var(--cg-esg-social)" data-pt="Social" data-en="Social">Social</div>
-        <div class="kpi-num"><span class="cnt" data-n="57">0</span></div>
-        <div class="kpi-desc" data-pt="Colaboradores (+7,5% vs 53 em 2024)" data-en="Employees (+7.5% vs 53 in 2024)">Colaboradores (+7,5% vs 53 em 2024)</div>
-        <div class="kpi-delta" style="color:var(--cg-esg-social)" data-pt="↑ 4 novos colaboradores" data-en="↑ 4 new hires">↑ 4 novos colaboradores</div>
+        <div class="kpi-tag" style="color:var(--cg-esg-social)" data-pt="Social · Meta macro" data-en="Social · Macro target">Social · Meta macro</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.3;color:var(--cg-ink);margin:8px 0 10px;" data-pt="Transição social justa" data-en="Just social transition">Transição social justa</div>
+        <div class="kpi-desc" data-pt="Promover condições de trabalho dignas, igualdade de oportunidades, progressão de carreira e bem-estar — internamente e ao longo da cadeia de valor — com base no respeito pelos direitos humanos." data-en="Promote decent working conditions, equal opportunities, career progression and well-being — internally and across the value chain — anchored in respect for human rights.">Promover condições de trabalho dignas, igualdade de oportunidades, progressão de carreira e bem-estar — internamente e ao longo da cadeia de valor — com base no respeito pelos direitos humanos.</div>
+        <div class="kpi-delta" style="color:var(--cg-esg-social)" data-pt="57 colaboradores · turnover prioritário em 2026" data-en="57 employees · turnover priority for 2026">57 colaboradores · turnover prioritário em 2026</div>
+        <div class="kpi-detail" hidden>
+          <h4>Os 2 objetivos</h4>
+          <ul>
+            <li>Condições de trabalho dignas, igualdade de oportunidades, progressão de carreira, formação e SST (saúde e segurança no trabalho)</li>
+            <li>Respeito pelos direitos humanos e identificação de incidentes severos na cadeia de fornecimento — Código de Conduta ESG nas adjudicações</li>
+          </ul>
+          <h4>KPIs principais</h4>
+          <p>% de resposta ao "Código de Conduta ESG" pelos parceiros · KPIs de igualdade salarial por categoria · horas de formação por colaborador (meta: 100% da equipa a partir de 2027) · taxa de turnover.</p>
+        </div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-stripe" style="background:var(--cg-cyan)"></div>
-        <div class="kpi-tag" style="color:var(--cg-cyan)" data-pt="Ambiental" data-en="Environmental">Ambiental</div>
-        <div class="kpi-num"><span class="cnt" data-n="16">0</span>,6<span class="kpi-unit">%</span></div>
-        <div class="kpi-desc" data-pt="Energia renovável: 10,8% fotovoltaica on-site + 5,8% GdO" data-en="Renewable energy: 10.8% on-site PV + 5.8% GoO">Energia renovável: 10,8% fotovoltaica on-site + 5,8% GdO</div>
-        <div class="kpi-delta" style="color:var(--cg-cyan)" data-pt="Consumo total: 1.999,4 MWh" data-en="Total consumption: 1,999.4 MWh">Consumo total: 1.999,4 MWh</div>
-      </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-detail="pilar-meta">
         <div class="kpi-stripe" style="background:var(--cg-esg-governance)"></div>
-        <div class="kpi-tag" style="color:var(--cg-esg-governance)" data-pt="Governança" data-en="Governance">Governança</div>
-        <div class="kpi-num">95,8<span class="kpi-unit">%</span></div>
-        <div class="kpi-desc" data-pt="GFA alinhado com estratégia de certificação LEED" data-en="GFA aligned with LEED certification strategy">GFA alinhado com estratégia de certificação LEED</div>
-        <div class="kpi-delta" style="color:var(--cg-esg-governance)" data-pt="1.º LEED Gold emitido (La Movida)" data-en="1st LEED Gold issued (La Movida)">1.º LEED Gold emitido (La Movida)</div>
+        <div class="kpi-tag" style="color:var(--cg-esg-governance)" data-pt="Governança · Meta macro" data-en="Governance · Macro target">Governança · Meta macro</div>
+        <div class="kpi-card-title" style="font-size:18px;font-weight:600;line-height:1.3;color:var(--cg-ink);margin:8px 0 10px;" data-pt="ESG na cadeia de valor" data-en="ESG across the value chain">ESG na cadeia de valor</div>
+        <div class="kpi-desc" data-pt="Reforçar os procedimentos internos para garantir que as atividades incorporam critérios ESG ao longo de toda a cadeia de valor — código de conduta, anti-corrupção e ativos resilientes." data-en="Strengthen internal procedures to ensure ESG criteria are embedded across the value chain — code of conduct, anti-bribery and climate-resilient assets.">Reforçar os procedimentos internos para garantir que as atividades incorporam critérios ESG ao longo de toda a cadeia de valor — código de conduta, anti-corrupção e ativos resilientes.</div>
+        <div class="kpi-delta" style="color:var(--cg-esg-governance)" data-pt="95,8% do GFA alinhado com estratégia de certificação" data-en="95.8% of GFA aligned with certification strategy">95,8% do GFA alinhado com estratégia de certificação</div>
+        <div class="kpi-detail" hidden>
+          <h4>Os 2 objetivos</h4>
+          <ul>
+            <li>Procedimentos em código de conduta corporativa, proteção de denunciantes, gestão de fornecedores, prevenção de corrupção e suborno</li>
+            <li>Desenvolvimento de ativos resilientes: mitigação climática (Scope 1+2+3), adaptação, poluição/biodiversidade, água e economia circular</li>
+          </ul>
+          <h4>KPIs principais</h4>
+          <p>% de resposta ao Código de Conduta ESG dos parceiros · horas de formação ESG dos colaboradores (a definir 2026) · % de GFA com plano de resiliência implementado.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ENVIRONMENTAL -->
-<section class="section" id="pilar-ambiental" style="background:#142e1f;color:#fff;">
+<section class="section" id="pilar-ambiental" style="background:var(--cg-pillar-eco);color:#fff;">
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:var(--cg-green);" data-pt="Pilar 01 — Ambiental" data-en="Pillar 01 — Environmental">Pilar 01 — Ambiental</p>
     <h2 class="heading fade-up" style="color:#fff;" data-pt="Energia, emissões<br><strong>e recursos naturais</strong>" data-en="Energy, emissions<br><strong>and natural resources</strong>">Energia, emissões<br><strong>e recursos naturais</strong></h2>
@@ -2195,7 +2594,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 </section>
 
 <!-- GOVERNANCE -->
-<section class="section" id="pilar-governanca" style="background:#181c2e;color:#fff;">
+<section class="section" id="pilar-governanca" style="background:var(--cg-pillar-gov);color:#fff;">
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:var(--cg-esg-governance);" data-pt="Pilar 03 — Governança" data-en="Pillar 03 — Governance">Pilar 03 — Governança</p>
     <h2 class="heading fade-up" style="color:#fff;" data-pt="Transparência e<br><strong>integridade institucional</strong>" data-en="Transparency and<br><strong>institutional integrity</strong>">Transparência e<br><strong>integridade institucional</strong></h2>
@@ -2237,17 +2636,48 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
-<!-- (Pilar 04 — Económico retirado a pedido da administração) -->
+<!-- ECONOMIC (Pilar 04 — deep rust) -->
+<section class="section" id="pilar-economico" style="background:var(--cg-pillar-econ);color:#fff;">
+  <div class="section-inner">
+    <p class="eyebrow fade-up" style="color:var(--cg-rust);" data-pt="Pilar 04 — Económico" data-en="Pillar 04 — Economic">Pilar 04 — Económico</p>
+    <h2 class="heading fade-up" style="color:#fff;" data-pt="Valor económico<br><strong>gerado e distribuído</strong>" data-en="Economic value<br><strong>generated and distributed</strong>">Valor económico<br><strong>gerado e distribuído</strong></h2>
+    <div class="metrics-grid stagger">
+      <div class="metric-card dark">
+        <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="Distribuído" data-en="Distributed">Distribuído</div>
+        <div class="metric-big">35,0<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
+        <div class="metric-unit" data-pt="Valor económico distribuído 2025" data-en="Economic value distributed 2025">Valor económico distribuído 2025</div>
+        <div class="metric-desc-text" data-pt="↑ 12,6% vs 2024 (31,09 M€). Pessoal: 1,57 M€ (+15,2%). Fornecedores e despesas operacionais: 32,39 M€ (+14,9%). Estado e OEP: 1,05 M€ (−32,4%)." data-en="↑ 12.6% vs 2024 (€31.09M). People: €1.57M (+15.2%). Suppliers & opex: €32.39M (+14.9%). State & SOE: €1.05M (−32.4%).">↑ 12,6% vs 2024 (31,09 M€). Pessoal: 1,57 M€ (+15,2%). Fornecedores e despesas operacionais: 32,39 M€ (+14,9%). Estado e OEP: 1,05 M€ (−32,4%).</div>
+        <div class="bar-track"><div class="bar-fill" data-w="100" style="background:var(--cg-rust)"></div></div>
+      </div>
+      <div class="metric-card dark">
+        <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="Receita" data-en="Revenue">Receita</div>
+        <div class="metric-big">24,34<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
+        <div class="metric-unit" data-pt="Prestações de serviço 2025 (vs 25,13 M€ em 2024)" data-en="Service revenue 2025 (vs €25.13M in 2024)">Prestações de serviço 2025 (vs 25,13 M€ em 2024)</div>
+        <div class="metric-desc-text" data-pt="Redução moderada (−3,1%), volume operacional mantido. Valor económico gerado: 24,55 M€ (vs 39,49 M€ em 2024)." data-en="Moderate decline (−3.1%), operating volume maintained. Economic value generated: €24.55M (vs €39.49M in 2024).">Redução moderada (−3,1%), volume operacional mantido. Valor económico gerado: 24,55 M€ (vs 39,49 M€ em 2024).</div>
+        <div class="bar-track"><div class="bar-fill" data-w="62" style="background:var(--cg-rust)"></div></div>
+      </div>
+      <div class="metric-card dark">
+        <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="EBITDA" data-en="EBITDA">EBITDA</div>
+        <div class="metric-big">−0,82<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
+        <div class="metric-unit" data-pt="EBITDA 2025 (vs 0,04 M€ em 2024)" data-en="EBITDA 2025 (vs €0.04M in 2024)">EBITDA 2025 (vs 0,04 M€ em 2024)</div>
+        <div class="metric-desc-text" data-pt="Pressão conjuntural pelo aumento de custos operacionais e redução do valor económico gerado. Valor económico acumulado: −10,45 M€ (vs +8,40 M€ em 2024)." data-en="Cyclical pressure from rising operating costs and lower generated value. Accumulated economic value: −€10.45M (vs +€8.40M in 2024).">Pressão conjuntural pelo aumento de custos operacionais e redução do valor económico gerado. Valor económico acumulado: −10,45 M€ (vs +8,40 M€ em 2024).</div>
+        <div class="bar-track"><div class="bar-fill" data-w="20" style="background:var(--cg-rust)"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ════════════════════════════════════════════════════════════════════════
      CHAPTER 03 — CREATING TOMORROW (Green pillar)
      ═══════════════════════════════════════════════════════════════════════ -->
 <section id="tomorrow" class="chapter-band green">
-  <div class="num">03</div>
-  <div>
-    <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 03" data-en="Chapter 03">Capítulo 03</p>
-    <h2 data-pt="Creating <strong>Tomorrow</strong>" data-en="Creating <strong>Tomorrow</strong>">Creating <strong>Tomorrow</strong></h2>
-    <p data-pt="Visão estratégica para os próximos anos, traduzida em metas concretas — Plano de Transição Climática, Estratégia de Certificação, recolha automatizada de dados ESG e compromisso reforçado com as comunidades." data-en="Strategic vision for the coming years, translated into concrete targets — Climate Transition Plan, Certification Strategy, automated ESG data collection and reinforced community commitment.">Visão estratégica para os próximos anos, traduzida em metas concretas — Plano de Transição Climática, Estratégia de Certificação, recolha automatizada de dados ESG e compromisso reforçado com as comunidades.</p>
+  <div class="chapter-band-inner">
+    <div class="num">03</div>
+    <div>
+      <p class="eyebrow" style="color:rgba(255,255,255,0.85);" data-pt="Capítulo 03" data-en="Chapter 03">Capítulo 03</p>
+      <h2 data-pt="Creating <strong>Tomorrow</strong>" data-en="Creating <strong>Tomorrow</strong>">Creating <strong>Tomorrow</strong></h2>
+      <p data-pt="Visão estratégica para os próximos anos, traduzida em metas concretas — Plano de Transição Climática, Estratégia de Certificação, recolha automatizada de dados ESG e compromisso reforçado com as comunidades." data-en="Strategic vision for the coming years, translated into concrete targets — Climate Transition Plan, Certification Strategy, automated ESG data collection and reinforced community commitment.">Visão estratégica para os próximos anos, traduzida em metas concretas — Plano de Transição Climática, Estratégia de Certificação, recolha automatizada de dados ESG e compromisso reforçado com as comunidades.</p>
+    </div>
   </div>
 </section>
 
@@ -2317,7 +2747,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         </svg>
         <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--cg-border);">
           <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:#33B67A;border-radius:2px;display:inline-block;"></span>Scope 1 (TonCO₂e)</span>
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:#9E8FD4;border-radius:2px;display:inline-block;"></span>Scope 2 (TonCO₂e)</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:var(--cg-cyan);border-radius:2px;display:inline-block;"></span>Scope 2 (TonCO₂e)</span>
           <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--cg-mid);"><span style="width:18px;height:2px;border-top:2px dashed #2E4791;"></span><span data-pt="Meta 2030 (−40%)" data-en="2030 target (−40%)">Meta 2030 (−40%)</span></span>
         </div>
       </div>
@@ -2393,7 +2823,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <div class="stagger" style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
       <div style="padding:32px;border:1px solid var(--cg-border);border-radius:2px;background:var(--cg-bone);border-left:3px solid var(--cg-green);">
         <div style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-green);margin-bottom:10px;" data-pt="Ambiental" data-en="Environmental">Ambiental</div>
-        <div style="font-size:15px;line-height:1.4;color:var(--cg-ink);margin-bottom:20px;" data-pt="Reduzir Scope 1+2 em 40% até 2030 (vs ano-base 2025: 197,9 TonCO₂e). Meta: ≤118,7 TonCO₂e — em aprovação CA em 2026." data-en="Reduce Scope 1+2 by 40% by 2030 (vs 2025 baseline: 197.9 TonCO₂e). Target: ≤118.7 TonCO₂e — pending Board approval in 2026.">Reduzir Scope 1+2 em 40% até 2030 (vs ano-base 2025: 197,9 TonCO₂e). Meta: ≤118,7 TonCO₂e — em aprovação CA em 2026.</div>
+        <div style="font-size:15px;line-height:1.4;color:var(--cg-ink);margin-bottom:20px;" data-pt="Reduzir Scope 1+2 em 40% até 2030 (vs ano-base 2025: 197,9 TonCO₂e). Meta: ≤118,7 TonCO₂e." data-en="Reduce Scope 1+2 by 40% by 2030 (vs 2025 baseline: 197.9 TonCO₂e). Target: ≤118.7 TonCO₂e.">Reduzir Scope 1+2 em 40% até 2030 (vs ano-base 2025: 197,9 TonCO₂e). Meta: ≤118,7 TonCO₂e.</div>
         <div style="display:flex;align-items:center;gap:12px;"><div style="flex:1;height:3px;background:var(--cg-border);border-radius:2px;overflow:hidden;"><div class="bar-fill" data-w="0" style="background:var(--cg-green)"></div></div><div style="font-size:12px;font-weight:500;color:var(--cg-mid);" data-pt="Base" data-en="Baseline">Base</div></div>
       </div>
       <div style="padding:32px;border:1px solid var(--cg-green);border-radius:2px;background:var(--cg-bone);">
@@ -2487,13 +2917,13 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         <div style="font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">Castro Group</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;">
           <li><a href="https://castro-group.pt/en/" target="_blank" rel="noopener" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Website do Grupo ↗" data-en="Group Website ↗">Website do Grupo ↗</a></li>
-          <li><a href="uploads/final report/RS26_identidade_12maio.pdf" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Descarregar PDF" data-en="Download PDF">Descarregar PDF</a></li>
+          <li><a href="uploads/final report/RS_CASTRO-GROUP.pdf" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Descarregar PDF" data-en="Download PDF">Descarregar PDF</a></li>
         </ul>
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
       <span style="font-size:10px;color:rgba(255,255,255,0.25);" data-pt="© 2025 Castro Group. Relatório de Sustentabilidade. Ano fiscal 2025." data-en="© 2025 Castro Group. Sustainability Report. Fiscal year 2025.">© 2025 Castro Group. Relatório de Sustentabilidade. Ano fiscal 2025.</span>
-      <span style="font-size:10px;color:rgba(255,255,255,0.25);" data-pt="Alinhado com VSME 2024." data-en="Aligned with VSME 2024.">Alinhado com VSME 2024.</span>
+      <span style="font-size:10px;color:rgba(255,255,255,0.25);" data-pt="Alinhado com <span data-gloss=&quot;VSME&quot;>VSME</span> 2024." data-en="Aligned with <span data-gloss=&quot;VSME&quot;>VSME</span> 2024.">Alinhado com <span data-gloss="VSME">VSME</span> 2024.</span>
     </div>
   </div>
 </footer>
@@ -2520,6 +2950,60 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 .dm-chart-wrap .bar-curr.is-down{fill:var(--cg-rust)}
 .dm-chart-wrap .bar-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;fill:var(--cg-ink)}
 .dm-chart-wrap .bar-year{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;fill:var(--cg-mid);letter-spacing:.10em;text-transform:uppercase}
+/* Detail blocks (PDF-sourced) inside empresas/fases cards — shown only inside modal */
+.kpi-card .kpi-detail, .metric-card .kpi-detail { display: none; }
+.kpi-card[data-detail], .metric-card[data-detail],
+.pf-detail-card[data-detail] { cursor: pointer; }
+.kpi-card[data-detail]:hover, .metric-card[data-detail]:hover {
+  outline: 1px solid var(--cg-border-soft);
+}
+.data-modal .kpi-detail {
+  display: block;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--cg-border);
+}
+.data-modal .kpi-detail h4 {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cg-mid);
+  margin-bottom: 8px; margin-top: 18px;
+}
+.data-modal .kpi-detail h4:first-child { margin-top: 0; }
+.data-modal .kpi-detail p { font-size: 13.5px; line-height: 1.7; color: var(--cg-ink); margin-bottom: 8px; }
+.data-modal .kpi-detail ul { list-style: none; padding-left: 0; margin: 0; }
+.data-modal .kpi-detail li {
+  padding-left: 18px; position: relative;
+  font-size: 13px; line-height: 1.7; color: var(--cg-ink);
+}
+.data-modal .kpi-detail li::before {
+  content: ''; position: absolute; left: 0; top: 11px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--cg-orange);
+}
+.data-modal .kpi-detail .kv {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px;
+  margin: 6px 0 10px;
+}
+.data-modal .kpi-detail .kv > div {
+  font-size: 12px; color: var(--cg-mid);
+  border-top: 1px solid var(--cg-border-soft);
+  padding-top: 8px;
+}
+.data-modal .kpi-detail .kv > div strong {
+  display: block; font-size: 16px; font-weight: 500; color: var(--cg-ink); margin-top: 2px;
+}
+/* Subtle hint on clickable empresa/fase cards: small arrow at top-right */
+.kpi-card[data-detail]::after,
+.pf-detail-card[data-detail]::after {
+  content: '↗';
+  position: absolute; top: 12px; right: 14px;
+  font-size: 11px; color: var(--cg-mid); opacity: 0.45;
+  transition: opacity 0.2s var(--cg-ease), transform 0.2s var(--cg-ease);
+}
+.kpi-card[data-detail]:hover::after,
+.pf-detail-card[data-detail]:hover::after {
+  opacity: 1; transform: translate(2px, -2px); color: var(--cg-orange);
+}
 </style>
 
 <!-- ── BACK TO TOP ── -->
@@ -2542,6 +3026,7 @@ function setLang(lang) {
     else el.textContent = val;
   });
   document.documentElement.lang = lang;
+  if (typeof applyGlossary === 'function') applyGlossary();
 }
 
 // ── STRIPE DISCS (hero) ───────────────────────────────────────────────────
@@ -2610,10 +3095,46 @@ function initBalls() {
     }
   }
 
+  // Cursor repulsion — discs flee from the pointer when it comes close
+  let mouseX = -9999, mouseY = -9999;
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+  const FORCE_R = W < 600 ? 110 : 180;
+  const VMAX = 4.0;
+  const VMIN = 0.25;
+
   let frame = null, running = false;
   function draw() {
     ctx.clearRect(0, 0, W, H);
     discs.forEach(d => {
+      // Repulsion: push disc away from cursor when within FORCE_R
+      if (mouseX > -1000) {
+        const dx = d.x - mouseX;
+        const dy = d.y - mouseY;
+        const distSq = dx * dx + dy * dy;
+        const effective = FORCE_R + d.r;
+        if (distSq < effective * effective && distSq > 1) {
+          const dist = Math.sqrt(distSq);
+          const force = (1 - dist / effective) * 0.9;
+          d.vx += (dx / dist) * force;
+          d.vy += (dy / dist) * force;
+        }
+      }
+      // Gentle damping so they settle back to baseline drift
+      d.vx *= 0.985;
+      d.vy *= 0.985;
+      // Clamp velocity so repulsion doesn't make them rocket off
+      const vmag = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
+      if (vmag > VMAX) { d.vx = (d.vx / vmag) * VMAX; d.vy = (d.vy / vmag) * VMAX; }
+      // Restore tiny drift if disc has stopped (keep the kaleidoscope alive)
+      if (vmag < VMIN) {
+        d.vx += (Math.random() - 0.5) * 0.18;
+        d.vy += (Math.random() - 0.5) * 0.12;
+      }
       if (!reduced) { d.x += d.vx; d.y += d.vy; }
       // bounce off edges (was wrap-around)
       if (d.x - d.r < 0) { d.x = d.r;       d.vx = Math.abs(d.vx); }
@@ -2723,17 +3244,33 @@ function _setNode(targetId, sourceEl) {
 function openDataModal(card) {
   const modal = document.getElementById('data-modal');
   if (!modal) return;
-  const tagEl   = card.querySelector('.kpi-tag, .metric-pill, .metric-tag-pill');
+  const tagEl   = card.querySelector('.kpi-tag, .metric-pill, .metric-tag-pill, .pf-detail-tag');
   const valEl   = card.querySelector('.metric-big, .kpi-num');
-  const subEl   = card.querySelector('.metric-unit, .kpi-desc');
+  const subEl   = card.querySelector('.metric-unit, .kpi-desc, .pf-detail-sub');
   const bodyEl  = card.querySelector('.metric-desc-text');
   const deltaEl = card.querySelector('.kpi-delta');
+  const titleEl = card.querySelector('.kpi-card-title, .pf-detail-title');
+  const detailEl = card.querySelector('.kpi-detail');
 
-  document.getElementById('dm-tag').textContent  = tagEl ? tagEl.textContent.trim() : '';
-  document.getElementById('dm-title').textContent = tagEl ? tagEl.textContent.trim() : '';
+  const tagText = tagEl ? tagEl.textContent.trim() : '';
+  const titleText = titleEl ? titleEl.textContent.trim() : tagText;
+  document.getElementById('dm-tag').textContent  = tagText;
+  document.getElementById('dm-title').textContent = titleText;
   _setNode('dm-value', valEl);
   _setNode('dm-sub',   subEl);
   _setNode('dm-body',  bodyEl);
+
+  // Inject extra PDF-sourced detail (empresas, fases) into modal body
+  const bodyHost = document.getElementById('dm-body');
+  // Remove any previously injected detail clone
+  const prevDetail = bodyHost.parentElement.querySelector('.kpi-detail-clone');
+  if (prevDetail) prevDetail.remove();
+  if (detailEl) {
+    const clone = detailEl.cloneNode(true);
+    clone.classList.add('kpi-detail-clone');
+    clone.removeAttribute('hidden');
+    bodyHost.parentElement.insertBefore(clone, bodyHost.nextSibling);
+  }
 
   const dmDelta = document.getElementById('dm-delta');
   if (deltaEl) {
@@ -2817,7 +3354,7 @@ function renderModalChart(valEl, bodyEl) {
 }
 (function wireDataModal() {
   document.addEventListener('click', (e) => {
-    const card = e.target.closest('.kpi-card, .metric-card');
+    const card = e.target.closest('.kpi-card, .metric-card, .pf-detail-card');
     if (card && !card.closest('.data-modal')) {
       openDataModal(card);
       return;
@@ -2865,8 +3402,8 @@ function initPeopleDots() {
   if (!container) return;
   _peopleDotsInit = true;
   while (container.firstChild) container.removeChild(container.firstChild);
-  const female = getComputedStyle(document.documentElement).getPropertyValue('--cg-esg-social').trim() || '#7C4DDB';
-  const male   = getComputedStyle(document.documentElement).getPropertyValue('--cg-esg-governance').trim() || '#9E8FD4';
+  const female = getComputedStyle(document.documentElement).getPropertyValue('--cg-esg-social').trim() || '#0E99D8';
+  const male   = getComputedStyle(document.documentElement).getPropertyValue('--cg-esg-governance').trim() || '#FB7622';
   const colors = [...Array(28).fill(female), ...Array(29).fill(male)];
   colors.forEach((c, i) => {
     const dot = document.createElement('div');
@@ -2912,6 +3449,105 @@ window.addEventListener('load', () => {
     if (heroEl) heroEl.classList.add('revealed');
   });
 });
+
+// ── HERO STATS · all dim by default, highlight only on hover (touch-driven) ─────
+(function initHeroStatsRow() {
+  const row = document.getElementById('hero-stats-row');
+  if (!row) return;
+  const cells = Array.from(row.querySelectorAll('.hero-stat-cell'));
+  if (!cells.length) return;
+  // Remove the initial .active (so nothing is highlighted by default)
+  cells.forEach(c => c.classList.remove('active'));
+})();
+
+// ── GLOSSARY · auto-tooltip any element with [data-gloss] ──────────────────────
+// Terms + definitions sourced from the PDF footnotes.
+const GLOSSARY = {
+  'KPI': 'KPI — Key Performance Indicator: indicador-chave de desempenho usado para medir o progresso face a objetivos estratégicos.',
+  'CSDDD': 'CSDDD — Corporate Sustainability Due Diligence Directive: diretiva europeia (UE 2024/1760) sobre o dever de diligência das empresas em matéria de sustentabilidade na sua cadeia de valor.',
+  'CSRD': 'CSRD — Corporate Sustainability Reporting Directive: regulamentação europeia (UE 2022/2464) que obriga as grandes empresas e empresas cotadas a publicar relatórios de sustentabilidade.',
+  'ESG': 'ESG — Environmental, Social and Governance: critérios para avaliar a sustentabilidade e práticas éticas de uma empresa em relação ao ambiente, sociedade e governança.',
+  'VSME': 'VSME — Voluntary Sustainability Reporting Standard for non-listed SMEs: normativo europeu de reporte de sustentabilidade voluntário, desenvolvido para pequenas e médias empresas não cotadas.',
+  'GFA': 'GFA — Gross Floor Area: área bruta de construção, unidade-padrão para dimensionamento de ativos imobiliários.',
+  'LEED': 'LEED — Leadership in Energy and Environmental Design: sistema internacional de certificação de edifícios sustentáveis, gerido pelo US Green Building Council.',
+  'OPR': 'OPR — Owner’s Project Requirements: documento que define os requisitos do proprietário para um projeto, base para o commissioning e certificações ambientais.',
+  'BTR': 'BTR — Build-to-Rent: modelo de promoção imobiliária em que os ativos são construídos especificamente para arrendamento de longo prazo.',
+  'BTS': 'BTS — Build-to-Sell: modelo de promoção em que os ativos são desenvolvidos para venda.',
+  'SIC': 'SIC — Sociedade de Investimento Coletivo: veículo regulado de gestão de investimentos coletivos em ativos imobiliários.',
+  'FII': 'FII — Fundo de Investimento Imobiliário: fundo regulado para investimento coletivo em ativos imobiliários.',
+  'SGOIC': 'SGOIC — Sociedade Gestora de Organismos de Investimento Coletivo: entidade regulada pela CMVM autorizada a gerir fundos.',
+  'CMVM': 'CMVM — Comissão do Mercado de Valores Mobiliários: autoridade portuguesa de supervisão dos mercados financeiros.',
+  'EBITDA': 'EBITDA — Earnings Before Interest, Taxes, Depreciation and Amortization: lucro antes de juros, impostos, depreciação e amortização.',
+  'Scope 1': 'Scope 1 — Emissões diretas de GEE provenientes de fontes detidas ou controladas pela empresa (combustíveis em obra, frota própria, etc.).',
+  'Scope 2': 'Scope 2 — Emissões indiretas de GEE associadas ao consumo de eletricidade, calor ou vapor adquiridos.',
+  'Scope 3': 'Scope 3 — Outras emissões indiretas de GEE ao longo da cadeia de valor (compras, transportes, resíduos, uso pelos clientes, etc.).',
+  'DAP': 'DAP — Declaração Ambiental de Produto: documento que quantifica o impacto ambiental incorporado num material de construção (Análise de Ciclo de Vida).',
+  'ACV': 'ACV — Análise do Ciclo de Vida: metodologia para avaliar o impacto ambiental de um produto, edifício ou serviço ao longo de toda a sua vida útil.'
+};
+function applyGlossary() {
+  document.querySelectorAll('[data-gloss]').forEach(el => {
+    if (el.dataset.glossBound) return;
+    const key = el.getAttribute('data-gloss');
+    const def = GLOSSARY[key];
+    if (!def) return;
+    el.classList.add('gloss');
+    el.setAttribute('data-def', def);
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', def);
+    el.dataset.glossBound = '1';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.gloss--open').forEach(o => { if (o !== el) o.classList.remove('gloss--open'); });
+      el.classList.toggle('gloss--open');
+    });
+  });
+}
+applyGlossary();
+document.addEventListener('click', () => {
+  document.querySelectorAll('.gloss--open').forEach(o => o.classList.remove('gloss--open'));
+});
+
+// ── ARTE LIGHTBOX · click any art photo to view it full-screen ────────────────
+(function initArteLightbox() {
+  const box = document.getElementById('arte-lightbox');
+  const img = document.getElementById('arte-lightbox-img');
+  const author = document.getElementById('arte-lightbox-author');
+  const meta = document.getElementById('arte-lightbox-meta');
+  const close = document.getElementById('arte-lightbox-close');
+  if (!box || !img) return;
+  function open(card) {
+    const cardImg = card.querySelector('img');
+    if (!cardImg) return;
+    img.src = cardImg.src;
+    img.alt = cardImg.alt || '';
+    const a = card.querySelector('.arte-card-author');
+    const t = card.querySelector('.arte-card-title');
+    const m = card.querySelector('.arte-card-meta');
+    let authorText = '';
+    if (a) authorText += a.textContent.trim();
+    if (t) authorText += (authorText ? ' · ' : '') + t.textContent.trim();
+    author.textContent = authorText;
+    meta.textContent = m ? m.textContent.trim() : '';
+    box.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function shut() {
+    box.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.arte-card').forEach(card => {
+    card.addEventListener('click', () => open(card));
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); }
+    });
+  });
+  close.addEventListener('click', shut);
+  box.addEventListener('click', (e) => { if (e.target === box) shut(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && box.classList.contains('is-open')) shut(); });
+})();
 
 // ── CUSTOM CURSOR (Castro-orange ball) ────────────────────────────────────
 (function initCursor() {

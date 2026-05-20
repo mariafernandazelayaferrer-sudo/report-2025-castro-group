@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Castro Group — Portfólio Completo · RS 2025</title>
 <meta name="description" content="Portfólio completo Castro Group: 19 ativos + 4 landbank distribuídos por 8 cidades.">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -25,7 +26,10 @@
   --cg-border:   #C7C4BA;
   --cg-border-soft: rgba(46, 71, 145, 0.18);
   --cg-dark-ink: #14182A;
+  --cg-orange-deep: #E36410;
   --cg-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --cg-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --cg-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html { scroll-behavior: smooth; }
@@ -54,13 +58,22 @@ nav {
   color: var(--cg-ink); opacity: 0.7;
 }
 .nav-back {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase; text-decoration: none;
   color: var(--cg-navy);
-  transition: gap 0.2s var(--cg-ease);
+  padding: 8px 18px;
+  background: rgba(46, 71, 145, 0.08);
+  border: 1px solid var(--cg-border-soft);
+  border-radius: 999px;
+  transition: gap 0.2s var(--cg-ease), background 0.2s var(--cg-ease), border-color 0.2s var(--cg-ease);
 }
-.nav-back:hover { gap: 14px; }
+.nav-back:hover {
+  gap: 14px;
+  background: var(--cg-navy);
+  color: #fff;
+  border-color: var(--cg-navy);
+}
 .nav-back .arrow { font-size: 16px; line-height: 1; }
 
 /* HEADER */
@@ -169,10 +182,27 @@ nav {
 .proj-cert-badge {
   position: absolute;
   bottom: 10px; right: 10px;
-  height: 32px; width: auto;
+  height: 48px; width: auto;
   z-index: 3;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.12));
 }
+.proj-cert-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 6px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--cg-green);
+  text-decoration: none;
+  align-self: flex-start;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.2s var(--cg-ease), gap 0.2s var(--cg-ease);
+}
+.proj-cert-link:hover {
+  border-bottom-color: var(--cg-green);
+  gap: 10px;
+}
+.proj-cert-link .arrow { font-size: 12px; line-height: 1; }
 .proj-card { position: relative; }
 .proj-media-placeholder {
   width: 100%; height: 100%;
@@ -234,6 +264,204 @@ nav {
 .cat-band.landbank .proj-name  { color: #fff; }
 .cat-band.landbank .proj-loc   { color: rgba(255,255,255,0.55); }
 
+/* MAP — Portugal continental · aviation-chart style, WGS84 coords */
+.pf-map-section {
+  padding: 96px 80px 80px;
+  background: var(--cg-bone);
+  border-bottom: 1px solid var(--cg-border);
+}
+.pf-map-inner { max-width: 1240px; margin: 0 auto; }
+.pf-map-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--cg-orange);
+  margin-bottom: 14px;
+}
+.pf-map-section h2 {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 300; line-height: 1.05; letter-spacing: -0.02em;
+  color: var(--cg-ink); margin-bottom: 12px;
+}
+.pf-map-section h2 strong { font-weight: 700; }
+.pf-map-section .pf-map-sub {
+  font-size: 13px; color: var(--cg-mid); margin-bottom: 48px;
+  max-width: 520px; line-height: 1.65;
+}
+.pf-mapwrap {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: stretch;
+}
+.pf-map {
+  position: relative;
+  aspect-ratio: 5 / 7;
+  background: var(--cg-putty);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  padding: clamp(18px, 2.6vh, 36px);
+  max-width: 580px;
+  width: 100%;
+  box-shadow: 0 1px 0 rgba(26,31,46,0.04), 0 32px 68px -32px rgba(26,31,46,0.22);
+  overflow: hidden;
+}
+.pf-map::before, .pf-map::after,
+.pf-map .pf-map__br-tr, .pf-map .pf-map__br-bl {
+  content: ""; position: absolute; width: 14px; height: 14px;
+  border: 1px solid var(--cg-orange); pointer-events: none; z-index: 2;
+}
+.pf-map::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.pf-map::after  { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+.pf-map .pf-map__br-tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.pf-map .pf-map__br-bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.pf-map svg { width: 100%; height: 100%; display: block; position: relative; z-index: 1; }
+.pf-map__label {
+  position: absolute; top: 14px; left: 30px; z-index: 3;
+  font-family: var(--cg-font-mono);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cg-orange); pointer-events: none;
+}
+.pf-map__label .sub {
+  display: block; color: var(--cg-mid); font-weight: 400;
+  font-size: 8px; margin-top: 2px; letter-spacing: 0.14em;
+}
+.pf-map__hint {
+  position: absolute; left: 18px; bottom: 14px;
+  font-family: var(--cg-font-mono); font-size: 8px;
+  color: var(--cg-mid); letter-spacing: 0.18em;
+  text-transform: uppercase; z-index: 3;
+}
+#portugal-svg .grid line {
+  stroke: rgba(26,31,46,0.07); stroke-width: 0.35;
+}
+#portugal-svg .grid line.major {
+  stroke: rgba(26,31,46,0.16); stroke-width: 0.5; stroke-dasharray: 1 3;
+}
+#portugal-svg .grid text {
+  fill: var(--cg-mid); font-family: var(--cg-font-mono);
+  font-size: 5px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+#portugal-svg .country {
+  fill: rgba(251,118,34,0.06);
+  stroke: var(--cg-orange); stroke-width: 0.8;
+  stroke-linejoin: round; stroke-linecap: round;
+  stroke-dasharray: var(--draw-len, 2000);
+  stroke-dashoffset: var(--draw-len, 2000);
+}
+.pf-map.is-in #portugal-svg .country {
+  animation: pfAtlasDraw 2200ms cubic-bezier(0.65,0,0.2,1) 200ms forwards;
+}
+@keyframes pfAtlasDraw { to { stroke-dashoffset: 0; } }
+
+#portugal-svg .pf-city {
+  cursor: pointer; opacity: 0;
+  transform-origin: center; transform-box: fill-box;
+}
+.pf-map.is-in #portugal-svg .pf-city {
+  opacity: 1; animation: pfCityIn 700ms var(--cg-ease-spring) forwards;
+}
+@keyframes pfCityIn { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+#portugal-svg .pf-city .ring {
+  fill: none; stroke: var(--cg-orange); stroke-width: 0.7;
+  opacity: 0.55; transition: opacity 0.25s, stroke-width 0.25s;
+}
+#portugal-svg .pf-city .pip {
+  fill: var(--cg-orange);
+  transition: r 0.35s var(--cg-ease-spring), fill 0.25s;
+}
+#portugal-svg .pf-city.is-multi .ring { opacity: 0.85; stroke-width: 1; }
+#portugal-svg .pf-city:hover .ring,
+#portugal-svg .pf-city:focus .ring { opacity: 1; stroke-width: 1.4; }
+#portugal-svg .pf-city:hover .pip,
+#portugal-svg .pf-city:focus .pip { fill: var(--cg-orange-deep); }
+#portugal-svg .pf-city text {
+  fill: var(--cg-ink); font-family: var(--cg-font-mono);
+  font-size: 5.2px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  pointer-events: none;
+  paint-order: stroke fill; stroke: var(--cg-putty);
+  stroke-width: 2px; stroke-linejoin: round;
+}
+#portugal-svg .pf-city .count {
+  fill: var(--cg-orange); font-size: 4.5px; font-weight: 600;
+}
+
+.pf-map__side {
+  display: grid; gap: 16px; align-content: center;
+}
+.pf-map__side-row {
+  background: #fff; border: 1px solid var(--cg-border);
+  padding: 24px 26px; border-radius: 2px;
+  display: grid; grid-template-columns: auto 1fr; gap: 18px;
+  align-items: baseline;
+  transition: border-color 0.2s var(--cg-ease), transform 0.2s var(--cg-ease);
+  cursor: pointer;
+}
+.pf-map__side-row:hover {
+  border-color: var(--cg-orange);
+  transform: translateX(4px);
+}
+.pf-map__side-row .city-name {
+  font-size: 16px; font-weight: 600; color: var(--cg-ink);
+  letter-spacing: -0.005em;
+}
+.pf-map__side-row .city-meta {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cg-mid); margin-top: 4px;
+}
+.pf-map__side-row .city-count {
+  font-family: var(--cg-font-mono);
+  font-size: 28px; font-weight: 500;
+  color: var(--cg-orange); line-height: 1;
+  min-width: 44px; text-align: right;
+}
+.pf-map__side-row.active {
+  border-color: var(--cg-orange);
+  background: rgba(251,118,34,0.04);
+}
+
+/* STICKY CATEGORY PILLS */
+.pf-jump {
+  position: sticky; top: 60px; z-index: 50;
+  background: rgba(216, 213, 204, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--cg-border);
+  padding: 14px 80px;
+}
+.pf-jump-inner {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.pf-jump a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cg-ink); text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--cg-border);
+  border-radius: 999px;
+  transition: all 0.2s var(--cg-ease);
+}
+.pf-jump a .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  display: inline-block;
+}
+.pf-jump a.op .dot   { background: var(--cg-green); }
+.pf-jump a.con .dot  { background: var(--cg-orange); }
+.pf-jump a.dev .dot  { background: var(--cg-cyan); }
+.pf-jump a.land .dot { background: var(--cg-rust); }
+.pf-jump a:hover {
+  background: #fff;
+  border-color: var(--cg-ink);
+  transform: translateY(-1px);
+}
+.pf-jump a .count {
+  font-family: var(--cg-font-mono);
+  font-size: 9px; opacity: 0.55;
+  font-weight: 500; letter-spacing: 0.08em;
+}
+
 /* FOOTER */
 footer {
   background: var(--cg-dark-ink);
@@ -259,6 +487,10 @@ footer a:hover { text-decoration: underline; }
   .pf-summary { grid-template-columns: repeat(2, 1fr); }
   .pf-summary-item:nth-child(2) { border-right: none; }
   .pf-summary-item:nth-child(odd) { border-right: 1px solid var(--cg-border); }
+  .pf-map-section { padding: 72px 32px 64px; }
+  .pf-mapwrap { grid-template-columns: 1fr; gap: 40px; }
+  .pf-map { max-width: 480px; justify-self: center; }
+  .pf-jump { padding: 12px 32px; }
   .cat-band { padding: 64px 32px 48px; }
   .proj-grid { grid-template-columns: repeat(2, 1fr); }
   footer { padding: 48px 32px 32px; }
@@ -270,6 +502,12 @@ footer a:hover { text-decoration: underline; }
   .pf-summary { grid-template-columns: 1fr; }
   .pf-summary-item { border-right: none; border-bottom: 1px solid var(--cg-border); }
   .pf-summary-item:last-child { border-bottom: none; }
+  .pf-map-section { padding: 48px 20px 40px; }
+  .pf-map-section h2 { font-size: 28px; }
+  .pf-map { max-width: 100%; padding: 14px; }
+  .pf-map__side-row { padding: 18px 18px; }
+  .pf-jump { padding: 10px 16px; top: 56px; }
+  .pf-jump a { padding: 6px 10px; font-size: 9px; }
   .cat-band { padding: 48px 20px 36px; }
   .proj-grid { grid-template-columns: 1fr; gap: 16px; }
   .proj-attrs li { grid-template-columns: 80px 1fr; gap: 8px; }
@@ -285,7 +523,7 @@ footer a:hover { text-decoration: underline; }
     <div class="nav-sep"></div>
     <span class="nav-wordmark" data-pt="Portfólio · RS 2025" data-en="Portfolio · SR 2025">Portfólio · RS 2025</span>
   </div>
-  <a href="index-v2.html" class="nav-back">
+  <a href="index.html" class="nav-back">
     <span class="arrow">←</span>
     <span data-pt="Voltar ao relatório" data-en="Back to report">Voltar ao relatório</span>
   </a>
@@ -324,6 +562,39 @@ footer a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- MAP — Portugal continental, dot density per city -->
+<section class="pf-map-section" aria-label="Distribuição geográfica do portfólio">
+  <div class="pf-map-inner">
+    <p class="pf-map-eyebrow" data-pt="Onde estamos · 8 cidades" data-en="Where we are · 8 cities">Onde estamos · 8 cidades</p>
+    <h2 data-pt="Portugal <strong>continental</strong>" data-en="Mainland <strong>Portugal</strong>">Portugal <strong>continental</strong></h2>
+    <p class="pf-map-sub" data-pt="23 ativos · 8 cidades · do Minho ao Algarve. O cluster maior está em Matosinhos (sede e Fuse Valley)." data-en="23 assets · 8 cities · from Minho to Algarve. The largest cluster is in Matosinhos (HQ and Fuse Valley).">23 ativos · 8 cidades · do Minho ao Algarve. O cluster maior está em Matosinhos (sede e Fuse Valley).</p>
+
+    <div class="pf-mapwrap">
+      <div class="pf-map" id="pf-map">
+        <span class="pf-map__br-tr" aria-hidden="true"></span>
+        <span class="pf-map__br-bl" aria-hidden="true"></span>
+        <span class="pf-map__label">PORTUGAL CONTINENTAL<span class="sub">36.9°N — 42.2°N · 9.5°W — 6.2°W</span></span>
+        <span class="pf-map__hint" data-pt="WGS84 · click numa cidade" data-en="WGS84 · click a city">WGS84 · click numa cidade</span>
+        <svg id="portugal-svg" viewBox="0 0 300 400" aria-label="Mapa de Portugal continental" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+      <aside class="pf-map__side" id="pf-map-side" aria-label="Cidades">
+        <!-- Filled by JS from the same ASSETS source as the map -->
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY CATEGORY NAV -->
+<nav class="pf-jump" aria-label="Navegação por categoria">
+  <div class="pf-jump-inner">
+    <a href="#operacao" class="op"><span class="dot"></span><span data-pt="Operação" data-en="Operation">Operação</span><span class="count">· 10</span></a>
+    <a href="#construcao" class="con"><span class="dot"></span><span data-pt="Construção" data-en="Construction">Construção</span><span class="count">· 4</span></a>
+    <a href="#desenvolvimento" class="dev"><span class="dot"></span><span data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</span><span class="count">· 5</span></a>
+    <a href="#landbank" class="land"><span class="dot"></span>Landbank<span class="count">· 4</span></a>
+  </div>
+</nav>
+
 <!-- OPERAÇÃO -->
 <section class="cat-band operation" id="operacao">
   <div class="cat-band-inner">
@@ -346,6 +617,10 @@ footer a:hover { text-decoration: underline; }
             <li><span class="key" data-pt="Gestão" data-en="Management">Gestão</span><span>CG</span></li>
           </ul>
           <span class="proj-badge cert-emit" data-pt="LEED Gold emitido" data-en="LEED Gold issued">LEED Gold emitido</span>
+          <a href="https://www.usgbc.org/projects/la-movida" target="_blank" rel="noopener" class="proj-cert-link" data-pt="Ver no USGBC" data-en="View on USGBC">
+            <span data-pt="Ver no USGBC" data-en="View on USGBC">Ver no USGBC</span>
+            <span class="arrow">↗</span>
+          </a>
           <img class="proj-cert-badge" src="uploads/leed/LEED_Gold-2026.svg" alt="LEED Gold" loading="lazy">
         </div>
       </article>
@@ -421,7 +696,7 @@ footer a:hover { text-decoration: underline; }
       </article>
 
       <article class="proj-card">
-        <div class="proj-media"><img src="uploads/projects/ALDI.jpg" alt="ALDI" loading="lazy" style="object-position:center 80%;"></div>
+        <div class="proj-media"><img src="uploads/projects/ALDI.jpg" alt="ALDI" loading="lazy" style="object-position:center 25%;"></div>
         <div class="proj-body">
           <div class="proj-name">ALDI</div>
           <div class="proj-loc">Matosinhos, Porto</div>
@@ -600,7 +875,7 @@ footer a:hover { text-decoration: underline; }
       <article class="proj-card">
         <div class="proj-media"><div class="proj-media-placeholder" aria-hidden="true"></div></div>
         <div class="proj-body">
-          <div class="proj-name">Lote 51 — Fuse Valley</div>
+          <div class="proj-name">Lote 81 — Fuse Valley</div>
           <div class="proj-loc">Matosinhos, Porto</div>
           <ul class="proj-attrs">
             <li><span class="key">GFA</span><span>8.000 m²</span></li>
@@ -686,7 +961,7 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   <p data-pt="Castro Group · Relatório de Sustentabilidade 2025 · Portfólio completo" data-en="Castro Group · Sustainability Report 2025 · Full portfolio">Castro Group · Relatório de Sustentabilidade 2025 · Portfólio completo</p>
-  <p><a href="index-v2.html" data-pt="← Voltar ao relatório" data-en="← Back to report">← Voltar ao relatório</a></p>
+  <p><a href="index.html" data-pt="← Voltar ao relatório" data-en="← Back to report">← Voltar ao relatório</a></p>
 </footer>
 
 <script>
@@ -753,6 +1028,253 @@ const cntIO = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.2 });
 document.querySelectorAll('.pf-summary').forEach(el => cntIO.observe(el));
+
+// ============ PORTUGAL MAP — aviation-chart style, WGS84 ============
+// Single source of truth for the map: 23 assets across 8 cities.
+// City names match the canonical CITIES dict below (WGS84 coordinates).
+const PF_ASSETS = [
+  // Operação (10)
+  { name: 'La Movida',              city: 'Matosinhos',          status: 'operacao' },
+  { name: 'SPARK 2',                city: 'Matosinhos',          status: 'operacao' },
+  { name: 'Palacete 31 de Janeiro', city: 'Braga',               status: 'operacao' },
+  { name: 'Villa Chloé',            city: 'Loulé',               status: 'operacao' },
+  { name: 'Moradia Fão',            city: 'Esposende',           status: 'operacao' },
+  { name: 'Immune',                 city: 'Braga',               status: 'operacao' },
+  { name: 'ALDI',                   city: 'Matosinhos',          status: 'operacao' },
+  { name: 'Polo Negócios',          city: 'Braga',               status: 'operacao' },
+  { name: 'Mercado da Pedra',       city: 'Braga',               status: 'operacao' },
+  { name: 'VivaGym',                city: 'Braga',               status: 'operacao' },
+  // Construção (4)
+  { name: 'SPARK',                  city: 'Matosinhos',          status: 'construcao' },
+  { name: 'The Breeze',             city: 'Vila Nova de Gaia',   status: 'construcao' },
+  { name: 'Valpark',                city: 'Valongo',             status: 'construcao' },
+  { name: 'Villa Bloom',            city: 'Loulé',               status: 'construcao' },
+  // Desenvolvimento (5)
+  { name: 'Fuse Valley',            city: 'Matosinhos',          status: 'desenvolvimento' },
+  { name: 'Bloom Living',           city: 'Maia',                status: 'desenvolvimento' },
+  { name: 'EXO 60',                 city: 'Vila Nova de Gaia',   status: 'desenvolvimento' },
+  { name: 'Lote 81 — Fuse Valley',  city: 'Matosinhos',          status: 'desenvolvimento' },
+  { name: 'Valongo',                city: 'Valongo',             status: 'desenvolvimento' },
+  // Landbank (4)
+  { name: 'Vila Franca de Xira',    city: 'Vila Franca de Xira', status: 'landbank' },
+  { name: 'Cortinha',               city: 'Matosinhos',          status: 'landbank' },
+  { name: 'Destaque Recarei',       city: 'Matosinhos',          status: 'landbank' },
+  { name: 'Casa do Rio',            city: 'Matosinhos',          status: 'landbank' }
+];
+
+(function buildPortugalMap() {
+  const host = document.getElementById('portugal-svg');
+  const sideEl = document.getElementById('pf-map-side');
+  const wrap = document.getElementById('pf-map');
+  if (!host) return;
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const sv = (tag, attrs) => {
+    const n = document.createElementNS(SVG_NS, tag);
+    if (attrs) for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+
+  // Viewbox + WGS84 projection (Portugal continental bbox)
+  const VB_W = 300, VB_H = 400;
+  const PAD_X = 30, PAD_Y = 12;
+  const LAT_N = 42.20, LAT_S = 36.90;
+  const LON_W = -9.55, LON_E = -6.18;
+  const innerW = VB_W - PAD_X * 2;
+  const innerH = VB_H - PAD_Y * 2;
+  const project = (lat, lon) => ({
+    x: PAD_X + (lon - LON_W) / (LON_E - LON_W) * innerW,
+    y: PAD_Y + (LAT_N - lat) / (LAT_N - LAT_S) * innerH
+  });
+
+  // Real WGS84 coords (N → S)
+  const CITIES = {
+    'Esposende':           { lat: 41.534, lon: -8.783, anchor: 'operacao' },
+    'Braga':               { lat: 41.545, lon: -8.426, anchor: 'operacao' },
+    'Maia':                { lat: 41.235, lon: -8.621, anchor: 'desenvolvimento' },
+    'Matosinhos':          { lat: 41.183, lon: -8.691, anchor: 'operacao' },
+    'Valongo':             { lat: 41.187, lon: -8.500, anchor: 'construcao' },
+    'Vila Nova de Gaia':   { lat: 41.124, lon: -8.611, anchor: 'construcao' },
+    'Vila Franca de Xira': { lat: 38.954, lon: -8.991, anchor: 'landbank' },
+    'Loulé':               { lat: 37.135, lon: -8.022, anchor: 'construcao' }
+  };
+
+  // Hand-traced silhouette of Portugal continental
+  const SILHOUETTE = [
+    [41.87,-8.87],[41.85,-8.86],[41.82,-8.86],
+    [41.69,-8.83],[41.54,-8.79],[41.40,-8.78],[41.36,-8.78],[41.32,-8.77],
+    [41.25,-8.74],[41.15,-8.68],[41.13,-8.67],[41.06,-8.66],[40.96,-8.65],
+    [40.76,-8.69],[40.65,-8.73],[40.50,-8.78],[40.40,-8.80],[40.32,-8.81],
+    [40.19,-8.83],[40.10,-8.85],[40.01,-8.87],[39.85,-8.95],[39.74,-9.02],
+    [39.62,-9.10],[39.51,-9.18],[39.42,-9.25],[39.36,-9.32],[39.30,-9.42],
+    [39.10,-9.42],[39.00,-9.43],[38.95,-9.42],[38.88,-9.40],[38.78,-9.43],[38.78,-9.50],[38.68,-9.43],
+    [38.69,-9.30],[38.70,-9.16],[38.70,-9.00],[38.66,-8.90],
+    [38.51,-8.95],[38.42,-9.00],[38.40,-8.86],[38.40,-8.80],[38.30,-8.83],
+    [38.05,-8.78],[37.95,-8.80],[37.80,-8.82],[37.65,-8.81],[37.45,-8.83],[37.30,-8.85],
+    [37.20,-8.85],[37.10,-8.85],
+    [37.04,-8.95],[37.00,-8.99],[36.97,-8.95],[36.97,-8.75],
+    [37.02,-8.55],[37.05,-8.40],[37.07,-8.20],[37.08,-8.10],[37.05,-7.95],[37.05,-7.85],
+    [37.08,-7.62],[37.10,-7.55],[37.18,-7.40],[37.19,-7.40],
+    [37.20,-7.40],[37.25,-7.40],[37.40,-7.36],
+    [37.65,-7.42],[37.90,-7.42],[38.05,-7.35],[38.18,-7.32],[38.30,-7.25],[38.40,-7.20],
+    [38.50,-7.00],[38.60,-6.95],[38.70,-7.00],[38.85,-6.97],[38.90,-6.95],[39.05,-7.00],
+    [39.15,-7.05],[39.25,-7.20],[39.35,-7.30],[39.45,-7.34],[39.55,-7.36],[39.68,-7.40],
+    [39.78,-7.42],[39.88,-7.36],[39.95,-7.30],[40.05,-7.15],[40.10,-7.05],[40.18,-6.95],
+    [40.25,-6.92],[40.35,-6.92],[40.45,-6.85],[40.50,-6.80],[40.65,-6.80],[40.75,-6.80],
+    [40.95,-6.85],[41.07,-6.85],[41.18,-6.78],[41.25,-6.74],[41.35,-6.62],[41.40,-6.55],
+    [41.55,-6.55],[41.65,-6.70],[41.78,-6.78],[41.85,-6.85],[41.90,-6.97],[41.95,-7.10],
+    [42.05,-7.28],[42.10,-7.40],[42.15,-7.45],[42.13,-7.55],[42.10,-7.62],[42.05,-7.75],
+    [41.98,-7.90],[41.95,-8.00],[41.95,-8.10],[41.97,-8.22],[41.99,-8.35],[41.97,-8.50],
+    [41.95,-8.62],[41.92,-8.72],[41.88,-8.80],
+    [41.87,-8.87]
+  ];
+
+  // Per-city label placement (resolves dense Porto-area cluster)
+  const LABELS = {
+    'Esposende':           { dx: -7, dy:  0, anchor: 'end',    leader: false },
+    'Braga':               { dx:  7, dy:  1.6, anchor: 'start',leader: false },
+    'Maia':                { dx:  9, dy: -4, anchor: 'start',  leader: true },
+    'Matosinhos':          { dx: -8, dy:  2, anchor: 'end',    leader: true },
+    'Valongo':             { dx:  8, dy:  6, anchor: 'start',  leader: true },
+    'Vila Nova de Gaia':   { dx:  8, dy: 10, anchor: 'start',  leader: true },
+    'Vila Franca de Xira': { dx: -7, dy: -2, anchor: 'end',    leader: true },
+    'Loulé':               { dx:  0, dy: -6, anchor: 'middle', leader: false }
+  };
+
+  // Grid (lat/long)
+  const grid = sv('g', { class: 'grid' });
+  for (let lon = -9; lon <= -6; lon += 0.5) {
+    const major = Number.isInteger(lon);
+    const p1 = project(LAT_N + 0.05, lon);
+    const p2 = project(LAT_S - 0.10, lon);
+    const ln = sv('line', { x1: p1.x.toFixed(2), y1: p1.y.toFixed(2), x2: p2.x.toFixed(2), y2: p2.y.toFixed(2) });
+    if (major) ln.setAttribute('class', 'major');
+    grid.appendChild(ln);
+    if (major) {
+      const t = sv('text', { x: p1.x.toFixed(2), y: (PAD_Y - 4).toFixed(2), 'text-anchor': 'middle' });
+      t.textContent = (-lon).toFixed(0) + '°W';
+      grid.appendChild(t);
+    }
+  }
+  for (let lat = 37; lat <= 42; lat += 0.5) {
+    const major = Number.isInteger(lat);
+    const p1 = project(lat, LON_W - 0.05);
+    const p2 = project(lat, LON_E + 0.10);
+    const ln = sv('line', { x1: p1.x.toFixed(2), y1: p1.y.toFixed(2), x2: p2.x.toFixed(2), y2: p2.y.toFixed(2) });
+    if (major) ln.setAttribute('class', 'major');
+    grid.appendChild(ln);
+    if (major) {
+      const t = sv('text', { x: (PAD_X - 6).toFixed(2), y: (p1.y + 1.8).toFixed(2), 'text-anchor': 'end' });
+      t.textContent = lat.toFixed(0) + '°N';
+      grid.appendChild(t);
+    }
+  }
+  host.appendChild(grid);
+
+  // Silhouette
+  const d = SILHOUETTE.map((pt, i) => {
+    const p = project(pt[0], pt[1]);
+    return (i === 0 ? 'M' : 'L') + p.x.toFixed(2) + ' ' + p.y.toFixed(2);
+  }).join(' ') + ' Z';
+  const path = sv('path', { d: d, class: 'country' });
+  host.appendChild(path);
+  requestAnimationFrame(() => {
+    try {
+      const len = path.getTotalLength();
+      path.style.setProperty('--draw-len', len.toFixed(1));
+    } catch (e) {}
+  });
+
+  // Group assets by city
+  const byCity = {};
+  PF_ASSETS.forEach(a => { (byCity[a.city] = byCity[a.city] || []).push(a); });
+
+  // City pins
+  const cityNames = Object.keys(CITIES);
+  cityNames.forEach((cityName, i) => {
+    const c = CITIES[cityName];
+    const p = project(c.lat, c.lon);
+    const count = (byCity[cityName] || []).length;
+    const L = LABELS[cityName] || { dx: 5, dy: 1.6, anchor: 'start' };
+
+    const g = sv('g', { class: 'pf-city' + (count > 1 ? ' is-multi' : ''), 'data-city': cityName, tabindex: '0' });
+    g.style.animationDelay = (i * 80) + 'ms';
+    g.appendChild(sv('circle', { class: 'ring', cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: (3 + Math.sqrt(Math.max(1, count)) * 1.6).toFixed(2) }));
+    g.appendChild(sv('circle', { class: 'pip',  cx: p.x.toFixed(2), cy: p.y.toFixed(2), r: (1.2 + Math.sqrt(Math.max(1, count)) * 0.6).toFixed(2) }));
+
+    if (L.leader) {
+      const lx = p.x + L.dx;
+      const ly = p.y + L.dy;
+      const lead = sv('line', {
+        x1: p.x.toFixed(2), y1: p.y.toFixed(2),
+        x2: lx.toFixed(2),  y2: ly.toFixed(2),
+        stroke: '#FB7622', 'stroke-width': '.4', opacity: '.55'
+      });
+      g.appendChild(lead);
+    }
+
+    const t = sv('text', { x: (p.x + L.dx).toFixed(2), y: (p.y + L.dy).toFixed(2), 'text-anchor': L.anchor });
+    t.textContent = cityName.toUpperCase();
+    g.appendChild(t);
+    if (count > 0) {
+      const cT = sv('text', { class: 'count', x: (p.x + L.dx).toFixed(2), y: (p.y + L.dy - 6).toFixed(2), 'text-anchor': L.anchor });
+      cT.textContent = count + (count === 1 ? ' ativo' : ' ativos');
+      g.appendChild(cT);
+    }
+
+    const targetId = CITIES[cityName].anchor || 'operacao';
+    g.addEventListener('click', () => {
+      const target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    g.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
+    });
+    host.appendChild(g);
+  });
+
+  // Side list — built with safe DOM (no innerHTML)
+  if (sideEl) {
+    const sorted = cityNames
+      .map(name => ({ name: name, count: (byCity[name] || []).length, anchor: CITIES[name].anchor }))
+      .sort((a, b) => b.count - a.count);
+    sorted.forEach(row => {
+      const r = document.createElement('div');
+      r.className = 'pf-map__side-row';
+      r.dataset.city = row.name;
+      const countEl = document.createElement('div');
+      countEl.className = 'city-count';
+      countEl.textContent = String(row.count);
+      const meta = document.createElement('div');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'city-name';
+      nameEl.textContent = row.name;
+      const metaEl = document.createElement('div');
+      metaEl.className = 'city-meta';
+      metaEl.textContent = row.count === 1 ? '1 ativo' : (row.count + ' ativos');
+      meta.appendChild(nameEl);
+      meta.appendChild(metaEl);
+      r.appendChild(countEl);
+      r.appendChild(meta);
+      r.addEventListener('click', () => {
+        const target = document.getElementById(row.anchor || 'operacao');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      sideEl.appendChild(r);
+    });
+  }
+
+  if (wrap) {
+    const mapIO = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          wrap.classList.add('is-in');
+          mapIO.unobserve(wrap);
+        }
+      });
+    }, { threshold: 0.25 });
+    mapIO.observe(wrap);
+  }
+})();
 </script>
 </body>
 </html>
