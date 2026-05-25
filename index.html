@@ -5,9 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Castro Group — Relatório de Sustentabilidade 2025</title>
 <meta name="description" content="Relatório de Sustentabilidade 2025 do Castro Group. Estratégia ESG, plano de transição climática e portfólio certificado.">
-<meta property="og:title" content="Castro Group — Relatório de Sustentabilidade 2025">
-<meta property="og:description" content="Criar valor é a nossa estratégia. Criar impacto positivo é a nossa ambição.">
+<!-- Open Graph / social previews -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Castro Group">
+<meta property="og:title" content="Castro Group — Relatório de Sustentabilidade 2025">
+<meta property="og:description" content="A sua opinião conta · vote nas prioridades ESG 2030. Relatório interativo com 14 KPIs, plano de transição climática e painel de dupla materialidade externa.">
+<meta property="og:url" content="https://mariafernandazelayaferrer-sudo.github.io/report-2025-castro-group/">
+<meta property="og:image" content="https://mariafernandazelayaferrer-sudo.github.io/report-2025-castro-group/assets/og/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Castro Group · Relatório de Sustentabilidade 2025 · com o motivo Bolas Portada">
+<meta property="og:locale" content="pt_PT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Castro Group — Relatório de Sustentabilidade 2025">
+<meta name="twitter:description" content="A sua opinião conta · vote nas prioridades ESG 2030.">
+<meta name="twitter:image" content="https://mariafernandazelayaferrer-sudo.github.io/report-2025-castro-group/assets/og/og-image.png">
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,10 +43,14 @@
   --cg-green:    #33B67A;
   --cg-rust:     #CC512C;
 
-  /* NEUTRALS */
-  --cg-putty:    #D8D5CC;     /* body bg · medium-light grey */
-  --cg-putty-2:  #EFEDE6;     /* retired: alias to bone (was #CECDC9 "dirty") */
-  --cg-bone:     #EFEDE6;     /* lightest grey · buttons + alt sections */
+  /* NEUTRALS — single grey family across the whole document (María).
+     Three tiers only:
+       · putty  → page / nav background (single canonical grey)
+       · bone   → cards in rest (slightly lighter, so they stand out)
+       · bone-hover → cards on hover (lighter still) */
+  --cg-putty:    #D8D5CC;     /* page background — matches the nav */
+  --cg-putty-2:  #D8D5CC;     /* alias → putty (chapter bands) */
+  --cg-bone:     #E2DFD6;     /* card surface — 4 shades lighter than putty */
   --cg-ink:      #1A1F2E;
   --cg-mid:      #6B7280;
   --cg-border:   #C7C4BA;
@@ -53,7 +69,7 @@
   /* DERIVED STATES */
   --cg-text-body:    #3A3F4D;   /* body copy — softer than --cg-ink */
   --cg-orange-deep:  #E36410;   /* hover/pressed state for orange CTAs */
-  --cg-bone-hover:   #F4F1EA;   /* hover bg on bone cards */
+  --cg-bone-hover:   #ECEAE1;   /* lighter than bone — card hover state */
   --cg-border-mid:   #B0ADA4;   /* border on hover/focus over bone */
 
   /* TAGS */
@@ -113,32 +129,117 @@ nav.over-dark .nav-sep { background: rgba(255,255,255,0.2); }
 }
 
 .nav-right { display: flex; align-items: center; gap: 12px; }
+/* Year stamp retired per María — clean right side of the nav */
+.nav-year { display: none; }
+
+/* PDF + language buttons share the .nav-back pill proportions used in
+   projects.html (padding 8/18, fs 11, ls .18em, radius 999) — one
+   single button system across the report. */
 .nav-pdf {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 14px; border-radius: 18px;
+  padding: 8px 18px; border-radius: 999px;
   background: var(--cg-orange); color: #fff;
   text-decoration: none;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase;
+  border: 1px solid transparent;
   transition: background 0.2s var(--cg-ease), transform 0.2s var(--cg-ease);
 }
 .nav-pdf:hover { background: var(--cg-orange-deep); transform: translateY(-1px); }
 .nav-pdf svg { width: 12px; height: 12px; }
 nav.over-dark .nav-pdf { background: rgba(255,255,255,0.92); color: var(--cg-navy); }
-.nav-year { font-size: 10px; letter-spacing: 0.12em; opacity: 0.5; color: var(--cg-ink); }
+
 .lang-toggle {
-  display: flex; gap: 2px;
-  background: var(--cg-bone); border-radius: 20px; padding: 3px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px; border-radius: 999px;
+  background: rgba(46, 71, 145, 0.08);
+  border: 1px solid var(--cg-border-soft);
 }
-nav.over-dark .lang-toggle { background: rgba(255,255,255,0.12); }
+nav.over-dark .lang-toggle { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.15); }
 .lang-btn {
-  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 16px; border: none; cursor: pointer;
-  background: transparent; color: var(--cg-mid);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px; border: none; cursor: pointer;
+  background: transparent; color: var(--cg-navy);
   transition: all 0.2s;
+  line-height: 1.4;
 }
 .lang-btn.active { background: var(--cg-navy); color: #fff; }
+nav.over-dark .lang-btn { color: rgba(255,255,255,0.7); }
 nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
+
+/* Nav vote pill — mirrors the .nav-pdf rounded pill, accent green */
+.nav-vote {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 999px;
+  background: var(--cg-green); color: #fff;
+  text-decoration: none;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: background 0.2s var(--cg-ease), transform 0.2s var(--cg-ease);
+}
+.nav-vote:hover { background: #2A8E60; transform: translateY(-1px); }
+.nav-vote svg { width: 12px; height: 12px; }
+nav.over-dark .nav-vote { background: rgba(255,255,255,0.92); color: var(--cg-green); }
+
+/* Floating vote FAB · sits to the left of .back-to-top */
+.vote-fab {
+  position: fixed; right: 120px; bottom: 24px;
+  z-index: 300;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 999px;
+  background: var(--cg-green); color: #fff;
+  border: 1px solid rgba(255,255,255,0.10);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+  opacity: 0; transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease, gap 0.2s ease;
+}
+.vote-fab.visible { opacity: 0.96; transform: translateY(0); pointer-events: auto; }
+.vote-fab:hover { background: #2A8E60; gap: 12px; }
+.vote-fab svg { width: 12px; height: 12px; }
+@media (max-width: 640px) {
+  .vote-fab { right: 70px; bottom: 14px; padding: 8px 14px; font-size: 10px; }
+}
+
+/* Big CTA at the end of Compromissos */
+.vote-cta {
+  margin: 48px auto 0;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 36px 32px;
+  background: var(--cg-bone);
+  border: 1px dashed var(--cg-border-mid);
+  border-radius: 8px;
+  text-align: center;
+}
+.vote-cta-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--cg-mid);
+}
+.vote-cta h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 300; line-height: 1.2; letter-spacing: -0.01em;
+  color: var(--cg-ink); max-width: 620px;
+}
+.vote-cta h3 strong { font-weight: 700; }
+.vote-cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 26px; border-radius: 999px;
+  background: var(--cg-green); color: #fff;
+  text-decoration: none;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: gap 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
+}
+.vote-cta-btn:hover { gap: 14px; background: #2A8E60; }
+.vote-cta-btn svg { width: 14px; height: 14px; }
 
 /* ── HERO — RS26 cover ─────────────────────────────────────────────────── */
 #hero {
@@ -271,20 +372,21 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 
 /* ── ESG SHORTCUT STRIP (jumps to each pillar from the top) ────────────── */
 .esg-shortcut {
-  background: var(--cg-bone);
+  background: var(--cg-putty);     /* matches the header grey (María) */
   padding: 0;
   border-bottom: 1px solid var(--cg-border);
 }
 .esg-shortcut-inner {
   max-width: 1240px; margin: 0 auto;
   padding: 36px 80px 40px;
+  text-align: center;       /* centre eyebrow + title + pill row */
 }
 .esg-shortcut-eyebrow {
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--cg-mid);
   margin-bottom: 10px;
-  display: flex; align-items: center; gap: 12px;
+  display: inline-flex; align-items: center; gap: 12px;
 }
 .esg-shortcut-eyebrow::before { content:''; width: 28px; height: 1px; background: var(--cg-mid); }
 .esg-shortcut-title {
@@ -293,50 +395,53 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   margin-bottom: 22px;
 }
 .esg-shortcut-title strong { font-weight: 700; }
+/* Tiles → rounded coloured pills (Ambiental/Social/Governança), each tile
+   keeps its own pillar accent as its background (María).
+   Centred on the page so they align with the Peter Drucker quote orbit. */
 .esg-shortcut-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--cg-border);
-  border: 1px solid var(--cg-border);
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center;
+  background: transparent; border: 0;
 }
 .esg-shortcut-tile {
-  display: flex; flex-direction: column; gap: 6px;
-  background: #fff;
-  padding: 22px 22px 20px;
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 14px 22px;
+  border-radius: 999px;
   text-decoration: none;
-  color: var(--cg-ink);
+  color: #fff;
+  background: var(--accent, var(--cg-mid));
+  border: 1px solid transparent;
   position: relative;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, gap 0.2s ease;
 }
-.esg-shortcut-tile:hover { background: var(--cg-bone-hover); }
-.esg-shortcut-tile::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 4px; background: var(--accent, var(--cg-mid));
+.esg-shortcut-tile:hover {
+  transform: translateY(-1px);
+  gap: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
+.esg-shortcut-tile::before { content: none; }
 .esg-shortcut-tile.amb { --accent: var(--cg-green); }
 .esg-shortcut-tile.soc { --accent: var(--cg-esg-social); }
 .esg-shortcut-tile.gov { --accent: var(--cg-esg-governance); }
 .esg-shortcut-pilar {
   font-size: 9px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--cg-mid);
+  color: rgba(255,255,255,0.78);
 }
 .esg-shortcut-name {
-  font-size: 18px; font-weight: 600; color: var(--cg-ink);
-  line-height: 1.15;
+  font-size: 14px; font-weight: 700; color: #fff;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  line-height: 1;
 }
-.esg-shortcut-desc {
-  font-size: 11px; line-height: 1.5; color: var(--cg-mid);
-  margin-top: 2px;
-}
+/* Description hidden in pill mode — the pill name carries enough signal. */
+.esg-shortcut-desc { display: none; }
 .esg-shortcut-arrow {
-  position: absolute; top: 22px; right: 22px;
-  font-size: 14px; color: var(--accent, var(--cg-mid));
-  transition: transform 0.2s ease;
+  position: static;
+  font-size: 14px; color: #fff;
   font-weight: 700;
+  transition: transform 0.2s ease;
 }
-.esg-shortcut-tile:hover .esg-shortcut-arrow { transform: translate(3px, -3px); }
+.esg-shortcut-tile:hover .esg-shortcut-arrow { transform: translate(3px, 0); }
 @media (max-width: 1024px) {
   .esg-shortcut-inner { padding: 28px 32px 32px; padding-right: 80px; }
 }
@@ -355,10 +460,11 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 @media (max-width: 880px) { .section { padding: 56px 24px; } }
 .section-inner { max-width: 1240px; margin: 0 auto; }
-.section.bone { background: var(--cg-bone); }
-/* putty-2 (sucio) retired — now uses bone for cleaner light grey */
-.section.putty-2 { background: var(--cg-bone); }
-.section.navy { background: var(--cg-navy); color: #fff; }
+/* All non-accent sections share the header putty (María). Only .navy
+   keeps its dark surface for the Portfolio macro panel. */
+.section.bone    { background: var(--cg-putty); }
+.section.putty-2 { background: var(--cg-putty); }
+.section.navy    { background: var(--cg-navy); color: #fff; }
 .section.navy .eyebrow { color: rgba(255,255,255,0.85); }
 .section.navy .heading { color: #fff; }
 .section.navy .body { color: rgba(255,255,255,0.75); }
@@ -417,14 +523,20 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 /* ── KPI CARDS ─────────────────────────────────────────────────────────── */
 .kpi-row {
   display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1px; background: var(--cg-border);
-  border: 1px solid var(--cg-border);
+  gap: 1px; background: var(--cg-putty);
+  border: 0;
 }
 .kpi-card {
   background: var(--cg-bone); padding: 36px 28px;
-  cursor: pointer; transition: background 0.2s; position: relative;
+  cursor: pointer;
+  transition: background 0.25s var(--cg-ease), box-shadow 0.25s var(--cg-ease);
+  position: relative;
+  --cg-accent-rgb: 251, 118, 34;   /* default to orange — Castro Group chapter accent */
 }
-.kpi-card:hover { background: var(--cg-bone-hover); }
+.kpi-card:hover {
+  background: rgba(var(--cg-accent-rgb), 0.07);
+  box-shadow: inset 0 0 0 2px rgba(var(--cg-accent-rgb), 0.95);
+}
 .kpi-stripe {
   position: absolute; left: 0; top: 36px;
   width: 3px; height: 28px;
@@ -457,9 +569,21 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   border-color: rgba(255,255,255,0.22);
 }
 .metric-card.light {
-  border: 1px solid var(--cg-border); background: var(--cg-bone);
+  border: 1px solid var(--cg-border);
+  background: var(--cg-bone);
+  transition: background 0.25s var(--cg-ease), box-shadow 0.25s var(--cg-ease);
 }
-.metric-card.light:hover { background: var(--cg-bone-hover); border-color: var(--cg-border-mid); }
+/* Per-pillar accent (RGB triplet so the rule below can mix with alpha) */
+.metric-card.light             { --cg-accent-rgb: 107, 114, 128; }   /* default mid grey */
+#pilar-ambiental  .metric-card.light { --cg-accent-rgb:  51, 182, 122; }   /* green */
+#pilar-social     .metric-card.light { --cg-accent-rgb:  14, 153, 216; }   /* cyan */
+#pilar-governanca .metric-card.light { --cg-accent-rgb: 251, 118,  34; }   /* orange */
+#pilar-economico  .metric-card.light { --cg-accent-rgb: 204,  81,  44; }   /* rust */
+.metric-card.light:hover {
+  background: rgba(var(--cg-accent-rgb), 0.07);          /* subtle pillar tint */
+  border-color: transparent;
+  box-shadow: inset 0 0 0 2px rgba(var(--cg-accent-rgb), 0.95);   /* thicker accent border */
+}
 .metric-pill {
   display: inline-block; font-size: 8px; font-weight: 700;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -793,7 +917,10 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 
 /* ── BACK-TO-TOP BUTTON (always available after scrolling) ─────────────── */
 .back-to-top {
-  position: fixed; left: 24px; bottom: 24px;
+  /* Sits centred between the chapter scroll-rail (48px wide at right:0)
+     and the inner card edge (≈100px from viewport right on a 1440 layout
+     where .section-inner caps at 1240px). María.                       */
+  position: fixed; right: 60px; bottom: 24px;
   z-index: 300;
   width: 44px; height: 44px;
   border-radius: 50%;
@@ -816,7 +943,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   outline: 2px solid var(--cg-orange); outline-offset: 3px;
 }
 @media (max-width: 640px) {
-  .back-to-top { left: 14px; bottom: 14px; width: 40px; height: 40px; font-size: 16px; }
+  .back-to-top { right: 14px; bottom: 14px; width: 40px; height: 40px; font-size: 16px; }
 }
 
 /* ── DATA MODAL (click any KPI/metric card to dive in) ─────────────────── */
@@ -1191,17 +1318,20 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   background: var(--cg-cyan);
 }
 .pf-full-link {
-  margin-top: 56px;
-  display: inline-flex; align-items: center; gap: 12px;
-  padding: 18px 28px;
+  margin-top: 40px;             /* tighter — button now centres visually
+                                   between the last white row and the
+                                   navy section bottom edge (María). */
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 18px;
   background: var(--cg-orange); color: #fff;
   text-decoration: none;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.16em;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase;
-  border-radius: 2px;
-  transition: transform 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: gap 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
 }
-.pf-full-link:hover { transform: translateX(4px); background: var(--cg-orange-deep); }
+.pf-full-link:hover { gap: 14px; background: var(--cg-orange-deep); }
 .pf-full-link .arrow { font-size: 18px; line-height: 1; }
 @media (max-width: 1024px) {
   .pf-macro { grid-template-columns: 1fr; gap: 40px; }
@@ -1216,11 +1346,219 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   .pf-cat-count { font-size: 18px; }
 }
 
+/* ── OPINIÃO INTERATIVA (post-Agradecimentos) ───────────────────────────
+   Pega-bolita digital — cada visitante vota nas prioridades ESG.
+   Os votos persistem no localStorage do browser; o contador de visitas
+   é local (incrementa na primeira visita do device). Inspirado no painel
+   físico de Negócios Sustentabilidade 2030 (Jornal de Negócios).        */
+.opiniao {
+  background: var(--cg-putty);
+  padding: 64px 80px 80px;
+  border-top: 1px solid var(--cg-border);
+}
+.opiniao-inner { max-width: 1240px; margin: 0 auto; }
+.opiniao-head { text-align: center; margin-bottom: 28px; }
+.opiniao-eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--cg-mid);
+  margin-bottom: 12px;
+}
+.opiniao-head h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 300; line-height: 1.15; letter-spacing: -0.01em;
+  color: var(--cg-ink);
+  margin-bottom: 12px;
+}
+.opiniao-head h2 strong { font-weight: 700; }
+.opiniao-sub {
+  font-size: 13px; color: var(--cg-mid);
+  font-style: italic;
+  max-width: 540px; margin: 0 auto 14px;
+}
+/* Big rule callout — directs the user to the right interaction */
+.opiniao-rule {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 10px 22px;
+  background: var(--cg-ink); color: #fff;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.opiniao-rule strong { color: var(--cg-orange); font-weight: 700; }
+.opiniao-stats {
+  display: flex; justify-content: center; gap: 64px;
+  margin: 28px 0 36px;
+  padding: 18px 0; border-top: 1px solid var(--cg-border);
+  border-bottom: 1px solid var(--cg-border);
+}
+.op-stat { text-align: center; }
+.op-stat strong {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 28px; font-weight: 300; color: var(--cg-ink);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.op-stat span {
+  display: block;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cg-mid);
+  margin-top: 4px;
+}
+.opiniao-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px;
+}
+.op-pillar {
+  background: var(--cg-bone);
+  padding: 22px 22px 24px;
+  border-radius: 6px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.op-pillar-head {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent, var(--cg-mid));
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent, var(--cg-mid));
+}
+.op-pillar[data-pillar="amb"] { --accent: var(--cg-green); }
+.op-pillar[data-pillar="soc"] { --accent: var(--cg-cyan); }
+.op-pillar[data-pillar="gov"] { --accent: var(--cg-orange); }
+.op-pillar-head-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--accent);
+}
+/* Circular vote buttons — each theme is its own bolita.
+   One vote per pillar: clicking a second theme replaces the previous. */
+.op-themes {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  justify-content: center;
+  padding: 8px 0;
+}
+.op-theme {
+  width: 102px; height: 102px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0);            /* transparent — we tint via box-shadow */
+  border: 2px solid var(--accent);
+  padding: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  transition:
+    background 0.25s var(--cg-ease),
+    box-shadow 0.25s var(--cg-ease),
+    transform 0.2s var(--cg-ease),
+    color 0.25s var(--cg-ease);
+}
+/* Soft tint of the pillar colour at rest, so the bolitas always read
+   as "verde / azul / naranja" even before any vote. */
+.op-theme { background: rgba(var(--cg-accent-rgb, 107, 114, 128), 0.10); }
+.op-pillar[data-pillar="amb"] { --cg-accent-rgb:  51, 182, 122; }   /* green */
+.op-pillar[data-pillar="soc"] { --cg-accent-rgb:  14, 153, 216; }   /* cyan  */
+.op-pillar[data-pillar="gov"] { --cg-accent-rgb: 251, 118,  34; }   /* orange */
+.op-theme:hover {
+  background: rgba(var(--cg-accent-rgb), 0.20);
+  transform: translateY(-2px);
+}
+.op-theme.is-voted {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(var(--cg-accent-rgb), 0.22);
+  animation: op-vote-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes op-vote-pop {
+  0%   { transform: scale(0.85); }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.op-theme-label {
+  font-size: 9.5px; font-weight: 600;
+  color: var(--accent);                   /* default label colour = pillar tint */
+  line-height: 1.18;
+  letter-spacing: 0.005em;
+}
+.op-theme.is-voted .op-theme-label { color: #fff; }
+.op-dots { display: none; }                /* dots retired — the bolita itself is the vote */
+/* Submit row — destaque between the grid and the credits */
+.opiniao-submit-row {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  margin-top: 36px;
+}
+.opiniao-submit-cluster {
+  display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+}
+.opiniao-submit, .opiniao-share {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 32px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s var(--cg-ease), transform 0.2s var(--cg-ease), gap 0.2s var(--cg-ease), opacity 0.2s var(--cg-ease), border-color 0.2s var(--cg-ease), color 0.2s var(--cg-ease);
+}
+.opiniao-submit svg, .opiniao-share svg { width: 14px; height: 14px; }
+.opiniao-submit { background: var(--cg-orange); color: #fff; }
+.opiniao-submit:hover:not(:disabled) {
+  background: var(--cg-orange-deep);
+  gap: 16px;
+  transform: translateY(-1px);
+}
+.opiniao-share {
+  background: transparent;
+  color: var(--cg-ink);
+  border-color: var(--cg-ink);
+}
+.opiniao-share:hover:not(:disabled) {
+  background: var(--cg-ink);
+  color: #fff;
+  gap: 16px;
+  transform: translateY(-1px);
+}
+.opiniao-submit:disabled, .opiniao-share:disabled {
+  background: var(--cg-border-mid);
+  color: rgba(255,255,255,0.85);
+  border-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.opiniao-share.is-ok {
+  background: var(--cg-green); color: #fff; border-color: var(--cg-green);
+}
+.opiniao-submit-hint {
+  font-size: 11px; color: var(--cg-mid); font-style: italic;
+}
+.opiniao-submit-hint.is-ok { color: var(--cg-green); font-style: normal; font-weight: 600; }
+
+.opiniao-credits {
+  margin-top: 40px; padding-top: 22px;
+  border-top: 1px solid var(--cg-border);
+  text-align: center;
+  font-size: 11px; color: var(--cg-mid);
+  line-height: 1.6;
+}
+.opiniao-credits strong { color: var(--cg-ink); font-weight: 600; }
+@media (max-width: 880px) {
+  .opiniao { padding: 48px 24px 64px; }
+  .opiniao-grid { grid-template-columns: 1fr; }
+  .opiniao-stats { gap: 32px; }
+}
+
 /* ── NAMES ORBIT (Agradecimentos, before footer) ───────────────────────── */
 .names-orbit {
   background: var(--cg-navy);
   color: #fff;
-  padding: 120px 32px 100px;
+  padding: 64px 32px 48px;   /* tighter top + bottom (María) */
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
   position: relative;
@@ -1228,16 +1566,16 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 }
 .names-orbit-title {
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: clamp(40px, 6vw, 80px);
+  font-size: clamp(28px, 3.6vw, 44px);   /* down from 40–80 */
   font-weight: 300; letter-spacing: -0.02em;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 .names-orbit-title strong { font-weight: 700; }
 .names-orbit-sub {
-  max-width: 540px;
-  font-size: 14px; line-height: 1.65;
+  max-width: 720px;          /* wider so "possível" stays on one line */
+  font-size: 13px; line-height: 1.5;
   color: rgba(255,255,255,0.62);
-  margin-bottom: 56px;
+  margin-bottom: 24px;       /* tighter gap to the ring (María) */
 }
 .names-orbit-svg {
   width: min(560px, 82vw);
@@ -1268,9 +1606,144 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   .names-text-inner { font-size: 9px; letter-spacing: 0.06em; }
 }
 
+/* ── PLANO DE TRANSIÇÃO CLIMÁTICA · pill bars + tabla en 2 colunas ─────── */
+.ptc-stage {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+  margin-top: 28px;
+  align-items: stretch;
+}
+.ptc-wrap {
+  background: #2A5F45;             /* forest dark — matches the reference */
+  border-radius: 6px;
+  padding: 18px 20px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.ptc-chart svg { width: 100%; height: auto; display: block; }
+/* Hover affordance on each year column */
+.ptc-bar { cursor: pointer; transition: opacity 0.2s var(--cg-ease); }
+.ptc-bar.is-dim { opacity: 0.35; }
+.ptc-bar.is-hot rect:first-child { stroke: #fff; stroke-width: 2; }
+.ptc-legend {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.16);
+}
+.ptc-legend-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.78);
+  margin-right: auto;
+}
+.ptc-legend-item {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.92);
+}
+.ptc-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.ptc-dot-ring { background: transparent; border: 1.5px solid #fff; }
+.ptc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  background: var(--cg-bone);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ptc-table thead th {
+  text-align: left;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cg-mid);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cg-border);
+}
+.ptc-table tbody tr {
+  cursor: pointer;
+  transition: background 0.18s var(--cg-ease);
+}
+.ptc-table tbody tr:hover,
+.ptc-table tbody tr.is-hot {
+  background: rgba(51,182,122,0.12);
+}
+.ptc-table tbody td {
+  padding: 9px 12px;
+  font-size: 12px; color: var(--cg-ink);
+  border-bottom: 1px solid var(--cg-border);
+  font-variant-numeric: tabular-nums;
+}
+.ptc-table tbody tr:last-child td { border-bottom: 0; }
+.ptc-table tbody td strong { font-weight: 600; }
+.ptc-meta-cell {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cg-mid);
+}
+.ptc-meta-cell.ok { color: var(--cg-green); font-weight: 700; }
+.ptc-row-meta td { background: rgba(51,182,122,0.08); }
+.ptc-row-meta:hover td,
+.ptc-row-meta.is-hot td { background: rgba(51,182,122,0.18); }
+
+@media (max-width: 900px) {
+  .ptc-stage { grid-template-columns: 1fr; }
+  .ptc-table { font-size: 11px; }
+}
+
+/* ── SUBSECTION DIVIDER · row of mini dots that pop in left→right ────────
+   Used between sub-sections inside a chapter to signal "you're moving
+   from one block to the next". The dot colour is inherited from the
+   chapter / pillar via a CSS variable, so reading dot colour by chapter:
+       orange = Capítulo 01 Castro Group
+       cyan   = Capítulo 02 Situação Atual
+       green  = pilar Ambiental · Capítulo 03 Creating Tomorrow
+       cyan   = pilar Social
+       orange = pilar Governança
+       rust   = pilar Económico                                            */
+.subsec-divider {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  max-width: 1240px;
+  margin: 28px auto;          /* symmetric — same gap above and below */
+  padding: 0 80px;
+  --sd-color: var(--cg-mid);
+}
+/* Cancel the padding the adjacent sections would otherwise add,
+   so the only spacing around the dotted line is the 28px margin above
+   — consistent across the whole report.                            */
+.section:has(+ .subsec-divider),
+.mvv-section:has(+ .subsec-divider) {
+  padding-bottom: 0;
+}
+.subsec-divider + .section,
+.subsec-divider + .mvv-section,
+.subsec-divider + section {
+  padding-top: 0;
+}
+.subsec-divider .sd-dot {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--sd-color);
+  opacity: 0;
+  transform: scale(0.3);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.subsec-divider.is-in .sd-dot {
+  opacity: 0.72;
+  transform: scale(1);
+}
+/* Colour modifiers — applied via class on the divider element */
+.subsec-divider.sd-orange { --sd-color: var(--cg-orange); }
+.subsec-divider.sd-cyan   { --sd-color: var(--cg-cyan); }
+.subsec-divider.sd-green  { --sd-color: var(--cg-green); }
+.subsec-divider.sd-rust   { --sd-color: var(--cg-rust); }
+.subsec-divider.sd-navy   { --sd-color: var(--cg-navy); }
+@media (max-width: 640px) {
+  .subsec-divider { padding: 0 20px; margin: 20px auto; }
+}
+
 /* ── MISSÃO · VISÃO · VALORES (Venn diagram, pg.24 of PDF) ─────────────── */
 .mvv-section {
-  background: var(--cg-bone);
+  background: var(--cg-putty);    /* matches the header grey */
   padding: 72px 80px 56px;
 }
 .mvv-inner {
@@ -1302,6 +1775,7 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   border: 1px solid var(--cg-border);
   display: block;
   position: relative;
+  transition: background 0.25s var(--cg-ease), box-shadow 0.25s var(--cg-ease);
 }
 .mvv-cards-only .mvv-card::before {
   content: '';
@@ -1310,9 +1784,14 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
   height: 3px;
   background: var(--accent, var(--cg-mid));
 }
-.mvv-cards-only .mvv-missao  { --accent: var(--cg-rust); }
-.mvv-cards-only .mvv-visao   { --accent: var(--cg-cyan); }
-.mvv-cards-only .mvv-valores { --accent: var(--cg-orange); }
+.mvv-cards-only .mvv-missao  { --accent: var(--cg-rust);   --cg-accent-rgb: 204,  81,  44; }
+.mvv-cards-only .mvv-visao   { --accent: var(--cg-cyan);   --cg-accent-rgb:  14, 153, 216; }
+.mvv-cards-only .mvv-valores { --accent: var(--cg-orange); --cg-accent-rgb: 251, 118,  34; }
+.mvv-cards-only .mvv-card:hover {
+  background: rgba(var(--cg-accent-rgb), 0.07);
+  border-color: transparent;
+  box-shadow: inset 0 0 0 2px rgba(var(--cg-accent-rgb), 0.95);
+}
 .mvv-cards-only .mvv-visao .mvv-card-tag { color: var(--cg-cyan); }
 .mvv-cards-only .mvv-card-tag {
   display: block;
@@ -1735,6 +2214,12 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
   <div class="nav-right">
     <span class="nav-year">2025</span>
+    <a class="nav-vote" href="#opiniao" aria-label="Votar prioridades ESG">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 12l5 5L20 6"/>
+      </svg>
+      <span data-pt="Vote" data-en="Vote">Vote</span>
+    </a>
     <a class="nav-pdf" href="uploads/final report/RS_CASTRO-GROUP.pdf" download aria-label="Descarregar PDF">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/>
@@ -1914,6 +2399,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
+<div class="subsec-divider sd-orange" aria-hidden="true"></div>
+
 <!-- EMPRESAS DO GRUPO -->
 <section class="section">
   <div class="section-inner">
@@ -2013,7 +2500,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     </div>
 
     <!-- Fundos -->
-    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);" class="stagger">
+    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cg-putty);border:0;" class="stagger">
       <div class="pf-detail-card" data-detail="fundo" style="background:var(--cg-bone);padding:28px 24px;position:relative;">
         <div class="pf-detail-tag" style="font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-navy);margin-bottom:10px;">SIC · OCT 2024</div>
         <div class="pf-detail-title" style="font-size:18px;font-weight:600;color:var(--cg-ink);">Castro Capital SIC</div>
@@ -2067,6 +2554,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
+<div class="subsec-divider sd-orange" aria-hidden="true"></div>
+
 <!-- ── MISSÃO · VISÃO · VALORES (Venn diagram, pg.24 do PDF) ─────────── -->
 <section class="mvv-section" aria-label="Missão, Visão e Valores">
   <div class="mvv-inner">
@@ -2090,12 +2579,14 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
+<div class="subsec-divider sd-orange" aria-hidden="true"></div>
+
 <!-- CICLO DE NEGÓCIOS — 5 fases -->
-<section class="section putty-2" style="padding-top:0;">
+<section class="section putty-2">
   <div class="section-inner">
-    <p class="eyebrow fade-up" style="margin-top:32px;" data-pt="Ciclo de Negócios" data-en="Business Cycle">Ciclo de Negócios</p>
+    <p class="eyebrow fade-up" data-pt="Ciclo de Negócios" data-en="Business Cycle">Ciclo de Negócios</p>
     <h2 class="heading fade-up" data-pt="5 fases<br><strong>do conceito ao fim de vida</strong>" data-en="5 phases<br><strong>from concept to end-of-life</strong>">5 fases<br><strong>do conceito ao fim de vida</strong></h2>
-    <div class="stagger" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);">
+    <div class="stagger" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--cg-putty);border:0;">
       <div class="pf-detail-card" data-detail="fase" style="background:var(--cg-bone);padding:24px 18px;position:relative;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cg-orange);"></div>
         <div class="pf-detail-tag" style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:var(--cg-orange);margin-bottom:14px;">01</div>
@@ -2475,48 +2966,50 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
+<div class="subsec-divider sd-cyan" aria-hidden="true"></div>
+
 <!-- ENVIRONMENTAL -->
-<section class="section" id="pilar-ambiental" style="background:var(--cg-pillar-eco);color:#fff;">
+<section class="section" id="pilar-ambiental">
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:var(--cg-green);" data-pt="Pilar 01 — Ambiental" data-en="Pillar 01 — Environmental">Pilar 01 — Ambiental</p>
-    <h2 class="heading fade-up" style="color:#fff;" data-pt="Energia, emissões<br><strong>e recursos naturais</strong>" data-en="Energy, emissions<br><strong>and natural resources</strong>">Energia, emissões<br><strong>e recursos naturais</strong></h2>
+    <h2 class="heading fade-up" data-pt="Energia, emissões<br><strong>e recursos naturais</strong>" data-en="Energy, emissions<br><strong>and natural resources</strong>">Energia, emissões<br><strong>e recursos naturais</strong></h2>
     <div class="metrics-grid stagger">
-      <div class="metric-card dark" data-rich="energia">
+      <div class="metric-card light" data-rich="energia">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Energia" data-en="Energy">Energia</div>
         <div class="metric-big">1.999,4</div>
         <div class="metric-unit">MWh <span data-pt="consumo total 2025" data-en="total consumption 2025">consumo total 2025</span></div>
         <div class="metric-desc-text" data-pt="Construção: 245,0 MWh (12,3%) ↓29,7%. Operação CG: 458,9 MWh (23,0%) ↓29,5%. Terceiros: 1.295,5 MWh (64,7%). Gasóleo em obra: 245,4 → 104,8 MWh." data-en="Construction: 245.0 MWh (12.3%) ↓29.7%. CG Ops: 458.9 MWh (23.0%) ↓29.5%. Third parties: 1,295.5 MWh (64.7%). Site diesel: 245.4 → 104.8 MWh.">Construção: 245,0 MWh (12,3%) ↓29,7%. Operação CG: 458,9 MWh (23,0%) ↓29,5%. Terceiros: 1.295,5 MWh (64,7%). Gasóleo em obra: 245,4 → 104,8 MWh.</div>
         <div class="bar-track"><div class="bar-fill" data-w="87" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="renovavel">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Renovável" data-en="Renewable">Renovável</div>
         <div class="metric-big">16,6<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="energia renovável" data-en="renewable energy">energia renovável</div>
         <div class="metric-desc-text" data-pt="10,8% produção fotovoltaica on-site + 5,8% contratos verdes com Garantias de Origem (GdO)." data-en="10.8% on-site photovoltaic + 5.8% green contracts with Guarantees of Origin (GoO).">10,8% produção fotovoltaica on-site + 5,8% contratos verdes com Garantias de Origem (GdO).</div>
         <div class="bar-track"><div class="bar-fill" data-w="16" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="emissoes">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Emissões" data-en="Emissions">Emissões</div>
         <div class="metric-big">197,9</div>
         <div class="metric-unit">TonCO₂e <span data-pt="Scope 1+2 (ano-base)" data-en="Scope 1+2 (baseline)">Scope 1+2 (ano-base)</span></div>
         <div class="metric-desc-text" data-pt="Scope 1: 124,8 ↓25,5% · Scope 2: 73,0 ↓25,0% · Total 1+2+3: 13.680,1 TonCO₂e (+1,6% vs 2024). 0,1% compensadas por GdO (18,2 TonCO₂e)." data-en="Scope 1: 124.8 ↓25.5% · Scope 2: 73.0 ↓25.0% · Total 1+2+3: 13,680.1 TonCO₂e (+1.6% vs 2024). 0.1% offset by GoO (18.2 TonCO₂e).">Scope 1: 124,8 ↓25,5% · Scope 2: 73,0 ↓25,0% · Total 1+2+3: 13.680,1 TonCO₂e (+1,6% vs 2024). 0,1% compensadas por GdO (18,2 TonCO₂e).</div>
         <div class="bar-track"><div class="bar-fill" data-w="75" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark" data-rich="agua">
+      <div class="metric-card light" data-rich="agua">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Água" data-en="Water">Água</div>
         <div class="metric-big">−32<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="consumo hídrico — operação CG" data-en="water — CG operations">consumo hídrico — operação CG</div>
         <div class="metric-desc-text" data-pt="Operação CG: 3.155 m³ (vs 4.670 m³ em 2024). Construção: 3.668 m³ (+2,9%). Terceiros: 6.525 m³. Reutilização: 0% — La Movida foi o 1.º ativo com reservatório." data-en="CG Ops: 3,155 m³ (vs 4,670 m³ in 2024). Construction: 3,668 m³ (+2.9%). Third parties: 6,525 m³. Reuse: 0% — La Movida was the 1st asset with rainwater tank.">Operação CG: 3.155 m³ (vs 4.670 m³ em 2024). Construção: 3.668 m³ (+2,9%). Terceiros: 6.525 m³. Reutilização: 0% — La Movida foi o 1.º ativo com reservatório.</div>
         <div class="bar-track"><div class="bar-fill" data-w="68" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="residuos">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Resíduos" data-en="Waste">Resíduos</div>
         <div class="metric-big">97,8<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="valorizados em construção" data-en="construction waste valorised">valorizados em construção</div>
         <div class="metric-desc-text" data-pt="Construção: 482,7 Ton (99,1% do total). Operação CG: 4,2 Ton em 6 fluxos. 45,2% de recuperação seletiva nos ativos operacionais." data-en="Construction: 482.7 Ton (99.1% of total). CG Ops: 4.2 Ton across 6 streams. 45.2% selective recovery at operational assets.">Construção: 482,7 Ton (99,1% do total). Operação CG: 4,2 Ton em 6 fluxos. 45,2% de recuperação seletiva nos ativos operacionais.</div>
         <div class="bar-track"><div class="bar-fill" data-w="98" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="mobilidade">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Mobilidade" data-en="Mobility">Mobilidade</div>
         <div class="metric-big">41<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="frota elétrica" data-en="electric fleet">frota elétrica</div>
@@ -2526,6 +3019,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     </div>
   </div>
 </section>
+
+<div class="subsec-divider sd-cyan" aria-hidden="true"></div>
 
 <!-- SOCIAL -->
 <section class="section" id="pilar-social">
@@ -2547,42 +3042,42 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     </div>
 
     <div class="metrics-grid stagger">
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="remuneracao">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Remuneração" data-en="Remuneration">Remuneração</div>
         <div class="metric-big">2.018,1€</div>
         <div class="metric-unit" data-pt="salário médio mensal (vs 1.967,3€ em 2024)" data-en="avg monthly salary (vs €1,967.3 in 2024)">salário médio mensal (vs 1.967,3€ em 2024)</div>
         <div class="metric-desc-text" data-pt="2,3x acima do salário mínimo (870€). 98,2% recebe acima do mínimo (+2,0 p.p. vs 2024). Gap salarial total subiu para 24,8% (vs 16,0% em 2024) — área prioritária para 2026." data-en="2.3x above minimum wage (€870). 98.2% earn above minimum (+2.0 p.p. vs 2024). Total pay gap rose to 24.8% (vs 16.0% in 2024) — priority area for 2026.">2,3x acima do salário mínimo (870€). 98,2% recebe acima do mínimo (+2,0 p.p. vs 2024). Gap salarial total subiu para 24,8% (vs 16,0% em 2024) — área prioritária para 2026.</div>
         <div class="bar-track"><div class="bar-fill" data-w="75" style="background:var(--cg-esg-social)"></div></div>
       </div>
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="formacao">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Formação" data-en="Training">Formação</div>
         <div class="metric-big">1.385h</div>
         <div class="metric-unit" data-pt="horas de formação 2025" data-en="training hours 2025">horas de formação 2025</div>
         <div class="metric-desc-text" data-pt="45,6% dos colaboradores formados (vs 60,4% em 2024). Média: 24,3h/pessoa (vs 63,0h). Redução por aumento de volume de trabalho — compromisso de retoma em 2026." data-en="45.6% trained (vs 60.4% in 2024). Avg: 24.3h/person (vs 63.0h). Reduction due to workload — commitment to resume in 2026.">45,6% dos colaboradores formados (vs 60,4% em 2024). Média: 24,3h/pessoa (vs 63,0h). Redução por aumento de volume de trabalho — compromisso de retoma em 2026.</div>
         <div class="bar-track"><div class="bar-fill" data-w="46" style="background:var(--cg-esg-social)"></div></div>
       </div>
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="seguranca">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Segurança" data-en="Safety">Segurança</div>
         <div class="metric-big">36,9</div>
         <div class="metric-unit" data-pt="Taxa VSME (vs 39,6 em 2024)" data-en="VSME rate (vs 39.6 in 2024)">Taxa VSME (vs 39,6 em 2024)</div>
         <div class="metric-desc-text" data-pt="141 trabalhadores médios em 4 obras. 27.104h trabalhadas. 5 acidentes não mortais · 1.424h perdidas. Formação SST: 236,8h (+58% vs 150h em 2024)." data-en="141 average workers across 4 sites. 27,104h worked. 5 non-fatal accidents · 1,424h lost. OHS training: 236.8h (+58% vs 150h in 2024).">141 trabalhadores médios em 4 obras. 27.104h trabalhadas. 5 acidentes não mortais · 1.424h perdidas. Formação SST: 236,8h (+58% vs 150h em 2024).</div>
         <div class="bar-track"><div class="bar-fill" data-w="63" style="background:var(--cg-esg-social)"></div></div>
       </div>
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="retencao">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Retenção" data-en="Retention">Retenção</div>
         <div class="metric-big">23,9<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="taxa de turnover (vs 3,9% em 2024)" data-en="turnover rate (vs 3.9% in 2024)">taxa de turnover (vs 3,9% em 2024)</div>
         <div class="metric-desc-text" data-pt="Aumento significativo. Reforço da estratégia de retenção: planos de progressão, proposta de valor e bem-estar organizacional." data-en="Significant increase. Strengthening retention strategy: career progression, value proposition and organisational wellbeing.">Aumento significativo. Reforço da estratégia de retenção: planos de progressão, proposta de valor e bem-estar organizacional.</div>
         <div class="bar-track"><div class="bar-fill" data-w="24" style="background:var(--cg-rust)"></div></div>
       </div>
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="performance">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Performance" data-en="Performance">Performance</div>
         <div class="metric-big">78,9<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="colaboradores com prémios" data-en="employees with bonuses">colaboradores com prémios</div>
         <div class="metric-desc-text" data-pt="vs 84,9% em 2024. Atribuição elegível a partir do ano seguinte ao da admissão — reflete novas admissões em 2025." data-en="vs 84.9% in 2024. Eligibility begins the year after hire — reflects 2025 new hires.">vs 84,9% em 2024. Atribuição elegível a partir do ano seguinte ao da admissão — reflete novas admissões em 2025.</div>
         <div class="bar-track"><div class="bar-fill" data-w="79" style="background:var(--cg-esg-social)"></div></div>
       </div>
-      <div class="metric-card light">
+      <div class="metric-card light" data-rich="comunidade">
         <div class="metric-pill" style="background:rgba(14,153,216,0.14);color:var(--cg-esg-social);" data-pt="Comunidade" data-en="Community">Comunidade</div>
         <div class="metric-big">126,4k€</div>
         <div class="metric-unit" data-pt="investimento externo (vs 84,4k€ em 2024)" data-en="external investment (vs €84.4k in 2024)">investimento externo (vs 84,4k€ em 2024)</div>
@@ -2593,39 +3088,41 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
+<div class="subsec-divider sd-cyan" aria-hidden="true"></div>
+
 <!-- GOVERNANCE -->
-<section class="section" id="pilar-governanca" style="background:var(--cg-pillar-gov);color:#fff;">
+<section class="section" id="pilar-governanca">
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:var(--cg-esg-governance);" data-pt="Pilar 03 — Governança" data-en="Pillar 03 — Governance">Pilar 03 — Governança</p>
-    <h2 class="heading fade-up" style="color:#fff;" data-pt="Transparência e<br><strong>integridade institucional</strong>" data-en="Transparency and<br><strong>institutional integrity</strong>">Transparência e<br><strong>integridade institucional</strong></h2>
+    <h2 class="heading fade-up" data-pt="Transparência e<br><strong>integridade institucional</strong>" data-en="Transparency and<br><strong>institutional integrity</strong>">Transparência e<br><strong>integridade institucional</strong></h2>
     <div class="metrics-grid stagger">
-      <div class="metric-card dark">
+      <div class="metric-card light">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Compliance" data-en="Compliance">Compliance</div>
         <div class="metric-big" style="font-size:24px;line-height:1.2;" data-pt="Código de Conduta ESG" data-en="ESG Code of Conduct">Código de Conduta ESG</div>
         <div class="metric-desc-text" style="margin-top:16px;" data-pt="Implementado em regime piloto em 2025 num projeto em construção. Taxa de resposta aquém do esperado — reformulação prevista para 2026 com integração como requisito de adjudicação." data-en="Implemented as pilot in 2025 on one construction project. Response rate below expectations — reformulation planned for 2026, integrated as procurement requirement.">Implementado em regime piloto em 2025 num projeto em construção. Taxa de resposta aquém do esperado — reformulação prevista para 2026 com integração como requisito de adjudicação.</div>
         <div class="bar-track"><div class="bar-fill" data-w="40" style="background:var(--cg-esg-governance)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="certificacao">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Certificação" data-en="Certification">Certificação</div>
         <div class="metric-big">95,8<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="GFA alinhado com estratégia" data-en="GFA aligned with strategy">GFA alinhado com estratégia</div>
         <div class="metric-desc-text" data-pt="257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido — La Movida. SPARK e The Breeze em fase final." data-en="257,050 m² total GFA (19 assets, excl. landbank). 1st LEED Gold issued — La Movida. SPARK and The Breeze in final phase.">257.050 m² GFA total (19 ativos, excl. landbank). 1.º LEED Gold emitido — La Movida. SPARK e The Breeze em fase final.</div>
         <div class="bar-track"><div class="bar-fill" data-w="96" style="background:var(--cg-esg-governance)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Regulação" data-en="Regulation">Regulação</div>
         <div class="metric-big">CMVM</div>
         <div class="metric-unit" data-pt="autorização grande dimensão (NEXA SGOIC)" data-en="large-entity authorisation (NEXA SGOIC)">autorização grande dimensão (NEXA SGOIC)</div>
         <div class="metric-desc-text" data-pt="Em agosto 2025, a CMVM concedeu à NEXA autorização para o exercício como sociedade gestora de grande dimensão. Gere 3 organismos: Castro Capital SIC, Fuse Valley FII, Icon SIC." data-en="In August 2025, CMVM granted NEXA authorisation as large-scale management company. Manages 3 entities: Castro Capital SIC, Fuse Valley FII, Icon SIC.">Em agosto 2025, a CMVM concedeu à NEXA autorização para o exercício como sociedade gestora de grande dimensão. Gere 3 organismos: Castro Capital SIC, Fuse Valley FII, Icon SIC.</div>
         <div class="bar-track"><div class="bar-fill" data-w="100" style="background:var(--cg-esg-governance)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Materialidade" data-en="Materiality">Materialidade</div>
         <div class="metric-big" style="font-size:24px;line-height:1.2;" data-pt="Dupla Materialidade" data-en="Double Materiality">Dupla Materialidade</div>
         <div class="metric-desc-text" style="margin-top:16px;" data-pt="1.ª análise interna realizada em 2025. Prioritários: E1.1 Energia/Emissões, S1.2 Condições de Trabalho, G1.1 Segurança e Qualidade dos Edifícios. Externa prevista em 2026." data-en="1st internal analysis completed in 2025. Priorities: E1.1 Energy/Emissions, S1.2 Working Conditions, G1.1 Building Safety & Quality. External planned 2026.">1.ª análise interna realizada em 2025. Prioritários: E1.1 Energia/Emissões, S1.2 Condições de Trabalho, G1.1 Segurança e Qualidade dos Edifícios. Externa prevista em 2026.</div>
         <div class="bar-track"><div class="bar-fill" data-w="65" style="background:var(--cg-esg-governance)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light">
         <div class="metric-pill" style="background:rgba(251,118,34,0.14);color:var(--cg-esg-governance);" data-pt="Digitalização" data-en="Digitalisation">Digitalização</div>
         <div class="metric-big">Arc</div>
         <div class="metric-unit" data-pt="software ESG implementado em 2025" data-en="ESG software implemented in 2025">software ESG implementado em 2025</div>
@@ -2636,27 +3133,29 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   </div>
 </section>
 
-<!-- ECONOMIC (Pilar 04 — deep rust) -->
-<section class="section" id="pilar-economico" style="background:var(--cg-pillar-econ);color:#fff;">
+<div class="subsec-divider sd-cyan" aria-hidden="true"></div>
+
+<!-- ECONOMIC -->
+<section class="section" id="pilar-economico">
   <div class="section-inner">
     <p class="eyebrow fade-up" style="color:var(--cg-rust);" data-pt="Pilar 04 — Económico" data-en="Pillar 04 — Economic">Pilar 04 — Económico</p>
-    <h2 class="heading fade-up" style="color:#fff;" data-pt="Valor económico<br><strong>gerado e distribuído</strong>" data-en="Economic value<br><strong>generated and distributed</strong>">Valor económico<br><strong>gerado e distribuído</strong></h2>
+    <h2 class="heading fade-up" data-pt="Valor económico<br><strong>gerado e distribuído</strong>" data-en="Economic value<br><strong>generated and distributed</strong>">Valor económico<br><strong>gerado e distribuído</strong></h2>
     <div class="metrics-grid stagger">
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="distribuido">
         <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="Distribuído" data-en="Distributed">Distribuído</div>
         <div class="metric-big">35,0<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
         <div class="metric-unit" data-pt="Valor económico distribuído 2025" data-en="Economic value distributed 2025">Valor económico distribuído 2025</div>
         <div class="metric-desc-text" data-pt="↑ 12,6% vs 2024 (31,09 M€). Pessoal: 1,57 M€ (+15,2%). Fornecedores e despesas operacionais: 32,39 M€ (+14,9%). Estado e OEP: 1,05 M€ (−32,4%)." data-en="↑ 12.6% vs 2024 (€31.09M). People: €1.57M (+15.2%). Suppliers & opex: €32.39M (+14.9%). State & SOE: €1.05M (−32.4%).">↑ 12,6% vs 2024 (31,09 M€). Pessoal: 1,57 M€ (+15,2%). Fornecedores e despesas operacionais: 32,39 M€ (+14,9%). Estado e OEP: 1,05 M€ (−32,4%).</div>
         <div class="bar-track"><div class="bar-fill" data-w="100" style="background:var(--cg-rust)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="receita">
         <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="Receita" data-en="Revenue">Receita</div>
         <div class="metric-big">24,34<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
         <div class="metric-unit" data-pt="Prestações de serviço 2025 (vs 25,13 M€ em 2024)" data-en="Service revenue 2025 (vs €25.13M in 2024)">Prestações de serviço 2025 (vs 25,13 M€ em 2024)</div>
         <div class="metric-desc-text" data-pt="Redução moderada (−3,1%), volume operacional mantido. Valor económico gerado: 24,55 M€ (vs 39,49 M€ em 2024)." data-en="Moderate decline (−3.1%), operating volume maintained. Economic value generated: €24.55M (vs €39.49M in 2024).">Redução moderada (−3,1%), volume operacional mantido. Valor económico gerado: 24,55 M€ (vs 39,49 M€ em 2024).</div>
         <div class="bar-track"><div class="bar-fill" data-w="62" style="background:var(--cg-rust)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card light" data-rich="ebitda">
         <div class="metric-pill" style="background:rgba(204,81,44,0.22);color:var(--cg-rust);" data-pt="EBITDA" data-en="EBITDA">EBITDA</div>
         <div class="metric-big">−0,82<span style="font-size:0.5em;opacity:0.65;margin-left:6px;">M€</span></div>
         <div class="metric-unit" data-pt="EBITDA 2025 (vs 0,04 M€ em 2024)" data-en="EBITDA 2025 (vs €0.04M in 2024)">EBITDA 2025 (vs 0,04 M€ em 2024)</div>
@@ -2687,91 +3186,60 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="eyebrow fade-up" data-pt="Plano de Transição Climática" data-en="Climate Transition Plan">Plano de Transição Climática</p>
     <h2 class="heading fade-up" data-pt="Trajetória de redução<br><strong>de emissões até 2030</strong>" data-en="Emissions reduction<br><strong>trajectory to 2030</strong>">Trajetória de redução<br><strong>de emissões até 2030</strong></h2>
 
-    <div class="fade-up" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:24px;">
-      <div>
-        <p class="body" data-pt="O Castro Group assumiu o compromisso de reduzir 40% das emissões diretas (Scope 1+2) até 2030, tomando 2025 como ano-base (197,9 TonCO₂e). Esta meta posiciona o Grupo em linha com o roteiro de descarbonização do setor imobiliário e com os objetivos da UE para 2030." data-en="Castro Group is committed to reducing direct emissions (Scope 1+2) by 40% by 2030, with 2025 as baseline (197.9 TonCO₂e). This aligns with the real estate sector's decarbonisation roadmap and EU 2030 objectives.">O Castro Group assumiu o compromisso de reduzir 40% das emissões diretas (Scope 1+2) até 2030, tomando 2025 como ano-base (197,9 TonCO₂e). Esta meta posiciona o Grupo em linha com o roteiro de descarbonização do setor imobiliário e com os objetivos da UE para 2030.</p>
-        <p class="body" style="margin-top:14px;" data-pt="A trajetória linear prevê reduções intermédias de 8,0% em 2026, 16,0% em 2027, 24,1% em 2028 e 32,1% em 2029, atingindo o valor máximo de 118,7 TonCO₂e em 2030. A meta encontra-se em processo de aprovação pelo Conselho de Administração, prevista para 2026." data-en="The linear trajectory foresees intermediate reductions of 8.0% in 2026, 16.0% in 2027, 24.1% in 2028 and 32.1% in 2029, reaching 118.7 TonCO₂e maximum in 2030. The target is in the process of Board approval, expected in 2026.">A trajetória linear prevê reduções intermédias de 8,0% em 2026, 16,0% em 2027, 24,1% em 2028 e 32,1% em 2029, atingindo o valor máximo de 118,7 TonCO₂e em 2030. A meta encontra-se em processo de aprovação pelo Conselho de Administração, prevista para 2026.</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;">
-          <span style="font-size:10px;font-weight:600;padding:6px 12px;border-radius:24px;background:var(--cg-bone);color:var(--cg-mid);border:1px solid var(--cg-border);" data-pt="Eletrificação da frota" data-en="Fleet electrification">Eletrificação da frota</span>
-          <span style="font-size:10px;font-weight:600;padding:6px 12px;border-radius:24px;background:var(--cg-bone);color:var(--cg-mid);border:1px solid var(--cg-border);" data-pt="Fotovoltaica on-site" data-en="On-site PV">Fotovoltaica on-site</span>
-          <span style="font-size:10px;font-weight:600;padding:6px 12px;border-radius:24px;background:var(--cg-bone);color:var(--cg-mid);border:1px solid var(--cg-border);" data-pt="Contratos verdes GdO" data-en="GoO green contracts">Contratos verdes GdO</span>
-          <span style="font-size:10px;font-weight:600;padding:6px 12px;border-radius:24px;background:var(--cg-bone);color:var(--cg-mid);border:1px solid var(--cg-border);" data-pt="Substituição gasóleo obra" data-en="Site diesel phase-out">Substituição gasóleo obra</span>
-          <span style="font-size:10px;font-weight:600;padding:6px 12px;border-radius:24px;background:var(--cg-bone);color:var(--cg-mid);border:1px solid var(--cg-border);" data-pt="Eficiência operacional" data-en="Operational efficiency">Eficiência operacional</span>
+    <p class="body fade-up" style="max-width:820px;margin-top:24px;" data-pt="O Castro Group assumiu o compromisso de reduzir 40% das emissões diretas (Scope 1+2) até 2030, tomando 2025 como ano-base (197,9 TonCO₂e). A trajetória linear prevê reduções intermédias de 8,0% em 2026, 16,0% em 2027, 24,1% em 2028 e 32,1% em 2029. A meta encontra-se em processo de aprovação pelo Conselho de Administração, prevista para 2026." data-en="Castro Group committed to cutting direct emissions (Scope 1+2) by 40% by 2030, with 2025 as baseline (197.9 TonCO₂e). The linear trajectory foresees intermediate reductions of 8.0% in 2026, 16.0% in 2027, 24.1% in 2028 and 32.1% in 2029. The target is pending Board approval, expected in 2026.">O Castro Group assumiu o compromisso de reduzir 40% das emissões diretas (Scope 1+2) até 2030, tomando 2025 como ano-base (197,9 TonCO₂e). A trajetória linear prevê reduções intermédias de 8,0% em 2026, 16,0% em 2027, 24,1% em 2028 e 32,1% em 2029. A meta encontra-se em processo de aprovação pelo Conselho de Administração, prevista para 2026.</p>
+
+    <!-- PTC chart + tabla lado a lado con hover sync (María):
+         tocar una pill resalta su fila correspondiente, y viceversa.   -->
+    <div class="ptc-stage fade-up" id="ptc-stage">
+      <div class="ptc-wrap">
+        <div class="ptc-chart">
+          <svg viewBox="0 0 600 320" preserveAspectRatio="xMidYMid meet" class="ptc-svg" aria-label="Plano de Transição Climático 2025-2030">
+            <defs>
+              <clipPath id="ptc-pill-2025"><rect x="20"  y="30"  width="70" height="240" rx="35"/></clipPath>
+              <clipPath id="ptc-pill-2026"><rect x="115" y="50"  width="70" height="220" rx="35"/></clipPath>
+              <clipPath id="ptc-pill-2027"><rect x="210" y="69"  width="70" height="201" rx="35"/></clipPath>
+              <clipPath id="ptc-pill-2028"><rect x="305" y="88"  width="70" height="182" rx="35"/></clipPath>
+              <clipPath id="ptc-pill-2029"><rect x="400" y="107" width="70" height="163" rx="35"/></clipPath>
+              <clipPath id="ptc-pill-2030"><rect x="495" y="126" width="70" height="144" rx="35"/></clipPath>
+            </defs>
+
+            <g class="ptc-bar" data-year="2025"><rect x="20"  y="30"  width="70" height="240" rx="35" fill="#5DA382"/><rect x="20"  y="181" width="70" height="89"  fill="#B7DCC5" clip-path="url(#ptc-pill-2025)"/><text x="55"  y="22"  text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">198</text><text x="55"  y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">124,8</text><text x="55"  y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2025</text></g>
+            <g class="ptc-bar" data-year="2026"><rect x="115" y="50"  width="70" height="220" rx="35" fill="#5DA382"/><rect x="115" y="189" width="70" height="81"  fill="#B7DCC5" clip-path="url(#ptc-pill-2026)"/><text x="150" y="42"  text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">182</text><text x="150" y="230" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">114,9</text><text x="150" y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2026</text></g>
+            <g class="ptc-bar" data-year="2027"><rect x="210" y="69"  width="70" height="201" rx="35" fill="#5DA382"/><rect x="210" y="196" width="70" height="74"  fill="#B7DCC5" clip-path="url(#ptc-pill-2027)"/><text x="245" y="61"  text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">166</text><text x="245" y="236" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">104,9</text><text x="245" y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2027</text></g>
+            <g class="ptc-bar" data-year="2028"><rect x="305" y="88"  width="70" height="182" rx="35" fill="#5DA382"/><rect x="305" y="203" width="70" height="67"  fill="#B7DCC5" clip-path="url(#ptc-pill-2028)"/><text x="340" y="80"  text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">150</text><text x="340" y="240" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">94,9</text><text x="340" y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2028</text></g>
+            <g class="ptc-bar" data-year="2029"><rect x="400" y="107" width="70" height="163" rx="35" fill="#5DA382"/><rect x="400" y="210" width="70" height="60"  fill="#B7DCC5" clip-path="url(#ptc-pill-2029)"/><text x="435" y="99"  text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">135</text><text x="435" y="245" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">85,0</text><text x="435" y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2029</text></g>
+            <g class="ptc-bar" data-year="2030"><rect x="495" y="126" width="70" height="144" rx="35" fill="#5DA382"/><rect x="495" y="217" width="70" height="53"  fill="#B7DCC5" clip-path="url(#ptc-pill-2030)"/><text x="530" y="118" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff">119</text><text x="530" y="248" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="#1A1F2E">75,1</text><text x="530" y="294" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.85)">2030</text></g>
+
+            <!-- META −40% line · sits at the top of the 2030 pill -->
+            <line x1="10" y1="126" x2="590" y2="126" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
+
+        <aside class="ptc-legend">
+          <div class="ptc-legend-title">▸ 2025–2030</div>
+          <div class="ptc-legend-item"><span class="ptc-dot" style="background:#5DA382"></span><span>Scope 1</span></div>
+          <div class="ptc-legend-item"><span class="ptc-dot" style="background:#B7DCC5"></span><span>Scope 2</span></div>
+          <div class="ptc-legend-item"><span class="ptc-dot ptc-dot-ring"></span><span>Meta −40%</span></div>
+        </aside>
       </div>
-      <div style="background:var(--cg-navy);padding:32px 28px 24px;border-radius:2px;color:#fff;">
-        <!-- NEXA-style line trajectory chart -->
-        <svg viewBox="0 0 800 340" style="width:100%;height:auto;display:block;" preserveAspectRatio="xMidYMid meet" aria-label="Emissions reduction trajectory 2025-2030">
-          <!-- Y axis grid -->
-          <line x1="60"  y1="40"  x2="60"  y2="260" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
-          <line x1="60"  y1="260" x2="780" y2="260" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
-          <!-- Y labels -->
-          <text x="55" y="50"  text-anchor="end" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">220</text>
-          <text x="55" y="115" text-anchor="end" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">165</text>
-          <text x="55" y="180" text-anchor="end" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">118,7</text>
-          <text x="55" y="245" text-anchor="end" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">55</text>
-          <text x="50" y="160" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.55)" transform="rotate(-90 50 160)">TonCO₂e</text>
-          <!-- META 2030 line: y = 260 - (118.7/220)*220 = 260 - 118.7 = 141.3 → at ~170 -->
-          <line x1="60" y1="170" x2="780" y2="170" stroke="rgba(255,255,255,.55)" stroke-width="1" stroke-dasharray="4 4"/>
-          <text x="770" y="164" text-anchor="end" font-size="10" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.85)">Meta 2030 · −40% · 118,7 TonCO₂e</text>
-          <!-- Trajectory line connecting 6 years (2025→2030) -->
-          <!-- y coords: total/220 * 220 px range from y=260. 197.9→y=62, 182→81, 166.1→101, 150.3→121, 134.4→141, 118.7→170 -->
-          <polyline points="120,62 234,82 348,103 462,123 576,143 690,170" fill="none" stroke="var(--cg-green)" stroke-width="2.4" stroke-linejoin="round"/>
-          <!-- Dots + year labels -->
-          <!-- 2025 baseline (highlight) -->
-          <circle cx="120" cy="62"  r="6" fill="var(--cg-green)"/>
-          <text x="120" y="48" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" font-weight="700" fill="#fff">197,9</text>
-          <text x="120" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="#fff" font-weight="700">2025</text>
-          <text x="120" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.55)" letter-spacing="0.16em">ANO-BASE</text>
-          <!-- 2026 -->
-          <circle cx="234" cy="82"  r="5" fill="rgba(255,255,255,.55)"/>
-          <text x="234" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">2026</text>
-          <text x="234" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.45)">−8%</text>
-          <!-- 2027 -->
-          <circle cx="348" cy="103" r="5" fill="rgba(255,255,255,.55)"/>
-          <text x="348" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">2027</text>
-          <text x="348" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.45)">−16%</text>
-          <!-- 2028 -->
-          <circle cx="462" cy="123" r="5" fill="rgba(255,255,255,.55)"/>
-          <text x="462" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">2028</text>
-          <text x="462" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.45)">−24%</text>
-          <!-- 2029 -->
-          <circle cx="576" cy="143" r="5" fill="rgba(255,255,255,.55)"/>
-          <text x="576" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.65)">2029</text>
-          <text x="576" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="rgba(255,255,255,.45)">−32%</text>
-          <!-- 2030 META (highlight) -->
-          <circle cx="690" cy="170" r="7" fill="var(--cg-green)"/>
-          <text x="690" y="156" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" font-weight="700" fill="var(--cg-green)">118,7</text>
-          <text x="690" y="285" text-anchor="middle" font-size="11" font-family="'Inter',sans-serif" fill="#fff" font-weight="700">2030</text>
-          <text x="690" y="304" text-anchor="middle" font-size="9" font-family="'Inter',sans-serif" fill="var(--cg-green)" font-weight="700">META −40%</text>
-        </svg>
-        <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--cg-border);">
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:#33B67A;border-radius:2px;display:inline-block;"></span>Scope 1 (TonCO₂e)</span>
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--cg-mid);font-weight:500;"><span style="width:14px;height:10px;background:var(--cg-cyan);border-radius:2px;display:inline-block;"></span>Scope 2 (TonCO₂e)</span>
-          <span style="display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--cg-mid);"><span style="width:18px;height:2px;border-top:2px dashed #2E4791;"></span><span data-pt="Meta 2030 (−40%)" data-en="2030 target (−40%)">Meta 2030 (−40%)</span></span>
-        </div>
-      </div>
+
+      <table class="ptc-table" aria-label="Plano de Transição Climática — tabela">
+        <thead><tr><th>Ano</th><th>S1</th><th>S2</th><th>Total</th><th>Redução</th><th>Meta</th></tr></thead>
+        <tbody>
+          <tr data-year="2025"><td>2025 (Base)</td><td>124,8</td><td>73,0</td><td><strong>197,9</strong></td><td>—</td><td class="ptc-meta-cell">✕</td></tr>
+          <tr data-year="2026"><td>2026</td><td>114,9</td><td>67,1</td><td><strong>182,0</strong></td><td>−8,0%</td><td class="ptc-meta-cell">✕</td></tr>
+          <tr data-year="2027"><td>2027</td><td>104,9</td><td>61,3</td><td><strong>166,1</strong></td><td>−16,0%</td><td class="ptc-meta-cell">✕</td></tr>
+          <tr data-year="2028"><td>2028</td><td>94,9</td><td>55,4</td><td><strong>150,3</strong></td><td>−24,1%</td><td class="ptc-meta-cell">✕</td></tr>
+          <tr data-year="2029"><td>2029</td><td>85,0</td><td>49,5</td><td><strong>134,4</strong></td><td>−32,1%</td><td class="ptc-meta-cell">✕</td></tr>
+          <tr data-year="2030" class="ptc-row-meta"><td><strong>2030</strong></td><td>75,1</td><td>43,6</td><td><strong>118,7</strong></td><td><strong>−40,0%</strong></td><td class="ptc-meta-cell ok">✓</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="stagger" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);margin-top:48px;">
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-mid);margin-bottom:12px;" data-pt="Ano-base · 2025" data-en="Baseline · 2025">Ano-base · 2025</div>
-        <div style="font-size:38px;font-weight:300;line-height:1;color:var(--cg-ink);">197,9 <span style="font-size:14px;color:var(--cg-mid);">TonCO₂e</span></div>
-        <div style="font-size:11px;color:var(--cg-mid);margin-top:8px;" data-pt="Scope 1: 124,8 · Scope 2: 73,0" data-en="Scope 1: 124.8 · Scope 2: 73.0">Scope 1: 124,8 · Scope 2: 73,0</div>
-      </div>
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-cyan);margin-bottom:12px;" data-pt="Trajetória · 2026-2029" data-en="Trajectory · 2026-2029">Trajetória · 2026-2029</div>
-        <div style="font-size:38px;font-weight:300;line-height:1;color:var(--cg-ink);">−8% <span style="font-size:14px;color:var(--cg-mid);">→ −32%</span></div>
-        <div style="font-size:11px;color:var(--cg-cyan);margin-top:8px;font-weight:600;" data-pt="Redução linear anual até 2030" data-en="Linear annual reduction to 2030">Redução linear anual até 2030</div>
-      </div>
-      <div style="background:var(--cg-bone);padding:28px 24px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cg-green);margin-bottom:12px;" data-pt="Meta · 2030" data-en="Target · 2030">Meta · 2030</div>
-        <div style="font-size:38px;font-weight:300;line-height:1;color:var(--cg-ink);">≤118,7 <span style="font-size:14px;color:var(--cg-mid);">TonCO₂e</span></div>
-        <div style="font-size:11px;color:var(--cg-green);margin-top:8px;font-weight:600;" data-pt="↓ 40% vs 2025 (em aprovação CA)" data-en="↓ 40% vs 2025 (pending board approval)">↓ 40% vs 2025 (em aprovação CA)</div>
-      </div>
-    </div>
   </div>
 </section>
+
+<div class="subsec-divider sd-green" aria-hidden="true"></div>
 
 <!-- CERTIFICATION STRATEGY -->
 <section class="section bone">
@@ -2779,7 +3247,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="eyebrow fade-up" data-pt="Estratégia de Certificação" data-en="Certification Strategy">Estratégia de Certificação</p>
     <h2 class="heading fade-up" data-pt="Edifícios certificados<br><strong>como prova de qualidade</strong>" data-en="Certified buildings<br><strong>as proof of quality</strong>">Edifícios certificados<br><strong>como prova de qualidade</strong></h2>
 
-    <div class="stagger" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--cg-border);border:1px solid var(--cg-border);margin-bottom:32px;">
+    <div class="stagger" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--cg-putty);border:0;margin-bottom:32px;">
       <div style="background:var(--cg-putty);padding:28px 24px;">
         <div style="display:inline-block;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:4px 8px;border-radius:2px;background:#CDEBD8;color:var(--cg-esg-economic);margin-bottom:10px;" data-pt="Cobertura" data-en="Coverage">Cobertura</div>
         <div style="font-size:36px;font-weight:300;line-height:1;color:var(--cg-ink);">95,8<span style="font-size:14px;color:var(--cg-mid);margin-left:4px;">%</span></div>
@@ -2814,6 +3282,8 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     </div>
   </div>
 </section>
+
+<div class="subsec-divider sd-green" aria-hidden="true"></div>
 
 <!-- GOALS / FUTURE -->
 <section class="section">
@@ -2863,6 +3333,18 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       </div>
     </div>
 
+    <!-- Vote CTA — narrative bridge into the interactive panel -->
+    <div class="vote-cta fade-up">
+      <span class="vote-cta-eyebrow" data-pt="Análise de Dupla Materialidade · Externa" data-en="Double Materiality · External">Análise de Dupla Materialidade · Externa</span>
+      <h3 data-pt="Diga-nos qual deve ser a <strong>prioridade</strong> das empresas." data-en="Tell us what companies should <strong>prioritise</strong>.">Diga-nos qual deve ser a <strong>prioridade</strong> das empresas.</h3>
+      <a href="#opiniao" class="vote-cta-btn" data-pt="Votar agora" data-en="Vote now">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12l5 5L20 6"/>
+        </svg>
+        <span data-pt="Votar agora" data-en="Vote now">Votar agora</span>
+      </a>
+    </div>
+
   </div>
 </section>
 
@@ -2895,6 +3377,102 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <!-- Center: tiny dot in white -->
     <circle class="names-orbit-center" cx="350" cy="350" r="3.5" opacity="0.8"/>
   </svg>
+</section>
+
+<!-- ── OPINIÃO INTERATIVA · digital pin-board for stakeholder voting ────── -->
+<section class="opiniao" id="opiniao" aria-label="Painel interativo de opinião">
+  <div class="opiniao-inner">
+    <div class="opiniao-head">
+      <p class="opiniao-eyebrow" data-pt="A sua opinião conta · 2030" data-en="Your opinion matters · 2030">A sua opinião conta · 2030</p>
+      <h2 data-pt="Qual deve ser a <strong>prioridade</strong> das empresas e do Castro Group?" data-en="What should companies and <strong>Castro Group</strong> prioritise?">Qual deve ser a <strong>prioridade</strong> das empresas e do Castro Group?</h2>
+      <p class="opiniao-sub" data-pt="Os votos complementam a análise de dupla materialidade do Grupo." data-en="Votes complement the Group's double materiality analysis.">Os votos complementam a análise de dupla materialidade do Grupo.</p>
+      <p class="opiniao-rule" data-pt="↓ Escolha <strong>1 tema por categoria</strong> (Ambiental · Social · Governança) ↓" data-en="↓ Pick <strong>1 topic per category</strong> (Environmental · Social · Governance) ↓">↓ Escolha <strong>1 tema por categoria</strong> (Ambiental · Social · Governança) ↓</p>
+    </div>
+
+    <div class="opiniao-stats" aria-label="Contadores">
+      <div class="op-stat">
+        <strong id="op-visitor-id">—</strong>
+        <span data-pt="Você é o visitante" data-en="You are visitor">Você é o visitante</span>
+      </div>
+      <div class="op-stat">
+        <strong id="op-votes-count">0</strong>
+        <span data-pt="Temas que votou" data-en="Topics voted">Temas que votou</span>
+      </div>
+      <div class="op-stat">
+        <strong id="op-reached-end">✓</strong>
+        <span data-pt="Chegou ao fim" data-en="Reached the end">Chegou ao fim</span>
+      </div>
+    </div>
+
+    <div class="opiniao-grid">
+      <div class="op-pillar" data-pillar="amb">
+        <div class="op-pillar-head">
+          <span class="op-pillar-head-icon">●</span>
+          <span data-pt="Ambiental" data-en="Environmental">Ambiental</span>
+        </div>
+        <div class="op-themes">
+          <button type="button" class="op-theme" data-theme="E1"><span class="op-theme-label" data-pt="Alterações climáticas e emissões GEE" data-en="Climate change &amp; GHG emissions">Alterações climáticas e emissões GEE</span></button>
+          <button type="button" class="op-theme" data-theme="E2"><span class="op-theme-label" data-pt="Eficiência energética e energia renovável" data-en="Energy efficiency &amp; renewables">Eficiência energética e energia renovável</span></button>
+          <button type="button" class="op-theme" data-theme="E3"><span class="op-theme-label" data-pt="Riscos climáticos físicos e de transição" data-en="Physical &amp; transition climate risks">Riscos climáticos físicos e de transição</span></button>
+          <button type="button" class="op-theme" data-theme="E4"><span class="op-theme-label" data-pt="Poluição do ar, água e solo" data-en="Air, water &amp; soil pollution">Poluição do ar, água e solo</span></button>
+          <button type="button" class="op-theme" data-theme="E5"><span class="op-theme-label" data-pt="Consumo e gestão da água" data-en="Water use &amp; management">Consumo e gestão da água</span></button>
+          <button type="button" class="op-theme" data-theme="E6"><span class="op-theme-label" data-pt="Biodiversidade e ecossistemas" data-en="Biodiversity &amp; ecosystems">Biodiversidade e ecossistemas</span></button>
+          <button type="button" class="op-theme" data-theme="E7"><span class="op-theme-label" data-pt="Uso de recursos e economia circular" data-en="Resource use &amp; circular economy">Uso de recursos e economia circular</span></button>
+          <button type="button" class="op-theme" data-theme="E8"><span class="op-theme-label" data-pt="Gestão de resíduos" data-en="Waste management">Gestão de resíduos</span></button>
+        </div>
+      </div>
+
+      <div class="op-pillar" data-pillar="soc">
+        <div class="op-pillar-head">
+          <span class="op-pillar-head-icon">●</span>
+          <span data-pt="Social" data-en="Social">Social</span>
+        </div>
+        <div class="op-themes">
+          <button type="button" class="op-theme" data-theme="S1"><span class="op-theme-label" data-pt="Emprego, condições laborais e rotatividade" data-en="Employment, labour conditions &amp; turnover">Emprego, condições laborais e rotatividade</span></button>
+          <button type="button" class="op-theme" data-theme="S2"><span class="op-theme-label" data-pt="Saúde e segurança ocupacional" data-en="Occupational health &amp; safety">Saúde e segurança ocupacional</span></button>
+          <button type="button" class="op-theme" data-theme="S3"><span class="op-theme-label" data-pt="Remuneração justa e negociação colectiva" data-en="Fair pay &amp; collective bargaining">Remuneração justa e negociação colectiva</span></button>
+          <button type="button" class="op-theme" data-theme="S4"><span class="op-theme-label" data-pt="Formação e desenvolvimento de colaboradores" data-en="Employee training &amp; development">Formação e desenvolvimento de colaboradores</span></button>
+          <button type="button" class="op-theme" data-theme="S5"><span class="op-theme-label" data-pt="Diversidade, equidade e inclusão" data-en="Diversity, equity &amp; inclusion">Diversidade, equidade e inclusão</span></button>
+          <button type="button" class="op-theme" data-theme="S6"><span class="op-theme-label" data-pt="Direitos humanos nas operações próprias" data-en="Human rights · own operations">Direitos humanos nas operações próprias</span></button>
+          <button type="button" class="op-theme" data-theme="S7"><span class="op-theme-label" data-pt="Direitos humanos na cadeia de valor" data-en="Human rights · value chain">Direitos humanos na cadeia de valor</span></button>
+          <button type="button" class="op-theme" data-theme="S8"><span class="op-theme-label" data-pt="Impacto nas comunidades locais" data-en="Impact on local communities">Impacto nas comunidades locais</span></button>
+          <button type="button" class="op-theme" data-theme="S9"><span class="op-theme-label" data-pt="Saúde, segurança e bem-estar dos utilizadores finais" data-en="End-user health, safety &amp; wellbeing">Saúde, segurança e bem-estar dos utilizadores finais</span></button>
+        </div>
+      </div>
+
+      <div class="op-pillar" data-pillar="gov">
+        <div class="op-pillar-head">
+          <span class="op-pillar-head-icon">●</span>
+          <span data-pt="Governança" data-en="Governance">Governança</span>
+        </div>
+        <div class="op-themes">
+          <button type="button" class="op-theme" data-theme="G1"><span class="op-theme-label" data-pt="Ética empresarial e anticorrupção" data-en="Business ethics &amp; anti-corruption">Ética empresarial e anticorrupção</span></button>
+          <button type="button" class="op-theme" data-theme="G2"><span class="op-theme-label" data-pt="Cultura corporativa e conduta" data-en="Corporate culture &amp; conduct">Cultura corporativa e conduta</span></button>
+          <button type="button" class="op-theme" data-theme="G3"><span class="op-theme-label" data-pt="Gestão de relações com fornecedores" data-en="Supplier relationship management">Gestão de relações com fornecedores</span></button>
+          <button type="button" class="op-theme" data-theme="G4"><span class="op-theme-label" data-pt="Diversidade nos órgãos de governança" data-en="Diversity in governance bodies">Diversidade nos órgãos de governança</span></button>
+          <button type="button" class="op-theme" data-theme="G5"><span class="op-theme-label" data-pt="Alinhamento com a Taxonomia UE" data-en="EU Taxonomy alignment">Alinhamento com a Taxonomia UE</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="opiniao-submit-row">
+      <div class="opiniao-submit-cluster">
+        <button type="button" class="opiniao-submit" id="opSubmit" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>
+          <span data-pt="Submeter votos" data-en="Submit votes">Submeter votos</span>
+        </button>
+        <button type="button" class="opiniao-share" id="opShare" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8a3 3 0 1 0-2.83-4M18 8a3 3 0 1 0 0 6M18 8L8 12M18 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM18 16L8 12M8 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+          </svg>
+          <span data-pt="Partilhar" data-en="Share">Partilhar</span>
+        </button>
+      </div>
+      <p class="opiniao-submit-hint" id="opSubmitHint" data-pt="Vote em pelo menos uma categoria para submeter." data-en="Vote in at least one category to submit.">Vote em pelo menos uma categoria para submeter.</p>
+    </div>
+
+    <p class="opiniao-credits" data-pt="Os votos são guardados no seu navegador (localStorage). Para visualização agregada da opinião de todos os stakeholders, contacte <strong>sustainability@castro-group.pt</strong>.<br>Painel inspirado em <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios." data-en="Votes are stored locally in your browser. For aggregated stakeholder data, contact <strong>sustainability@castro-group.pt</strong>.<br>Panel inspired by <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios.">Os votos são guardados no seu navegador (localStorage). Para visualização agregada da opinião de todos os stakeholders, contacte <strong>sustainability@castro-group.pt</strong>.<br>Painel inspirado em <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios.</p>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -2954,176 +3532,268 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 /* ── RICH KPI MODAL v2 (PILLAR_MODAL_SPEC.md) ──────────────────────────── */
 /* Activated when card has data-rich="<kpi-id>". Composition follows the
    printed pillar layout: mono eyebrow + large headline with inline KPI,
-   then a stack of chart blocks rendered against a saturated blue card. */
+   then a stack of chart blocks rendered against a saturated cyan card. */
 .data-modal.is-rich {
   padding: 0;
-  max-width: min(1100px, 92vw);
+  max-width: min(880px, 92vw);
   max-height: 86vh; overflow-y: auto;
 }
 .rich-kpi {
   display: block;
-  padding: 40px 44px 36px;
+  padding: 26px 30px 24px;
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .rkv2-pillarbar {
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid var(--cg-border);
-  padding-bottom: 18px; margin-bottom: 22px;
+  padding-bottom: 14px; margin-bottom: 16px;
 }
 .rkv2-eyebrow {
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
-  text-transform: uppercase; color: #E87A2E;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--cg-orange);
 }
 .rkv2-eyebrow .rkv2-bracket { color: var(--cg-mid); margin-right: 6px; }
 .rkv2-headline {
-  font-size: clamp(28px, 3.4vw, 42px);
+  font-size: clamp(26px, 3vw, 38px);
   font-weight: 300; line-height: 1.12; letter-spacing: -0.01em;
   color: var(--cg-ink);
-  margin: 0 0 14px;
+  margin: 0 0 10px;
 }
 .rkv2-headline .rkv2-num { font-weight: 400; }
 .rkv2-headline .rkv2-unit { font-size: 0.5em; color: var(--cg-mid); margin-left: 4px; font-weight: 400; }
-.rkv2-headline .rkv2-sep { color: var(--cg-border); margin: 0 14px; font-size: 0.7em; }
-.rkv2-headline .rkv2-delta { color: #E87A2E; font-weight: 400; }
-.rkv2-headline .rkv2-delta.is-positive { color: #2D7B4F; }
+.rkv2-headline .rkv2-sep { color: var(--cg-border); margin: 0 12px; font-size: 0.7em; }
+.rkv2-headline .rkv2-delta { color: var(--cg-orange); font-weight: 400; }
+.rkv2-headline .rkv2-delta.is-positive { color: var(--cg-green); }
 .rkv2-desc {
-  font-size: 14px; line-height: 1.65; color: var(--cg-mid);
-  max-width: 720px; margin: 0 0 28px;
+  font-size: 13.5px; line-height: 1.6; color: var(--cg-mid);
+  max-width: 720px; margin: 0 0 20px;
 }
 
-/* Layout: top row = main chart + optional side card */
+/* Layout: top row = main chart + optional side card.
+   Charts host uses flex-column gap so every chart block (toprow,
+   horizontal bars, sub-stacks) sits with a consistent gap and never
+   collapses into the next one (María: "no estén sobrepuestos"). */
+.rkv2-charts-host { display: flex; flex-direction: column; gap: 14px; }
 .rkv2-toprow {
-  display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px;
-  margin-bottom: 16px;
+  display: grid; grid-template-columns: 1.55fr 1fr; gap: 12px;
 }
 .rkv2-toprow.is-single { grid-template-columns: 1fr; }
 .rkv2-subs {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  margin-bottom: 16px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
 }
 
-/* Card primitives */
+/* Card primitives — cyan from Situação Atual */
 .rkv2-card {
-  background: #3F7EA8;                /* --blue-bg */
-  border-radius: 4px;
-  padding: 28px 30px;
+  background: var(--cg-cyan);
+  border-radius: 6px;
+  padding: 14px 18px 16px;
   color: #fff;
   position: relative;
   overflow: hidden;
 }
-.rkv2-card.is-dark { background: #1a1a1a; }
+.rkv2-card.is-dark { background: var(--cg-dark-ink); }
 .rkv2-card.is-beige { background: #DCD9D0; color: var(--cg-ink); }
+
+/* Subtle tech accents: corner ticks */
+.rkv2-card::before,
+.rkv2-card::after {
+  content: ''; position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.rkv2-card::before { top: 8px; left: 8px;  border-right: 0; border-bottom: 0; }
+.rkv2-card::after  { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+.rkv2-card.is-beige::before,
+.rkv2-card.is-beige::after { border-color: rgba(26,31,46,0.14); }
+
 .rkv2-card-head {
   display: flex; align-items: baseline; gap: 8px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
-  text-transform: uppercase; color: #E87A2E;
-  margin-bottom: 18px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.78);
+  margin-bottom: 22px;
+  white-space: nowrap;
 }
-.rkv2-card.is-beige .rkv2-card-head { color: #E87A2E; }
-.rkv2-card-head .rkv2-arrow { color: #fff; font-size: 11px; }
-.rkv2-card.is-beige .rkv2-card-head .rkv2-arrow { color: var(--cg-ink); }
-.rkv2-card-title {
-  font-size: 14px; font-weight: 500; color: #fff;
-  letter-spacing: 0.02em;
+.rkv2-card.is-beige .rkv2-card-head { color: var(--cg-mid); }
+.rkv2-card-head .rkv2-arrow { color: var(--cg-orange); font-size: 10px; }
+.rkv2-card.is-beige .rkv2-card-head .rkv2-arrow { color: var(--cg-orange); }
+.rkv2-card-title { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; color: inherit; }
+
+/* Stagger reveal animation when modal opens — bubble grows in place from
+   its centre to its final size, no overshoot, no slide. The translate
+   stays inside the keyframe so the bubble keeps its anchored position. */
+@keyframes rkv2-pop {
+  0%   { transform: translate(-50%, -50%) scale(0); }
+  100% { transform: translate(-50%, -50%) scale(1); }
 }
-.rkv2-card.is-beige .rkv2-card-title { color: var(--cg-ink); }
+@keyframes rkv2-grow-w {
+  0%   { width: 0; }
+  100% { width: var(--target-w); }
+}
+@keyframes rkv2-grow-h {
+  0%   { height: 0; }
+  100% { height: var(--target-h); }
+}
 
 /* BUBBLE CHART */
 .rkv2-bubble {
-  display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px;
-  align-items: center; min-height: 340px;
+  display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px;
+  align-items: center; min-height: 260px;
 }
 .rkv2-bubble-stage {
-  position: relative; height: 340px;
-  display: flex; align-items: center; justify-content: center;
+  position: relative; height: 260px;
 }
 .rkv2-bubble-dot {
   position: absolute; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 500; color: var(--cg-ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px; font-weight: 500; color: var(--cg-ink);
   letter-spacing: -0.01em;
+  cursor: default;
+  animation: rkv2-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  transition: transform 0.3s var(--cg-ease), box-shadow 0.3s var(--cg-ease);
+  box-shadow: 0 0 0 0 rgba(255,255,255,0);
 }
-.rkv2-bubble-dot.is-primary { background: #DCD9D0; }
-.rkv2-bubble-dot.is-secondary { background: #A8C8DC; }
-.rkv2-bubble-legend { display: flex; flex-direction: column; gap: 6px; }
+.rkv2-bubble-dot:nth-child(1) { animation-delay: 0.05s; }
+.rkv2-bubble-dot:nth-child(2) { animation-delay: 0.20s; }
+.rkv2-bubble-dot:nth-child(3) { animation-delay: 0.35s; }
+/* Bubble palette — 3 distinct tones, all lighter than the cyan section bg,
+   so the 3 activities read as 3 separate items even at a glance. */
+.rkv2-bubble-dot.bg-grey  { background: #DCD9D0; color: var(--cg-ink); }
+.rkv2-bubble-dot.bg-cyan-light { background: #B6DAEC; color: var(--cg-ink); }
+.rkv2-bubble-dot.bg-cyan-deep  { background: #7DB8D9; color: #fff; }
+.rkv2-bubble-dot.is-hot {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.45);
+  z-index: 4;
+}
+.rkv2-bubble-legend { display: flex; flex-direction: column; gap: 4px; }
 .rkv2-bubble-legend-title {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
-  text-transform: uppercase; color: #fff;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
   margin-bottom: 6px;
 }
 .rkv2-bubble-legend-item {
-  display: grid; grid-template-columns: 14px 1fr; gap: 10px;
+  display: grid; grid-template-columns: 12px 1fr; gap: 10px;
   align-items: center;
-  font-size: 12px; color: rgba(255,255,255,0.92); font-weight: 400;
+  font-size: 13px; color: #fff; font-weight: 400;
+  padding: 6px 8px; border-radius: 3px;
+  cursor: default;
+  transition: background 0.2s var(--cg-ease);
 }
+.rkv2-bubble-legend-item:hover { background: rgba(255,255,255,0.10); }
 .rkv2-bubble-legend-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.7);
+  display: inline-block;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #fff;                    /* fallback so the dot is always visible */
+  flex-shrink: 0;
 }
+.rkv2-bubble-legend-dot.bg-grey       { background: #DCD9D0; }
+.rkv2-bubble-legend-dot.bg-cyan-light { background: #B6DAEC; }
+.rkv2-bubble-legend-dot.bg-cyan-deep  { background: #7DB8D9; }
 
 /* HORIZONTAL BARS (year-over-year) */
-.rkv2-hbars { display: flex; flex-direction: column; gap: 24px; }
-.rkv2-hbar-row { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; }
+.rkv2-hbars { display: flex; flex-direction: column; gap: 12px; }
+.rkv2-hbar-row {
+  display: grid; grid-template-columns: 18px 130px 1fr;
+  gap: 12px; align-items: center;
+}
+.rkv2-hbar-legend {
+  display: flex; gap: 18px; margin-top: 14px; padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.16);
+}
+.rkv2-hbar-legend-item {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.92);
+}
+.rkv2-hbar-legend-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+}
+.rkv2-hbar-legend-dot.is-prev { background: rgba(255,255,255,0.55); }
+.rkv2-hbar-legend-dot.is-curr { background: #DCD9D0; }
 .rkv2-hbar-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 600; color: #fff;
-  padding-top: 2px;
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
 }
-.rkv2-hbar-pairs { display: flex; flex-direction: column; gap: 8px; }
+.rkv2-hbar-name {
+  font-size: 12px; font-weight: 500; color: #fff;
+  line-height: 1.3;
+}
+.rkv2-hbar-pairs { display: flex; flex-direction: column; gap: 6px; }
 .rkv2-hbar-pair {
-  display: grid; grid-template-columns: 1fr auto; gap: 14px;
+  display: grid; grid-template-columns: 1fr 165px; gap: 12px;
   align-items: center;
-  font-size: 12px; color: rgba(255,255,255,0.92);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: rgba(255,255,255,0.92);
   font-variant-numeric: tabular-nums;
 }
 .rkv2-hbar-track {
-  height: 10px; border-radius: 999px;
+  height: 8px; border-radius: 999px;
   background: rgba(255,255,255,0.10);
+  position: relative;
 }
 .rkv2-hbar-fill {
   height: 100%; border-radius: 999px;
+  width: 0;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.rkv2-hbar-fill.is-prev { background: #A8C8DC; }
-.rkv2-hbar-fill.is-curr { background: #DCD9D0; }
-.rkv2-hbar-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.rkv2-hbar-fill.is-prev { background: rgba(255,255,255,0.55); transition-delay: 0.15s; }
+.rkv2-hbar-fill.is-curr { background: #DCD9D0; transition-delay: 0.30s; }
+/* Once the rich card is mounted, .is-in class triggers the width to grow
+   to its target value held in --target-w. */
+.rkv2-hbar-fill.is-in { width: var(--target-w, 0%); }
+.rkv2-hbar-val {
+  white-space: nowrap;
+  text-align: left;                /* hugs the bar, no big right-side gap */
+  padding-left: 4px;
+}
+.rkv2-hbar-val .rkv2-yr { color: rgba(255,255,255,0.55); margin-left: 6px; }
 
-/* VERTICAL STACKED BARS (2024 vs 2025 with segments) */
+/* VERTICAL STACKED BARS (2024 vs 2025 with segments).
+   Each column is a 3-row grid (bar | year | total) so bars always
+   share the same baseline and labels stay aligned across A/B/C. */
 .rkv2-vstack {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
-  align-items: end; min-height: 230px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
   padding-top: 6px;
 }
 .rkv2-vstack-col {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  display: grid;
+  grid-template-rows: 260px auto auto;  /* fixed bar row → consistent baseline */
+  justify-items: center;
+  row-gap: 8px;
 }
+.rkv2-vstack-col > .rkv2-vstack-bar { align-self: end; }
 .rkv2-vstack-bar {
-  width: 100%; max-width: 86px;
+  width: 100%; max-width: 76px;
   display: flex; flex-direction: column-reverse;
-  border-radius: 4px 4px 0 0; overflow: hidden;
-  position: relative;
+  border-radius: 12px 12px 0 0;     /* soft rounded corners — top stays flat */
+  overflow: hidden;                  /* clips the top segment to the curve */
+  animation: rkv2-grow-h 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.30s;
+  height: 0;
 }
 .rkv2-vstack-seg {
-  position: relative;
-  display: flex; align-items: flex-start; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-family: 'JetBrains Mono', monospace; font-size: 10px;
   color: var(--cg-ink); font-weight: 500;
-  padding-top: 6px;
-  line-height: 1.2;
-  text-align: center;
+  text-align: center; line-height: 1.1;
 }
-.rkv2-vstack-seg.is-primary { background: #DCD9D0; }
-.rkv2-vstack-seg.is-secondary { background: #A8C8DC; }
+/* Segment palette — same colour per segment type across every sub-card,
+   so "Eletricidade" looks identical in A, B and C (cross-check).         */
+.rkv2-vstack-seg.bg-grey       { background: #DCD9D0; color: var(--cg-ink); }
+.rkv2-vstack-seg.bg-cyan-light { background: #B6DAEC; color: var(--cg-ink); }
+.rkv2-vstack-seg.bg-cyan-deep  { background: #7DB8D9; color: #fff; }
+.rkv2-vstack-seg.bg-orange     { background: #F0BFA8; color: var(--cg-ink); }
 .rkv2-vstack-year {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px; font-weight: 600; color: #fff;
-  letter-spacing: 0.04em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.10em;
 }
 .rkv2-vstack-total {
   font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  color: rgba(255,255,255,0.85);
+  color: #fff;
 }
 
 /* SIDE CARD (single big KPI) */
@@ -3131,22 +3801,43 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   display: flex; flex-direction: column; justify-content: space-between;
 }
 .rkv2-side-val {
-  font-size: clamp(48px, 6vw, 72px);
-  font-weight: 300; line-height: 1;
+  font-size: clamp(48px, 6.5vw, 84px);
+  font-weight: 300; line-height: 0.95;
   color: #fff; letter-spacing: -0.02em;
   margin: 18px 0 14px;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
 }
-.rkv2-side-val .rkv2-unit { font-size: 0.32em; color: rgba(255,255,255,0.6); margin-left: 4px; vertical-align: 0.4em; font-weight: 400; }
+/* Auto-shrink for long values (e.g. "257.050 m²") so they never clip */
+.rkv2-side-val.is-narrow {
+  font-size: clamp(30px, 3.4vw, 44px);
+}
+.rkv2-side-val .rkv2-unit { font-size: 0.34em; color: rgba(255,255,255,0.65); margin-left: 4px; vertical-align: 0.4em; font-weight: 400; }
 .rkv2-side-note {
-  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.68);
+  font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,0.68);
 }
-.rkv2-card.is-beige .rkv2-side-val { color: var(--cg-ink); }
-.rkv2-card.is-beige .rkv2-side-val .rkv2-unit { color: var(--cg-mid); }
-.rkv2-card.is-beige .rkv2-side-note { color: var(--cg-mid); }
 
-/* Sub-card variant: blue card hosting a stacked vertical chart */
+/* Sub-card variant: cyan card hosting a stacked vertical chart */
+.rkv2-card.is-sub { padding-bottom: 16px; }
 .rkv2-card.is-sub .rkv2-card-head { font-size: 9px; }
-.rkv2-card.is-sub .rkv2-card-title { font-size: 13px; }
+.rkv2-substack-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+}
+.rkv2-substack-legend-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; color: rgba(255,255,255,0.92); font-weight: 400;
+}
+.rkv2-substack-legend-swatch {
+  width: 10px; height: 10px; border-radius: 50%;   /* bolita, no cuadrado */
+  background: #fff;
+  flex-shrink: 0;
+}
+.rkv2-substack-legend-swatch.bg-grey       { background: #DCD9D0; }
+.rkv2-substack-legend-swatch.bg-cyan-light { background: #B6DAEC; }
+.rkv2-substack-legend-swatch.bg-cyan-deep  { background: #7DB8D9; }
+.rkv2-substack-legend-swatch.bg-orange     { background: #F0BFA8; }
 
 /* Hide the legacy generic chart when rich mode is on */
 .data-modal.is-rich #dm-chart,
@@ -3162,16 +3853,25 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .rkv2-toprow { grid-template-columns: 1fr; }
   .rkv2-subs { grid-template-columns: repeat(2, 1fr); }
   .rkv2-bubble { grid-template-columns: 1fr; }
-  .rkv2-bubble-stage { height: 220px; }
+  .rkv2-bubble-stage { height: 200px; }
+  .rkv2-hbar-row { grid-template-columns: 18px 1fr; }
+  .rkv2-hbar-row .rkv2-hbar-name { grid-column: 2; }
+  .rkv2-hbar-row .rkv2-hbar-pairs { grid-column: 2; }
 }
 @media (max-width: 600px) {
-  .rich-kpi { padding: 26px 22px 24px; }
-  .rkv2-card { padding: 22px 20px; }
+  .rich-kpi { padding: 22px 18px 22px; }
+  .rkv2-card { padding: 16px 18px 18px; }
   .rkv2-subs { grid-template-columns: 1fr; }
 }
 /* Detail blocks (PDF-sourced) inside empresas/fases cards — shown only inside modal */
 .kpi-card .kpi-detail, .metric-card .kpi-detail { display: none; }
 .kpi-card[data-detail], .metric-card[data-detail],
+.pf-detail-card { transition: background 0.25s var(--cg-ease), box-shadow 0.25s var(--cg-ease); --cg-accent-rgb: 251, 118, 34; }
+.pf-detail-card[data-detail="fundo"]:hover,
+.pf-detail-card[data-detail="fase"]:hover {
+  background: rgba(var(--cg-accent-rgb), 0.07) !important;
+  box-shadow: inset 0 0 0 2px rgba(var(--cg-accent-rgb), 0.95);
+}
 .pf-detail-card[data-detail] { cursor: pointer; }
 .kpi-card[data-detail]:hover, .metric-card[data-detail]:hover {
   outline: 1px solid var(--cg-border-soft);
@@ -3226,6 +3926,12 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 </style>
 
 <!-- ── BACK TO TOP ── -->
+<a class="vote-fab" id="voteFab" href="#opiniao" aria-label="Votar prioridades ESG">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 12l5 5L20 6"/>
+  </svg>
+  <span data-pt="Vote" data-en="Vote">Vote</span>
+</a>
 <button class="back-to-top" type="button" aria-label="Voltar ao topo" onclick="scrollToTopSmooth()">↑</button>
 
 <!-- ── CURSOR ORB ── -->
@@ -3466,10 +4172,18 @@ function scrollToTopSmooth() {
 }
 (function setupBackToTop() {
   const btn = document.querySelector('.back-to-top');
-  if (!btn) return;
+  const fab = document.querySelector('.vote-fab');
+  if (!btn && !fab) return;
+  // Hide the vote FAB once the user is already inside the panel
+  // (no point pushing them to where they already are).
+  const opiniao = document.getElementById('opiniao');
   function toggle() {
-    if (window.scrollY > 400) btn.classList.add('visible');
-    else btn.classList.remove('visible');
+    const past = window.scrollY > 400;
+    if (btn) btn.classList.toggle('visible', past);
+    if (fab) {
+      const inPanel = opiniao && (opiniao.getBoundingClientRect().top < window.innerHeight * 0.6);
+      fab.classList.toggle('visible', past && !inPanel);
+    }
   }
   window.addEventListener('scroll', toggle, { passive: true });
   toggle();
@@ -3496,57 +4210,59 @@ const RICH_KPI = {
   energia: {
     pillarIdx: '02.1', pillarName: 'Environmental', label: 'Energia',
     headline: { lead: 'Consumo de energia', value: '1.999,4', unit: 'MWh', delta: '−12,6%', deltaPositive: true },
-    description: 'Em 2025, o consumo energético total do Castro Group totalizou 1.999,4 MWh, distribuído por três segmentos. A Operação sob gestão por terceiros representa a maior parcela (64,7%), seguida pela Operação CG (23,0%) e pela Construção (12,3%).',
+    description: 'Em 2025, o consumo energético total do Castro Group totalizou 1.999,4 MWh, distribuído por três segmentos. A Operação sob gestão por terceiros representa a maior parcela, seguida pela Operação CG e pela Construção.',
     charts: [
-      { type: 'bubble', title: 'Distribuição por Atividade · 2025',
+      { type: 'bubble', title: 'Distribuição por Atividade · 2025', legendTitle: 'Atividade',
         bubbles: [
-          { label: 'Operação (Terceiros)', pct: 64.7, value: 1295.5, kind: 'primary' },
-          { label: 'Operação (Gestão CG)', pct: 23.0, value: 458.9,  kind: 'secondary' },
-          { label: 'Construção',           pct: 12.3, value: 245.0,  kind: 'secondary' }
+          { label: 'Operação · Terceiros', pct: 64.7, value: 1295.5, color: 'bg-grey' },
+          { label: 'Operação · Gestão CG', pct: 23.0, value: 458.9,  color: 'bg-cyan-light' },
+          { label: 'Construção',           pct: 12.3, value: 245.0,  color: 'bg-cyan-deep' }
         ],
-        side: { type: 'kpi', title: 'Energia renovável', value: '16,6', unit: '%',
+        side: { type: 'kpi', title: 'Energia renovável · 2025', value: '16,6', unit: '%',
                 note: '5,8% contratos verdes (Garantias de Origem) + 10,8% produção fotovoltaica on-site.' }
       },
-      { type: 'horizontalBars', title: 'Consumo por Atividade · MWh',
+      { type: 'horizontalBars', title: 'Consumo por Atividade', unit: 'MWh',
         rows: [
           { label: 'A', name: 'Construção',          prev: { year: 2024, value: 348.7,  intensity: '11,3 kWh/m²' }, curr: { year: 2025, value: 245.0,  intensity: '7,9 kWh/m²' } },
-          { label: 'B', name: 'Operação (Gestão CG)', prev: { year: 2024, value: 651.3,  intensity: '33,0 kWh/m²' }, curr: { year: 2025, value: 458.9,  intensity: '23,3 kWh/m²' } },
-          { label: 'C', name: 'Operação (Terceiros)', prev: { year: 2024, value: 1288.9, intensity: '134,5 kWh/m²' }, curr: { year: 2025, value: 1295.5, intensity: '135,2 kWh/m²' } }
+          { label: 'B', name: 'Operação Gestão CG',  prev: { year: 2024, value: 651.3,  intensity: '33,0 kWh/m²' }, curr: { year: 2025, value: 458.9,  intensity: '23,3 kWh/m²' } },
+          { label: 'C', name: 'Operação Terceiros',  prev: { year: 2024, value: 1288.9, intensity: '134,5 kWh/m²' }, curr: { year: 2025, value: 1295.5, intensity: '135,2 kWh/m²' } }
         ]
       },
-      { type: 'subStacks', title: 'Consumo por Tipo · subatividades',
+      // Cross-check: same colour per segment label across all 3 sub-cards.
+      // Eletricidade → bg-cyan-light · Gasóleo → bg-grey · Gás Natural → bg-cyan-deep.
+      { type: 'subStacks', unit: 'MWh',
         cards: [
-          { eyebrow: 'A. Construção', title: 'Eletricidade + Gasóleo',
+          { eyebrow: 'A · Construção',
             cols: [
               { year: 2024, total: '348,7 MWh', segments: [
-                { label: 'Eletricidade · 103,3', value: 103.3, kind: 'secondary' },
-                { label: 'Gasóleo · 245,4',      value: 245.4, kind: 'primary' }
+                { label: 'Eletricidade', value: 103.3, color: 'bg-cyan-light' },
+                { label: 'Gasóleo',      value: 245.4, color: 'bg-grey' }
               ]},
               { year: 2025, total: '245,0 MWh', segments: [
-                { label: 'Eletricidade · 140,1', value: 140.1, kind: 'secondary' },
-                { label: 'Gasóleo · 104,8',      value: 104.8, kind: 'primary' }
+                { label: 'Eletricidade', value: 140.1, color: 'bg-cyan-light' },
+                { label: 'Gasóleo',      value: 104.8, color: 'bg-grey' }
               ]}
             ]
           },
-          { eyebrow: 'B. Op. (Gestão CG)', title: 'Eletricidade',
+          { eyebrow: 'B · Operação CG',
             cols: [
               { year: 2024, total: '651,3 MWh', segments: [
-                { label: 'Eletricidade · 651,3', value: 651.3, kind: 'primary' }
+                { label: 'Eletricidade', value: 651.3, color: 'bg-cyan-light' }
               ]},
               { year: 2025, total: '458,9 MWh', segments: [
-                { label: 'Eletricidade · 458,9', value: 458.9, kind: 'primary' }
+                { label: 'Eletricidade', value: 458.9, color: 'bg-cyan-light' }
               ]}
             ]
           },
-          { eyebrow: 'C. Op. (Terceiros)', title: 'Eletricidade + Gás Natural',
+          { eyebrow: 'C · Operação Terceiros',
             cols: [
               { year: 2024, total: '1.288,9 MWh', segments: [
-                { label: 'Eletricidade · 1.074,5', value: 1074.5, kind: 'secondary' },
-                { label: 'Gás Natural · 214,4',    value: 214.4,  kind: 'primary' }
+                { label: 'Eletricidade', value: 1074.5, color: 'bg-cyan-light' },
+                { label: 'Gás Natural',  value: 214.4,  color: 'bg-cyan-deep' }
               ]},
               { year: 2025, total: '1.295,5 MWh', segments: [
-                { label: 'Eletricidade · 1.081,1', value: 1081.1, kind: 'secondary' },
-                { label: 'Gás Natural · 214,4',    value: 214.4,  kind: 'primary' }
+                { label: 'Eletricidade', value: 1081.1, color: 'bg-cyan-light' },
+                { label: 'Gás Natural',  value: 214.4,  color: 'bg-cyan-deep' }
               ]}
             ]
           }
@@ -3558,23 +4274,349 @@ const RICH_KPI = {
   agua: {
     pillarIdx: '02.2', pillarName: 'Environmental', label: 'Água',
     headline: { lead: 'Consumo de água', value: '13.348,2', unit: 'm³', delta: '−9,5%', deltaPositive: true },
-    description: 'Redução face a 2024 (14.747,3 m³). A Operação sob gestão por terceiros é a maior parcela (48,9%), seguida pela Construção (27,5%) e pela Operação CG (23,6%) — a fase de obra continua a pesar pela intensidade do SPARK e The Breeze.',
+    description: 'Redução face a 2024 (14.747,3 m³). A Operação sob gestão por terceiros é a maior parcela, seguida pela Construção e pela Operação CG — a fase de obra continua a pesar pela intensidade do SPARK e The Breeze.',
     charts: [
-      { type: 'bubble', title: 'Distribuição por Atividade · 2025',
+      { type: 'bubble', title: 'Distribuição por Atividade · 2025', legendTitle: 'Atividade',
         bubbles: [
-          { label: 'Operação (Terceiros)', pct: 48.9, value: 6525.0, kind: 'primary' },
-          { label: 'Construção',           pct: 27.5, value: 3668.2, kind: 'secondary' },
-          { label: 'Operação (Gestão CG)', pct: 23.6, value: 3155.0, kind: 'secondary' }
+          { label: 'Operação · Terceiros', pct: 48.9, value: 6525.0, color: 'bg-grey' },
+          { label: 'Construção',           pct: 27.5, value: 3668.2, color: 'bg-cyan-light' },
+          { label: 'Operação · Gestão CG', pct: 23.6, value: 3155.0, color: 'bg-cyan-deep' }
         ],
-        side: { type: 'kpi', title: 'Água reutilizada', value: '0,0', unit: '%',
+        side: { type: 'kpi', title: 'Água reutilizada · 2025', value: '0,0', unit: '%',
                 note: 'Sem capacidade instalada em 2025. A La Movida é o 1.º ativo da carteira com reservatório de águas pluviais; o SPARK incorporará o mesmo sistema.' }
       },
-      { type: 'horizontalBars', title: 'Consumo por Atividade · m³',
+      { type: 'horizontalBars', title: 'Consumo por Atividade', unit: 'm³',
         rows: [
           { label: 'A', name: 'Construção',          prev: { year: 2024, value: 3564.3, intensity: '0,1 m³/m²' }, curr: { year: 2025, value: 3668.2, intensity: '0,1 m³/m²' } },
-          { label: 'B', name: 'Operação (Gestão CG)', prev: { year: 2024, value: 4670.0, intensity: '0,2 m³/m²' }, curr: { year: 2025, value: 3155.0, intensity: '0,2 m³/m²' } },
-          { label: 'C', name: 'Operação (Terceiros)', prev: { year: 2024, value: 6513.0, intensity: '0,7 m³/m²' }, curr: { year: 2025, value: 6525.0, intensity: '0,7 m³/m²' } }
+          { label: 'B', name: 'Operação Gestão CG',  prev: { year: 2024, value: 4670.0, intensity: '0,2 m³/m²' }, curr: { year: 2025, value: 3155.0, intensity: '0,2 m³/m²' } },
+          { label: 'C', name: 'Operação Terceiros',  prev: { year: 2024, value: 6513.0, intensity: '0,7 m³/m²' }, curr: { year: 2025, value: 6525.0, intensity: '0,7 m³/m²' } }
         ]
+      }
+    ]
+  },
+
+  renovavel: {
+    pillarIdx: '02.3', pillarName: 'Environmental', label: 'Renovável',
+    headline: { lead: 'Energia renovável', value: '16,6', unit: '%', delta: 'em 2025', deltaPositive: true },
+    description: 'A componente renovável combina contratos de eletricidade verde (Garantias de Origem) com produção fotovoltaica on-site. O restante do consumo é fornecido pela rede convencional.',
+    charts: [
+      { type: 'bubble', title: 'Mix de Energia · 2025', legendTitle: 'Origem',
+        bubbles: [
+          { label: 'Rede convencional', pct: 83.4, value: 1667.5, color: 'bg-grey' },
+          { label: 'Fotovoltaica on-site', pct: 10.8, value: 215.9, color: 'bg-cyan-light' },
+          { label: 'Contratos verdes (GdO)', pct: 5.8, value: 116.0, color: 'bg-cyan-deep' }
+        ],
+        side: { type: 'kpi', title: 'CO₂ compensado · 2025', value: '0,1', unit: '%',
+                note: '18,2 TonCO₂e compensadas via Garantias de Origem. Sem GdO, o total Scope 1+2+3 seria 13.698,3 TonCO₂e.' }
+      }
+    ]
+  },
+
+  emissoes: {
+    pillarIdx: '02.4', pillarName: 'Environmental', label: 'Emissões',
+    headline: { lead: 'Scope 1 + 2', value: '197,9', unit: 'TonCO₂e', delta: '−25,3%', deltaPositive: true },
+    description: 'Scope 1 (frota + gasóleo em obra) caiu 25,5% e Scope 2 (eletricidade) caiu 25,0%. O Scope 3, dominado por compras e operação de terceiros (98,6% do total), totalizou 13.482,3 TonCO₂e — total geral 13.680,1 TonCO₂e (+1,6% vs 2024).',
+    charts: [
+      { type: 'bubble', title: 'Emissões por Scope · 2025', legendTitle: 'Scope',
+        bubbles: [
+          { label: 'Scope 3 (cadeia de valor)', pct: 98.6, value: 13482.3, color: 'bg-grey' },
+          { label: 'Scope 1 (diretas)',          pct: 0.9,  value: 124.8,   color: 'bg-cyan-deep' },
+          { label: 'Scope 2 (eletricidade)',     pct: 0.5,  value: 73.0,    color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Total 1+2+3 · 2025', value: '13.680', unit: 'TonCO₂e',
+                note: '+1,6% vs 2024 (13.468,4). 185,6 kgCO₂e/m²/ano. 0,1% (18,2 Ton) compensadas via GdO.' }
+      },
+      { type: 'horizontalBars', title: 'Scope 1+2 · evolução', unit: 'TonCO₂e',
+        rows: [
+          { label: 'A', name: 'Scope 1 · Frota',    prev: { year: 2024, value: 110.4, intensity: '1,5 kgCO₂/m²' }, curr: { year: 2025, value: 100.4, intensity: '1,4 kgCO₂/m²' } },
+          { label: 'B', name: 'Scope 1 · Obra',     prev: { year: 2024, value: 57.2,  intensity: '0,8 kgCO₂/m²' }, curr: { year: 2025, value: 24.4,  intensity: '0,3 kgCO₂/m²' } },
+          { label: 'C', name: 'Scope 2 · Operação', prev: { year: 2024, value: 81.2,  intensity: '1,1 kgCO₂/m²' }, curr: { year: 2025, value: 51.2,  intensity: '0,7 kgCO₂/m²' } },
+          { label: 'D', name: 'Scope 2 · Obra',     prev: { year: 2024, value: 16.1,  intensity: '0,2 kgCO₂/m²' }, curr: { year: 2025, value: 21.9,  intensity: '0,3 kgCO₂/m²' } }
+        ]
+      }
+    ]
+  },
+
+  residuos: {
+    pillarIdx: '02.5', pillarName: 'Environmental', label: 'Resíduos',
+    headline: { lead: 'Resíduos produzidos', value: '486,9', unit: 'Ton', delta: '97,8% valorizados', deltaPositive: true },
+    description: 'A construção representa 99,1% dos resíduos (482,7 Ton, todos encaminhados para operadoras licenciadas). Na operação direta, 45,2% dos resíduos são recuperados via separação seletiva.',
+    charts: [
+      { type: 'bubble', title: 'Distribuição por Atividade · 2025', legendTitle: 'Atividade',
+        bubbles: [
+          { label: 'Construção',   pct: 99.1, value: 482.7, color: 'bg-grey' },
+          { label: 'Operação CG',  pct: 0.9,  value: 4.2,   color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Recuperação na operação', value: '45,2', unit: '%',
+                note: '6 fluxos de separação: RSU, Ecoponto Amarelo, Azul, Verde, Orgânicos e Cápsulas. Cápsulas de café com recolha dedicada.' }
+      },
+      { type: 'subStacks', unit: 'Ton',
+        cards: [
+          { eyebrow: 'A · Construção',
+            cols: [
+              { year: 2024, total: '301,1 Ton', segments: [
+                { label: 'Construção', value: 301.1, color: 'bg-grey' }
+              ]},
+              { year: 2025, total: '482,7 Ton', segments: [
+                { label: 'Construção', value: 482.7, color: 'bg-grey' }
+              ]}
+            ]
+          },
+          { eyebrow: 'B · Operação CG · por fluxo',
+            cols: [
+              { year: 2024, total: '4,2 Ton', segments: [
+                { label: 'RSU',         value: 1.9, color: 'bg-grey' },
+                { label: 'Ecoponto Az.', value: 0.7, color: 'bg-cyan-light' },
+                { label: 'Cápsulas',     value: 0.7, color: 'bg-cyan-deep' },
+                { label: 'Orgânicos',    value: 0.5, color: 'bg-orange' }
+              ]},
+              { year: 2025, total: '4,2 Ton', segments: [
+                { label: 'RSU',         value: 1.9, color: 'bg-grey' },
+                { label: 'Ecoponto Az.', value: 0.7, color: 'bg-cyan-light' },
+                { label: 'Cápsulas',     value: 0.7, color: 'bg-cyan-deep' },
+                { label: 'Orgânicos',    value: 0.5, color: 'bg-orange' }
+              ]}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  mobilidade: {
+    pillarIdx: '02.6', pillarName: 'Environmental', label: 'Mobilidade',
+    headline: { lead: 'Frota elétrica', value: '41,0', unit: '%', delta: '~59 TonCO₂e evitadas', deltaPositive: true },
+    description: '804.469 km percorridos em 2025 (↓20,7% face a 1.014.334 km em 2024). 35,3% das emissões da frota foram evitadas pela componente elétrica — se todos os VE fossem a gasóleo, as emissões seriam ~55% superiores.',
+    charts: [
+      { type: 'bubble', title: 'Composição da Frota · 2025', legendTitle: 'Combustível',
+        bubbles: [
+          { label: 'Gasóleo',          pct: 53.8, value: 467581, color: 'bg-grey' },
+          { label: 'Elétrico',         pct: 41.0, value: 324564, color: 'bg-cyan-light' },
+          { label: 'Gasolina / GPL',   pct: 5.1,  value: 12324,  color: 'bg-cyan-deep' }
+        ],
+        side: { type: 'kpi', title: 'Emissões evitadas · 2025', value: '35,3', unit: '%',
+                note: '~59 TonCO₂e evitadas pela componente elétrica face ao cenário 100% gasóleo.' }
+      },
+      { type: 'horizontalBars', title: 'Quilómetros por Categoria', unit: 'km',
+        rows: [
+          { label: 'A', name: 'Gasóleo',        prev: { year: 2024, value: 675187.3, intensity: '161,0 gCO₂/km' }, curr: { year: 2025, value: 467581.0, intensity: '208,8 gCO₂/km' } },
+          { label: 'B', name: 'Elétrico',       prev: { year: 2024, value: 307245.0, intensity: '23,8 gCO₂/km' },  curr: { year: 2025, value: 324564.0, intensity: '26,0 gCO₂/km' } },
+          { label: 'C', name: 'Gasolina / GPL', prev: { year: 2024, value: 31902.0,  intensity: '53,6 gCO₂/km' },  curr: { year: 2025, value: 12324.0,  intensity: '223,2 gCO₂/km' } }
+        ]
+      }
+    ]
+  },
+
+  remuneracao: {
+    pillarIdx: '03.1', pillarName: 'Social', label: 'Remuneração',
+    headline: { lead: 'Salário médio mensal', value: '2.018,1', unit: '€', delta: '2,3× salário mínimo', deltaPositive: true },
+    description: '98,2% dos colaboradores recebem acima do salário mínimo nacional (€870). O gap salarial total cresceu de 16,0% para 24,8% — área prioritária para 2026, com foco nas categorias técnico e operacional (obra).',
+    charts: [
+      { type: 'bubble', title: 'Cobertura salarial · 2025', legendTitle: 'Salário',
+        bubbles: [
+          { label: 'Acima do mínimo (€870)', pct: 98.2, value: 56, color: 'bg-grey' },
+          { label: 'No salário mínimo',       pct: 1.8,  value: 1,  color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Gap salarial · 2025', value: '24,8', unit: '%',
+                note: '↑ vs 16,0% em 2024. Por cada 1€ que o homem ganha, a mulher ganha 0,75€ (face a 0,84€ em 2024).' }
+      },
+      { type: 'horizontalBars', title: 'Diferença Salarial por Categoria', unit: '%',
+        rows: [
+          { label: 'A', name: 'Administração',    prev: { year: 2024, value: 0.0,  intensity: 'paridade' }, curr: { year: 2025, value: 0.0,  intensity: 'paridade' } },
+          { label: 'B', name: 'Direção',          prev: { year: 2024, value: 9.5,  intensity: 'favorável ♀' }, curr: { year: 2025, value: 4.6,  intensity: 'favorável ♀' } },
+          { label: 'C', name: 'Gestão',           prev: { year: 2024, value: 6.1,  intensity: '' }, curr: { year: 2025, value: 4.1,  intensity: '' } },
+          { label: 'D', name: 'Técnico',          prev: { year: 2024, value: 5.5,  intensity: '' }, curr: { year: 2025, value: 20.4, intensity: '↑ prioritário' } },
+          { label: 'E', name: 'Operacional',      prev: { year: 2024, value: 23.6, intensity: '' }, curr: { year: 2025, value: 11.0, intensity: '↓ melhoria' } },
+          { label: 'F', name: 'Técnico (Obra)',   prev: { year: 2024, value: 15.2, intensity: '' }, curr: { year: 2025, value: 6.0,  intensity: '↓ melhoria' } }
+        ]
+      }
+    ]
+  },
+
+  formacao: {
+    pillarIdx: '03.2', pillarName: 'Social', label: 'Formação',
+    headline: { lead: 'Horas de formação', value: '1.385', unit: 'h', delta: '−58,5%', deltaPositive: false },
+    description: 'Redução face a 2024 (3.338h) explicada pelo aumento do volume de trabalho. 45,6% dos colaboradores tiveram formação (vs 60,4% em 2024). Compromisso: retomar em 2026 com plano estruturado — 100% da equipa em formação anualmente a partir de 2027.',
+    charts: [
+      { type: 'bubble', title: 'Colaboradores formados · 2025', legendTitle: 'Cobertura',
+        bubbles: [
+          { label: 'Sem formação',         pct: 54.4, value: 31, color: 'bg-grey' },
+          { label: 'Com formação',         pct: 45.6, value: 26, color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Horas por pessoa · 2025', value: '24,3', unit: 'h',
+                note: 'Face a 63,0h/pessoa em 2024. Horas por treinado: 53,3h (vs 104,3h em 2024).' }
+      },
+      { type: 'horizontalBars', title: 'Comparativo 2024 vs 2025', unit: 'h',
+        rows: [
+          { label: 'A', name: 'Horas totais',       prev: { year: 2024, value: 3338, intensity: 'total' }, curr: { year: 2025, value: 1385, intensity: 'total' } },
+          { label: 'B', name: 'Horas/pessoa',       prev: { year: 2024, value: 63,   intensity: 'média' }, curr: { year: 2025, value: 24.3, intensity: 'média' } },
+          { label: 'C', name: 'Horas/treinado',     prev: { year: 2024, value: 104.3, intensity: 'média' }, curr: { year: 2025, value: 53.3, intensity: 'média' } }
+        ]
+      }
+    ]
+  },
+
+  seguranca: {
+    pillarIdx: '03.3', pillarName: 'Social', label: 'Segurança',
+    headline: { lead: 'Taxa de acidentes (VSME)', value: '36,9', unit: '', delta: '−6,8% vs 2024', deltaPositive: true },
+    description: '141 trabalhadores em 4 obras totalizaram 27.104 horas trabalhadas. 5 acidentes não mortais com 1.424h perdidas. A formação SST cresceu 58% (236,8h vs 150h), reforçando uma cultura de segurança em obra que reduz a taxa por VSME.',
+    charts: [
+      { type: 'bubble', title: 'Sinistralidade · 2025', legendTitle: 'Indicador',
+        bubbles: [
+          { label: 'Horas trabalhadas',  pct: 95,  value: 27104, color: 'bg-grey' },
+          { label: 'Horas perdidas',     pct: 5,   value: 1424,  color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Formação SST · 2025', value: '236,8', unit: 'h',
+                note: '+58% face a 150h em 2024. 16,8 min/participante (vs 10,3 min). 5 acidentes não mortais.' }
+      },
+      { type: 'horizontalBars', title: 'Indicadores SST', unit: '',
+        rows: [
+          { label: 'A', name: 'Taxa acidentes (VSME)', prev: { year: 2024, value: 39.6, intensity: '·' }, curr: { year: 2025, value: 36.9, intensity: '·' } },
+          { label: 'B', name: 'Horas perdidas',        prev: { year: 2024, value: 1048, intensity: 'h' }, curr: { year: 2025, value: 1424, intensity: 'h' } },
+          { label: 'C', name: 'Formação SST',          prev: { year: 2024, value: 150,  intensity: 'h' }, curr: { year: 2025, value: 236.8, intensity: 'h' } }
+        ]
+      }
+    ]
+  },
+
+  retencao: {
+    pillarIdx: '03.4', pillarName: 'Social', label: 'Retenção',
+    headline: { lead: 'Taxa de turnover', value: '23,9', unit: '%', delta: '+20 p.p. vs 2024', deltaPositive: false },
+    description: 'Aumento significativo face aos 3,9% de 2024 — área prioritária. Em paralelo, o quadro cresceu de 53 para 57 colaboradores. Reforço da estratégia de retenção: planos de progressão de carreira, proposta de valor e bem-estar organizacional.',
+    charts: [
+      { type: 'bubble', title: 'Equipa por género · 2025', legendTitle: 'Género',
+        bubbles: [
+          { label: 'Masculino · 29', pct: 50.9, value: 29, color: 'bg-grey' },
+          { label: 'Feminino · 28',  pct: 49.1, value: 28, color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Crescimento · 2025', value: '+7,5', unit: '%',
+                note: 'De 53 para 57 colaboradores. Em 2025 foi criado o departamento People Team focado em pessoas.' }
+      }
+    ]
+  },
+
+  performance: {
+    pillarIdx: '03.5', pillarName: 'Social', label: 'Performance',
+    headline: { lead: 'Prémios de performance', value: '78,9', unit: '%', delta: 'vs 84,9% em 2024', deltaPositive: false },
+    description: 'A atribuição de prémios depende do ano de admissão — o colaborador é elegível a partir do ano seguinte. A redução face a 2024 reflete o impacto das novas admissões em 2025 (4 colaboradores adicionais ainda em período de elegibilidade).',
+    charts: [
+      { type: 'bubble', title: 'Elegibilidade · 2025', legendTitle: 'Estado',
+        bubbles: [
+          { label: 'Com prémio',          pct: 78.9, value: 45, color: 'bg-grey' },
+          { label: 'Em período de espera', pct: 21.1, value: 12, color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Cobertura · 2024', value: '84,9', unit: '%',
+                note: '45 dos 57 colaboradores foram distinguidos com prémios em 2025. O critério de elegibilidade mantém-se inalterado.' }
+      }
+    ]
+  },
+
+  comunidade: {
+    pillarIdx: '03.6', pillarName: 'Social', label: 'Comunidade',
+    headline: { lead: 'Investimento externo', value: '126,4', unit: 'k€', delta: '+50% vs 2024', deltaPositive: true },
+    description: 'A componente artística passou de doação monetária (€26k em 2024) para incorporação direta de obras nos projetos do Grupo (€78k em 2025 — Bordalo II e Coletivo RUA). O envolvimento académico cresceu 5,7× em horas, com 4 estágios (3 nacionais + 1 internacional).',
+    charts: [
+      { type: 'bubble', title: 'Distribuição do Investimento · 2025', legendTitle: 'Categoria',
+        bubbles: [
+          { label: 'Artístico (Bordalo II + RUA)', pct: 61.7, value: 78000, color: 'bg-grey' },
+          { label: 'Académico (4 estágios)',        pct: 37.4, value: 47351, color: 'bg-cyan-light' },
+          { label: 'Donações + Voluntariado',       pct: 0.9,  value: 1101,  color: 'bg-cyan-deep' }
+        ],
+        side: { type: 'kpi', title: 'Iniciativas internas · 2025', value: '19', unit: '',
+                note: 'Vs 12 em 2024. Três eixos: desenvolvimento pessoal/profissional, bem-estar nutricional/físico/emocional, e cultura interna/coesão.' }
+      },
+      { type: 'horizontalBars', title: 'Investimento por Categoria', unit: '€',
+        rows: [
+          { label: 'A', name: 'Apoio Artístico',  prev: { year: 2024, value: 26233.7, intensity: '·' }, curr: { year: 2025, value: 78000.0, intensity: '·' } },
+          { label: 'B', name: 'Apoio Académico',  prev: { year: 2024, value: 7963.9,  intensity: '·' }, curr: { year: 2025, value: 47351.2, intensity: '·' } },
+          { label: 'C', name: 'Donações',         prev: { year: 2024, value: 8702.9,  intensity: '·' }, curr: { year: 2025, value: 1015.0,  intensity: '·' } },
+          { label: 'D', name: 'Voluntariado',     prev: { year: 2024, value: 1860.6,  intensity: '·' }, curr: { year: 2025, value: 86.1,    intensity: '·' } }
+        ]
+      }
+    ]
+  },
+
+  distribuido: {
+    pillarIdx: '04.1', pillarName: 'Economic', label: 'Distribuído',
+    headline: { lead: 'Valor económico distribuído', value: '35,0', unit: 'M€', delta: '+12,6% vs 2024', deltaPositive: true },
+    description: 'O Grupo aumentou o valor distribuído aos stakeholders mesmo num contexto económico mais exigente. O reforço foi em pessoal (+15,2%, capital humano) e fornecedores (+14,9%, cadeia de valor). A componente Estado e OEP caiu 32,4% em linha com a menor base tributável.',
+    charts: [
+      { type: 'bubble', title: 'Distribuição por Destino · 2025', legendTitle: 'Destino',
+        bubbles: [
+          { label: 'Fornecedores / Opex',  pct: 92.5, value: 32390000, color: 'bg-grey' },
+          { label: 'Pessoal',              pct: 4.5,  value: 1570000,  color: 'bg-cyan-light' },
+          { label: 'Estado e OEP',         pct: 3.0,  value: 1050000,  color: 'bg-cyan-deep' }
+        ],
+        side: { type: 'kpi', title: 'Total distribuído · 2025', value: '35,00', unit: 'M€',
+                note: 'Vs €31,09M em 2024. Reforço em capital humano e cadeia de valor; redução no Estado em linha com a menor base tributável.' }
+      },
+      { type: 'horizontalBars', title: 'Comparativo 2024 vs 2025', unit: 'M€',
+        rows: [
+          { label: 'A', name: 'Pessoal',                prev: { year: 2024, value: 1.36,  intensity: '+15,2%' }, curr: { year: 2025, value: 1.57,  intensity: 'cap. humano' } },
+          { label: 'B', name: 'Fornecedores / Opex',    prev: { year: 2024, value: 28.18, intensity: '+14,9%' }, curr: { year: 2025, value: 32.39, intensity: 'cadeia valor' } },
+          { label: 'C', name: 'Estado e OEP',           prev: { year: 2024, value: 1.55,  intensity: '−32,4%' }, curr: { year: 2025, value: 1.05,  intensity: 'menor base' } }
+        ]
+      }
+    ]
+  },
+
+  receita: {
+    pillarIdx: '04.2', pillarName: 'Economic', label: 'Receita',
+    headline: { lead: 'Prestações de serviço', value: '24,34', unit: 'M€', delta: '−3,1% vs 2024', deltaPositive: false },
+    description: 'Redução moderada face a €25,13M em 2024, mantendo um volume operacional elevado. O valor económico gerado caiu para €24,55M (vs €39,49M) — reflexo da menor base de contratos e do momento de transição de carteira.',
+    charts: [
+      { type: 'bubble', title: 'Receita vs Valor Gerado · 2025', legendTitle: 'Indicador',
+        bubbles: [
+          { label: 'Valor económico gerado',  pct: 50.2, value: 24.55, color: 'bg-grey' },
+          { label: 'Prestações de serviço',   pct: 49.8, value: 24.34, color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Valor gerado · 2025', value: '24,55', unit: 'M€',
+                note: 'Vs €39,49M em 2024. A queda reflete a transição de carteira; o volume de prestações de serviço mantém-se estável.' }
+      }
+    ]
+  },
+
+  certificacao: {
+    pillarIdx: '03.7', pillarName: 'Governance', label: 'Certificação',
+    headline: { lead: 'GFA com estratégia de certificação', value: '95,8', unit: '%', delta: '1.º LEED Gold emitido', deltaPositive: true },
+    description: 'A carteira tem 19 ativos com GFA total de 257.049,9 m² (excl. landbank). 95,8% do GFA está alinhado com a estratégia de certificação, distribuído por 8 estados: desde o primeiro certificado LEED Gold emitido (La Movida) até projetos com OPR em implementação.',
+    charts: [
+      { type: 'bubble', title: 'Estratégia de Certificação · 2025', legendTitle: 'Fase do ativo',
+        bubbles: [
+          { label: 'Projetos · 71,3%',     pct: 71.3, value: 183354, color: 'bg-grey' },
+          { label: 'Construção · 16,6%',   pct: 16.6, value: 42736,  color: 'bg-cyan-light' },
+          { label: 'Operação · 12,0%',     pct: 12.0, value: 30959,  color: 'bg-cyan-deep' }
+        ],
+        side: { type: 'kpi', title: 'Carteira · 2025', value: '257.050', unit: 'm²',
+                note: '19 ativos (excl. landbank). 1.º LEED Gold emitido em 2025 (La Movida, 0,6% do GFA). SPARK e The Breeze em fase final.' }
+      },
+      { type: 'horizontalBars', title: 'Detalhe por estado de certificação', unit: 'm²',
+        rows: [
+          { label: 'A', name: 'Projetos · com obj. certificar',     prev: { year: 2025, value: 101000.0, intensity: '39,3% · 2 ativos' }, curr: { year: 2025, value: 101000.0, intensity: '39,3% · 2 ativos' } },
+          { label: 'B', name: 'Projetos · OPR em implementação',    prev: { year: 2025, value: 82354.6,  intensity: '32,0% · 3 ativos' }, curr: { year: 2025, value: 82354.6,  intensity: '32,0% · 3 ativos' } },
+          { label: 'C', name: 'Construção · cert. em desenvolv.',   prev: { year: 2025, value: 29080.6,  intensity: '11,3% · 2 ativos' }, curr: { year: 2025, value: 29080.6,  intensity: '11,3% · 2 ativos' } },
+          { label: 'D', name: 'Construção · com obj. certificar',   prev: { year: 2025, value: 13200.0,  intensity: '5,1% · 1 ativo' },  curr: { year: 2025, value: 13200.0,  intensity: '5,1% · 1 ativo' } },
+          { label: 'E', name: 'Operação · com obj. certificar',     prev: { year: 2025, value: 18563.7,  intensity: '7,2% · 2 ativos' }, curr: { year: 2025, value: 18563.7,  intensity: '7,2% · 2 ativos' } },
+          { label: 'F', name: 'Operação · sem obj. certificar',     prev: { year: 2025, value: 10735.0,  intensity: '4,2% · 7 ativos' }, curr: { year: 2025, value: 10735.0,  intensity: '4,2% · 7 ativos' } },
+          { label: 'G', name: 'Operação · certificado emitido',     prev: { year: 2025, value: 1660.0,   intensity: '0,6% · 1 ativo (La Movida)' }, curr: { year: 2025, value: 1660.0, intensity: '0,6% · 1 ativo (La Movida)' } },
+          { label: 'H', name: 'Construção · sem obj. certificar',   prev: { year: 2025, value: 456.0,    intensity: '0,2% · 1 ativo' }, curr: { year: 2025, value: 456.0, intensity: '0,2% · 1 ativo' } }
+        ]
+      }
+    ]
+  },
+
+  ebitda: {
+    pillarIdx: '04.3', pillarName: 'Economic', label: 'EBITDA',
+    headline: { lead: 'EBITDA agregado', value: '−0,82', unit: 'M€', delta: 'vs +0,04 M€ em 2024', deltaPositive: false },
+    description: 'Pressão conjuntural pelo aumento de custos operacionais e redução do valor económico gerado. O valor económico acumulado caiu para −€10,45M (vs +€8,40M em 2024) — resultado do desfasamento temporal entre geração e distribuição de valor, sem comprometer a sustentabilidade operacional de médio/longo prazo.',
+    charts: [
+      { type: 'bubble', title: 'EBITDA vs Acumulado · 2025', legendTitle: 'Indicador',
+        bubbles: [
+          { label: 'Valor económico acumulado', pct: 92.7, value: -10.45, color: 'bg-grey' },
+          { label: 'EBITDA',                    pct: 7.3,  value: -0.82,  color: 'bg-cyan-light' }
+        ],
+        side: { type: 'kpi', title: 'Acumulado · 2025', value: '−10,45', unit: 'M€',
+                note: 'Vs +€8,40M em 2024. Inversão por desfasamento entre geração (€24,55M) e distribuição (€35,00M) de valor.' }
       }
     ]
   }
@@ -3588,7 +4630,12 @@ function _el(tag, opts) {
   const e = isSvg ? document.createElementNS(NS_SVG, tag) : document.createElement(tag);
   if (opts.cls) e.setAttribute('class', opts.cls);
   if (opts.attrs) for (const k in opts.attrs) e.setAttribute(k, opts.attrs[k]);
-  if (opts.style) for (const k in opts.style) e.style[k] = opts.style[k];
+  if (opts.style) for (const k in opts.style) {
+    // CSS custom properties (--*) must go through setProperty,
+    // because element.style['--x'] = '...' silently no-ops.
+    if (k.indexOf('--') === 0) e.style.setProperty(k, opts.style[k]);
+    else e.style[k] = opts.style[k];
+  }
   if (opts.text != null) e.textContent = String(opts.text);
   if (opts.children) opts.children.forEach(c => c && e.appendChild(c));
   return e;
@@ -3603,35 +4650,52 @@ function _rkv2CardHead(title) {
 }
 
 function _rkv2Bubble(chart) {
-  // Bubble area scales with sqrt(pct) so the visual area is proportional.
-  // Sizes capped so the largest bubble fits inside the 340px stage.
+  // Each bubble carries an explicit `color` token: bg-grey / bg-cyan-light /
+  // bg-cyan-deep. María: 3 distinct colours so the 3 activities read apart.
   const stage = _el('div', { cls: 'rkv2-bubble-stage' });
-  const sizes = chart.bubbles.map(b => Math.min(70 + Math.sqrt(b.pct) * 20, 260));
-  // Primary bubble (largest, beige) anchors centre-left; secondaries float
-  // to the right with overlap that echoes the printed bubble diagram.
+  const sizes = chart.bubbles.map(b => Math.min(60 + Math.sqrt(b.pct) * 16, 200));
+  // Slightly raised top-row so the bottom bubble never clips against
+  // the stage edge (María: 23,6% queda tapado).
   const positions = [
-    { left: '38%',  top: '50%', transform: 'translate(-50%, -50%)' },
-    { left: '74%',  top: '32%', transform: 'translate(-50%, -50%)' },
-    { left: '78%',  top: '74%', transform: 'translate(-50%, -50%)' }
+    { left: '36%', top: '48%', transform: 'translate(-50%, -50%)' },
+    { left: '72%', top: '28%', transform: 'translate(-50%, -50%)' },
+    { left: '76%', top: '66%', transform: 'translate(-50%, -50%)' }
   ];
+  const dots = [];
   chart.bubbles.forEach((b, i) => {
     const sz = sizes[i];
+    const colorCls = b.color || 'bg-grey';
     const dot = _el('div', {
-      cls: 'rkv2-bubble-dot ' + (b.kind === 'primary' ? 'is-primary' : 'is-secondary'),
+      cls: 'rkv2-bubble-dot ' + colorCls,
+      attrs: { 'data-bubble-key': String(i) },
       style: Object.assign({
-        width: sz + 'px', height: sz + 'px'
+        width: sz + 'px', height: sz + 'px',
+        fontSize: Math.max(13, Math.min(22, sz * 0.18)) + 'px'
       }, positions[i] || {})
     });
     dot.textContent = b.pct.toFixed(1).replace('.', ',') + '%';
     stage.appendChild(dot);
+    dots.push(dot);
   });
   const legend = _el('div', { cls: 'rkv2-bubble-legend' });
-  legend.appendChild(_el('div', { cls: 'rkv2-bubble-legend-title', text: '▸ Distribuição por Atividade' }));
-  chart.bubbles.forEach(b => {
-    legend.appendChild(_el('div', { cls: 'rkv2-bubble-legend-item', children: [
-      _el('span', { cls: 'rkv2-bubble-legend-dot' }),
-      _el('span', { text: b.label + ' · ' + b.pct.toFixed(1).replace('.', ',') + '%' })
-    ]}));
+  legend.appendChild(_el('div', { cls: 'rkv2-bubble-legend-title', text: '▸ ' + (chart.legendTitle || 'Atividade') }));
+  chart.bubbles.forEach((b, i) => {
+    const colorCls = b.color || 'bg-grey';
+    const item = _el('div', {
+      cls: 'rkv2-bubble-legend-item',
+      attrs: { 'data-bubble-key': String(i) },
+      children: [
+        _el('span', { cls: 'rkv2-bubble-legend-dot ' + colorCls }),
+        _el('span', { text: b.label })
+      ]
+    });
+    legend.appendChild(item);
+    const hot  = () => { dots[i].classList.add('is-hot'); item.classList.add('is-hot'); };
+    const cold = () => { dots[i].classList.remove('is-hot'); item.classList.remove('is-hot'); };
+    item.addEventListener('mouseenter', hot);
+    item.addEventListener('mouseleave', cold);
+    dots[i].addEventListener('mouseenter', hot);
+    dots[i].addEventListener('mouseleave', cold);
   });
   return _el('div', { cls: 'rkv2-card', children: [
     _rkv2CardHead(chart.title),
@@ -3640,52 +4704,87 @@ function _rkv2Bubble(chart) {
 }
 
 function _rkv2HorizontalBars(chart) {
+  // Width of each fill bar is `value / globalMax` so the longest bar in the
+  // whole chart hits 100% and every other bar reads as that fraction.
   const wrap = _el('div', { cls: 'rkv2-hbars' });
+  const unit = chart.unit || '';
   const max = Math.max(...chart.rows.flatMap(r => [r.prev.value, r.curr.value]));
+  let prevYear = null, currYear = null;
   chart.rows.forEach(r => {
+    if (prevYear == null) prevYear = r.prev.year;
+    if (currYear == null) currYear = r.curr.year;
     const fmt = v => v.toLocaleString('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     const pairs = _el('div', { cls: 'rkv2-hbar-pairs' });
     [r.prev, r.curr].forEach((p, idx) => {
       const pct = (p.value / max) * 100;
+      const fill = _el('div', {
+        cls: 'rkv2-hbar-fill ' + (idx === 0 ? 'is-prev' : 'is-curr'),
+        style: { '--target-w': pct.toFixed(2) + '%' }
+      });
+      // María: only value + unit + intensity. Year moves to the legend below.
+      const val = _el('div', { cls: 'rkv2-hbar-val', text: fmt(p.value) + ' ' + unit + ' · ' + p.intensity });
       pairs.appendChild(_el('div', { cls: 'rkv2-hbar-pair', children: [
-        _el('div', { cls: 'rkv2-hbar-track', children: [
-          _el('div', { cls: 'rkv2-hbar-fill ' + (idx === 0 ? 'is-prev' : 'is-curr'), style: { width: pct.toFixed(2) + '%' } })
-        ]}),
-        _el('div', { cls: 'rkv2-hbar-val', text: fmt(p.value) + ' MWh · ' + p.intensity + ' · ' + p.year })
+        _el('div', { cls: 'rkv2-hbar-track', children: [fill] }),
+        val
       ]}));
     });
     wrap.appendChild(_el('div', { cls: 'rkv2-hbar-row', children: [
-      _el('div', { cls: 'rkv2-hbar-label', text: r.label + '.' }),
+      _el('div', { cls: 'rkv2-hbar-label', text: r.label }),
+      _el('div', { cls: 'rkv2-hbar-name', text: r.name }),
       pairs
     ]}));
-    wrap.appendChild(_el('div', { cls: 'rkv2-bubble-legend-item', style: { gridColumn: '2 / 3', marginLeft: '42px', opacity: '0.7' }, children: [
-      _el('span', { text: r.name })
-    ]}));
   });
+  // Year-colour legend (replaces the inline year labels — María).
+  const legend = _el('div', { cls: 'rkv2-hbar-legend', children: [
+    _el('div', { cls: 'rkv2-hbar-legend-item', children: [
+      _el('span', { cls: 'rkv2-hbar-legend-dot is-prev' }),
+      _el('span', { text: String(prevYear) })
+    ]}),
+    _el('div', { cls: 'rkv2-hbar-legend-item', children: [
+      _el('span', { cls: 'rkv2-hbar-legend-dot is-curr' }),
+      _el('span', { text: String(currYear) })
+    ]})
+  ]});
   return _el('div', { cls: 'rkv2-card', children: [
     _rkv2CardHead(chart.title),
-    wrap
+    wrap,
+    legend
   ]});
 }
 
 function _rkv2SubStacks(chart) {
+  // Same color per segment type across every sub-card so "Eletricidade"
+  // reads identical in A, B and C (cross-check). Segments carry an
+  // explicit `color` token (bg-grey / bg-cyan-light / bg-cyan-deep / bg-orange).
+  const unit = chart.unit || 'MWh';
   const subs = _el('div', { cls: 'rkv2-subs' });
-  chart.cards.forEach(c => {
+  // Cross-card proportional heights (global max) — only used when cards
+  // are within ~10× of each other. If one card is much smaller than
+  // another (e.g. Resíduos: A=482 Ton vs B=4 Ton), that card falls back
+  // to its own scale so its segments stay readable.
+  const cardMaxes = chart.cards.map(c =>
+    Math.max(...c.cols.map(col => col.segments.reduce((s, x) => s + x.value, 0)))
+  );
+  const globalMax = Math.max(...cardMaxes);
+  chart.cards.forEach((c, idx) => {
     const colsWrap = _el('div', { cls: 'rkv2-vstack' });
-    // Determine global max across both years of this card for relative heights
-    const totals = c.cols.map(col => col.segments.reduce((s, x) => s + x.value, 0));
-    const maxTot = Math.max(...totals);
+    const cardMax = cardMaxes[idx];
+    const usePerCard = (globalMax / cardMax) > 10;
+    const maxTot = usePerCard ? cardMax : globalMax;
+    const MAX_H = 240;  // taller so even small segments fit their value text
     c.cols.forEach(col => {
-      const bar = _el('div', { cls: 'rkv2-vstack-bar', style: { height: '180px' } });
       const totalThis = col.segments.reduce((s, x) => s + x.value, 0);
-      const barH = (totalThis / maxTot) * 180;
-      bar.style.height = barH + 'px';
+      const barH = (totalThis / maxTot) * MAX_H;
+      const bar = _el('div', { cls: 'rkv2-vstack-bar', style: { '--target-h': barH + 'px' } });
       col.segments.forEach(seg => {
+        // Strictly proportional height — every segment shows its value.
         const segH = (seg.value / totalThis) * barH;
+        const colorCls = seg.color || 'bg-grey';
+        const valTxt = seg.value.toLocaleString('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' ' + unit;
         bar.appendChild(_el('div', {
-          cls: 'rkv2-vstack-seg ' + (seg.kind === 'primary' ? 'is-primary' : 'is-secondary'),
-          style: { height: Math.max(segH, 18) + 'px' },
-          text: seg.label
+          cls: 'rkv2-vstack-seg ' + colorCls,
+          style: { height: segH + 'px' },
+          text: valTxt
         }));
       });
       colsWrap.appendChild(_el('div', { cls: 'rkv2-vstack-col', children: [
@@ -3694,9 +4793,25 @@ function _rkv2SubStacks(chart) {
         _el('div', { cls: 'rkv2-vstack-total', text: col.total })
       ]}));
     });
+    // Legend at the bottom — one entry per unique segment in this card
+    const seenLabels = new Set();
+    const legendItems = [];
+    c.cols.forEach(col => col.segments.forEach(seg => {
+      if (seenLabels.has(seg.label)) return;
+      seenLabels.add(seg.label);
+      legendItems.push(seg);
+    }));
+    const legend = _el('div', { cls: 'rkv2-substack-legend' });
+    legendItems.forEach(seg => {
+      legend.appendChild(_el('div', { cls: 'rkv2-substack-legend-item', children: [
+        _el('span', { cls: 'rkv2-substack-legend-swatch ' + (seg.color || 'bg-grey') }),
+        _el('span', { text: seg.label })
+      ]}));
+    });
     subs.appendChild(_el('div', { cls: 'rkv2-card is-sub', children: [
-      _rkv2CardHead(c.eyebrow + ' · ' + c.title),
-      colsWrap
+      _rkv2CardHead(c.eyebrow),
+      colsWrap,
+      legend
     ]}));
   });
   return subs;
@@ -3704,7 +4819,10 @@ function _rkv2SubStacks(chart) {
 
 function _rkv2Side(side) {
   if (!side) return null;
-  const val = _el('div', { cls: 'rkv2-side-val', text: side.value });
+  // Long values (e.g. "257.050") collide with the unit at the default
+  // 84px size — drop to the narrow variant so they never clip.
+  const isNarrow = String(side.value).replace(/\s+/g, '').length > 5;
+  const val = _el('div', { cls: 'rkv2-side-val' + (isNarrow ? ' is-narrow' : ''), text: side.value });
   val.appendChild(_el('span', { cls: 'rkv2-unit', text: side.unit }));
   return _el('div', { cls: 'rkv2-card is-dark rkv2-side', children: [
     _el('div', { children: [
@@ -3743,8 +4861,8 @@ function renderRichKpi(d) {
 
   const desc = _el('p', { cls: 'rkv2-desc', text: d.description });
 
-  // Charts area
-  const chartsHost = _el('div');
+  // Charts area — flex column with consistent gap between blocks
+  const chartsHost = _el('div', { cls: 'rkv2-charts-host' });
 
   d.charts.forEach((ch, idx) => {
     if (ch.type === 'bubble') {
@@ -3771,6 +4889,16 @@ function renderRichKpi(d) {
   const closeBtn = dmEl.querySelector('.data-modal-close');
   if (closeBtn) closeBtn.insertAdjacentElement('afterend', root);
   else dmEl.appendChild(root);
+
+  // After mount, set each horizontal-bar fill width to its proportional
+  // target — done in a setTimeout so the browser commits `width: 0`
+  // first, letting the CSS `transition: width` actually animate.
+  setTimeout(() => {
+    root.querySelectorAll('.rkv2-hbar-fill').forEach(el => {
+      const w = el.style.getPropertyValue('--target-w');
+      if (w) el.style.width = w;
+    });
+  }, 30);
 }
 
 function openDataModal(card) {
@@ -3999,6 +5127,277 @@ window.addEventListener('load', () => {
     if (heroEl) heroEl.classList.add('revealed');
   });
 });
+
+// ── OPINIÃO INTERATIVA · digital pin-board, votes saved in localStorage ──
+// Inspired by the Negócios Sustentabilidade 2030 physical panel.
+// Each visitor gets a stable ID + sees only their own dots; aggregation
+// would require a backend (Firebase / Supabase / endpoint). The contact
+// e-mail in the credits is where the Sustainability team will pull data
+// once a backend is wired up.
+(function setupOpiniao() {
+  const STORAGE_KEY = 'cg-opiniao-2025';
+  let state;
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); }
+  catch (e) { state = null; }
+  if (!state) {
+    state = {
+      visitorId: null,            // resolved from CountAPI on first visit
+      firstVisit: new Date().toISOString(),
+      reachedEnd: false,
+      votes: []
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  const persist = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+  // Visitor id chip — resolved against counterapi.dev (real cross-user
+  // counter). If the locally stored id came from the random fallback
+  // (e.g. a previous visit while the counter was unreachable), retry the
+  // counter on every visit until we get a real one.
+  const idEl = document.getElementById('op-visitor-id');
+  function paintId(n) { if (idEl) idEl.textContent = '#' + n; }
+  function fetchCounter() {
+    // counterapi.dev returns { count: N, ... } and increments on /up
+    return fetch('https://api.counterapi.dev/v1/castro-group/rs2025-final/up')
+      .then(r => r.json())
+      .then(data => {
+        const n = data && (data.count || data.value);
+        if (typeof n !== 'number') throw new Error('bad counter response');
+        return n;
+      });
+  }
+  if (state.visitorId && state.idSource === 'real') {
+    paintId(state.visitorId);
+  } else {
+    fetchCounter()
+      .then(n => {
+        state.visitorId = n;
+        state.idSource = 'real';
+        persist();
+        paintId(n);
+      })
+      .catch(() => {
+        if (!state.visitorId) {
+          state.visitorId = 1000 + Math.floor(Math.random() * 9000);
+          state.idSource = 'fallback';
+          persist();
+        }
+        paintId(state.visitorId);
+      });
+  }
+
+  // Mark "reached end" the first time the panel scrolls into view
+  const panel = document.getElementById('opiniao');
+  if (panel && !state.reachedEnd) {
+    const endIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          state.reachedEnd = true;
+          persist();
+          endIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    endIO.observe(panel);
+  }
+  const endEl = document.getElementById('op-reached-end');
+  if (endEl) endEl.textContent = state.reachedEnd ? '✓' : '…';
+
+  function renderVotesCount() {
+    const c = document.getElementById('op-votes-count');
+    if (c) c.textContent = String(state.votes.length);
+  }
+
+  function renderTheme(btn) {
+    const theme = btn.dataset.theme;
+    const isVoted = state.votes.indexOf(theme) !== -1;
+    btn.classList.toggle('is-voted', isVoted);
+    const dots = btn.querySelector('.op-dots');
+    if (!dots) return;
+    while (dots.firstChild) dots.removeChild(dots.firstChild);
+    if (isVoted) {
+      const dot = document.createElement('span');
+      dot.className = 'op-dot';
+      dots.appendChild(dot);
+    }
+  }
+
+  // One vote per pillar: voting a new theme in a pillar replaces the
+  // previous vote in that same pillar. Voting the already-voted theme
+  // toggles it off (cleared vote in that pillar).
+  document.querySelectorAll('.op-theme').forEach(btn => renderTheme(btn));
+
+  const submitBtn = document.getElementById('opSubmit');
+  const shareBtn  = document.getElementById('opShare');
+  const submitHint = document.getElementById('opSubmitHint');
+  function updateSubmit() {
+    const n = state.votes.length;
+    if (submitBtn) submitBtn.disabled = n === 0;
+    if (shareBtn)  shareBtn.disabled  = n === 0;
+    if (submitHint) {
+      if (n === 0) {
+        submitHint.textContent = (currentLang === 'en' ? 'Vote in at least one category to submit.' : 'Vote em pelo menos uma categoria para submeter.');
+        submitHint.classList.remove('is-ok');
+      } else {
+        submitHint.textContent = (currentLang === 'en' ? n + ' vote' + (n>1?'s':'') + ' ready to send.' : n + ' voto' + (n>1?'s':'') + ' pronto' + (n>1?'s':'') + ' para enviar.');
+        submitHint.classList.add('is-ok');
+      }
+    }
+  }
+
+  // Map theme id → readable label (collected from the DOM at startup)
+  const themeLabels = {};
+  document.querySelectorAll('.op-theme[data-theme]').forEach(b => {
+    const lbl = b.querySelector('.op-theme-label');
+    themeLabels[b.dataset.theme] = lbl ? lbl.textContent.trim() : b.dataset.theme;
+  });
+  // Map theme id → pillar (amb / soc / gov)
+  const themePillar = {};
+  document.querySelectorAll('.op-pillar[data-pillar]').forEach(p => {
+    p.querySelectorAll('.op-theme[data-theme]').forEach(b => {
+      themePillar[b.dataset.theme] = p.dataset.pillar;
+    });
+  });
+  const PILLAR_LABEL = { amb: 'Ambiental', soc: 'Social', gov: 'Governança' };
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      if (!state.votes.length) return;
+      const lines = state.votes.map(t => {
+        const p = themePillar[t] || '?';
+        return '· ' + PILLAR_LABEL[p] + ' · ' + (themeLabels[t] || t) + '  [' + t + ']';
+      }).join('\n');
+      const subject = 'Vote · Materialidade Externa RS2025 · Visitante #' + state.visitorId;
+      const body =
+        'Visitante #' + state.visitorId + '\n' +
+        'Submetido em ' + new Date().toLocaleString('pt-PT') + '\n' +
+        '\n' +
+        'Prioridades ESG escolhidas:\n' +
+        lines + '\n' +
+        '\n' +
+        '— enviado via página interativa do Relatório de Sustentabilidade 2025';
+      const mailto = 'mailto:sustainability@castro-group.pt' +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = mailto;
+    });
+  }
+
+  // Share button — Web Share API on mobile/supported browsers,
+  // clipboard fallback elsewhere. The text quotes the user's own votes
+  // so the share is personal and signals concrete priorities to peers.
+  if (shareBtn) {
+    const shareLabel = shareBtn.querySelector('span');
+    const shareLabelOriginal = shareLabel ? shareLabel.textContent : 'Partilhar';
+    shareBtn.addEventListener('click', async () => {
+      if (!state.votes.length) return;
+      const votedThemes = state.votes
+        .map(t => themeLabels[t] || t)
+        .map(s => '"' + s + '"')
+        .join(' · ');
+      const url = location.origin + location.pathname + '#opiniao';
+      const title = 'Relatório de Sustentabilidade 2025 · Castro Group';
+      const text = 'Votei ' + votedThemes + ' como prioridade ESG 2030 do Castro Group. Faça também a sua escolha:';
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, text, url });
+          return;
+        }
+      } catch (e) { /* user cancelled — fall through */ if (e && e.name === 'AbortError') return; }
+      // Fallback: copy to clipboard
+      const payload = text + ' ' + url;
+      try {
+        await navigator.clipboard.writeText(payload);
+        if (shareLabel) shareLabel.textContent = (currentLang === 'en' ? 'Copied ✓' : 'Copiado ✓');
+        shareBtn.classList.add('is-ok');
+        setTimeout(() => {
+          if (shareLabel) shareLabel.textContent = shareLabelOriginal;
+          shareBtn.classList.remove('is-ok');
+        }, 2000);
+      } catch (e) {
+        // Last-resort: window.prompt so the user can copy manually
+        window.prompt(currentLang === 'en' ? 'Copy and share:' : 'Copie e partilhe:', payload);
+      }
+    });
+  }
+
+  document.querySelectorAll('.op-theme').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.theme;
+      const pillar = btn.closest('.op-pillar');
+      if (!pillar) return;
+      const pillarThemes = Array.from(pillar.querySelectorAll('.op-theme[data-theme]'))
+        .map(b => b.dataset.theme);
+      const existing = state.votes.find(v => pillarThemes.indexOf(v) !== -1);
+      if (existing === theme) {
+        state.votes.splice(state.votes.indexOf(theme), 1);
+      } else {
+        if (existing) state.votes.splice(state.votes.indexOf(existing), 1);
+        state.votes.push(theme);
+      }
+      persist();
+      pillar.querySelectorAll('.op-theme').forEach(renderTheme);
+      renderVotesCount();
+      updateSubmit();
+    });
+  });
+  renderVotesCount();
+  updateSubmit();
+})();
+
+// ── PTC HOVER SYNC · hover a year in the chart or table highlights both ──
+(function setupPtcSync() {
+  const stage = document.getElementById('ptc-stage');
+  if (!stage) return;
+  const bars = stage.querySelectorAll('.ptc-bar[data-year]');
+  const rows = stage.querySelectorAll('.ptc-table tr[data-year]');
+  function setHot(year) {
+    bars.forEach(b => {
+      const isMatch = b.dataset.year === year;
+      b.classList.toggle('is-hot', isMatch);
+      b.classList.toggle('is-dim', year != null && !isMatch);
+    });
+    rows.forEach(r => r.classList.toggle('is-hot', r.dataset.year === year));
+  }
+  function clear() {
+    bars.forEach(b => { b.classList.remove('is-hot'); b.classList.remove('is-dim'); });
+    rows.forEach(r => r.classList.remove('is-hot'));
+  }
+  bars.forEach(b => {
+    b.addEventListener('mouseenter', () => setHot(b.dataset.year));
+    b.addEventListener('mouseleave', clear);
+  });
+  rows.forEach(r => {
+    r.addEventListener('mouseenter', () => setHot(r.dataset.year));
+    r.addEventListener('mouseleave', clear);
+  });
+})();
+
+// ── SUBSECTION DIVIDERS · populate with mini-dots that pop in on scroll ──
+(function setupSubsecDividers() {
+  const dividers = document.querySelectorAll('.subsec-divider');
+  if (!dividers.length) return;
+  const DOT_COUNT = 64;       // dense dotted line, more expression (María)
+  const STAGGER_MS = 14;      // keep total reveal time around 0.9s
+  dividers.forEach(d => {
+    if (d.children.length) return;
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'sd-dot';
+      dot.style.transitionDelay = (i * STAGGER_MS) + 'ms';
+      d.appendChild(dot);
+    }
+  });
+  const sdIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in');
+        sdIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.35 });
+  dividers.forEach(d => sdIO.observe(d));
+})();
 
 // ── HERO STATS · all dim by default, highlight only on hover (touch-driven) ─────
 (function initHeroStatsRow() {
