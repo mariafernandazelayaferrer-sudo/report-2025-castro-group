@@ -89,7 +89,7 @@ body {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px; height: 76px;
+  padding: 0 48px; height: 88px;
   background: rgba(216, 213, 204, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cg-border);
@@ -103,7 +103,7 @@ nav.over-dark .nav-wordmark,
 nav.over-dark .nav-year { color: #fff; }
 
 .nav-left { display: flex; align-items: center; gap: 20px; }
-.nav-logo { height: 48px; width: auto; display: block; }
+.nav-logo { height: 67px; width: auto; display: block; }   /* +40% per María */
 nav.over-dark .nav-logo { filter: brightness(0) invert(1); }
 .nav-sep { width: 1px; height: 18px; background: var(--cg-border); }
 nav.over-dark .nav-sep { background: rgba(255,255,255,0.2); }
@@ -1705,7 +1705,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .data-modal-overlay { padding: 12px; }
 
   /* Logo: keep it visible but not oversized on phones */
-  .nav-logo { height: 32px; }
+  .nav-logo { height: 45px; }
 
   /* Materiality plot legibility */
   .mm-head { grid-template-columns: 1fr !important; }
@@ -1717,7 +1717,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 @media (max-width: 380px) {
   .hero-title { font-size: 30px !important; }
   .data-modal-value { font-size: 36px; }
-  .nav-logo { height: 28px; }
+  .nav-logo { height: 39px; }
   nav { padding: 0 12px; height: 52px; padding-right: 12px; }
   .section { padding: 48px 16px; padding-right: 16px; }
   .hero-content { padding: 116px 16px 28px; }
@@ -2481,7 +2481,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     <p class="eyebrow fade-up" style="color:var(--cg-green);" data-pt="Pilar 01 — Ambiental" data-en="Pillar 01 — Environmental">Pilar 01 — Ambiental</p>
     <h2 class="heading fade-up" style="color:#fff;" data-pt="Energia, emissões<br><strong>e recursos naturais</strong>" data-en="Energy, emissions<br><strong>and natural resources</strong>">Energia, emissões<br><strong>e recursos naturais</strong></h2>
     <div class="metrics-grid stagger">
-      <div class="metric-card dark">
+      <div class="metric-card dark" data-rich="energia">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Energia" data-en="Energy">Energia</div>
         <div class="metric-big">1.999,4</div>
         <div class="metric-unit">MWh <span data-pt="consumo total 2025" data-en="total consumption 2025">consumo total 2025</span></div>
@@ -2502,7 +2502,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
         <div class="metric-desc-text" data-pt="Scope 1: 124,8 ↓25,5% · Scope 2: 73,0 ↓25,0% · Total 1+2+3: 13.680,1 TonCO₂e (+1,6% vs 2024). 0,1% compensadas por GdO (18,2 TonCO₂e)." data-en="Scope 1: 124.8 ↓25.5% · Scope 2: 73.0 ↓25.0% · Total 1+2+3: 13,680.1 TonCO₂e (+1.6% vs 2024). 0.1% offset by GoO (18.2 TonCO₂e).">Scope 1: 124,8 ↓25,5% · Scope 2: 73,0 ↓25,0% · Total 1+2+3: 13.680,1 TonCO₂e (+1,6% vs 2024). 0,1% compensadas por GdO (18,2 TonCO₂e).</div>
         <div class="bar-track"><div class="bar-fill" data-w="75" style="background:var(--cg-green)"></div></div>
       </div>
-      <div class="metric-card dark">
+      <div class="metric-card dark" data-rich="agua">
         <div class="metric-pill" style="background:rgba(51,182,122,0.18);color:var(--cg-green);" data-pt="Água" data-en="Water">Água</div>
         <div class="metric-big">−32<span style="font-size:24px;">%</span></div>
         <div class="metric-unit" data-pt="consumo hídrico — operação CG" data-en="water — CG operations">consumo hídrico — operação CG</div>
@@ -2950,6 +2950,225 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 .dm-chart-wrap .bar-curr.is-down{fill:var(--cg-rust)}
 .dm-chart-wrap .bar-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;fill:var(--cg-ink)}
 .dm-chart-wrap .bar-year{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;fill:var(--cg-mid);letter-spacing:.10em;text-transform:uppercase}
+
+/* ── RICH KPI MODAL v2 (PILLAR_MODAL_SPEC.md) ──────────────────────────── */
+/* Activated when card has data-rich="<kpi-id>". Composition follows the
+   printed pillar layout: mono eyebrow + large headline with inline KPI,
+   then a stack of chart blocks rendered against a saturated blue card. */
+.data-modal.is-rich {
+  padding: 0;
+  max-width: min(1100px, 92vw);
+  max-height: 86vh; overflow-y: auto;
+}
+.rich-kpi {
+  display: block;
+  padding: 40px 44px 36px;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.rkv2-pillarbar {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--cg-border);
+  padding-bottom: 18px; margin-bottom: 22px;
+}
+.rkv2-eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #E87A2E;
+}
+.rkv2-eyebrow .rkv2-bracket { color: var(--cg-mid); margin-right: 6px; }
+.rkv2-headline {
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 300; line-height: 1.12; letter-spacing: -0.01em;
+  color: var(--cg-ink);
+  margin: 0 0 14px;
+}
+.rkv2-headline .rkv2-num { font-weight: 400; }
+.rkv2-headline .rkv2-unit { font-size: 0.5em; color: var(--cg-mid); margin-left: 4px; font-weight: 400; }
+.rkv2-headline .rkv2-sep { color: var(--cg-border); margin: 0 14px; font-size: 0.7em; }
+.rkv2-headline .rkv2-delta { color: #E87A2E; font-weight: 400; }
+.rkv2-headline .rkv2-delta.is-positive { color: #2D7B4F; }
+.rkv2-desc {
+  font-size: 14px; line-height: 1.65; color: var(--cg-mid);
+  max-width: 720px; margin: 0 0 28px;
+}
+
+/* Layout: top row = main chart + optional side card */
+.rkv2-toprow {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px;
+  margin-bottom: 16px;
+}
+.rkv2-toprow.is-single { grid-template-columns: 1fr; }
+.rkv2-subs {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Card primitives */
+.rkv2-card {
+  background: #3F7EA8;                /* --blue-bg */
+  border-radius: 4px;
+  padding: 28px 30px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.rkv2-card.is-dark { background: #1a1a1a; }
+.rkv2-card.is-beige { background: #DCD9D0; color: var(--cg-ink); }
+.rkv2-card-head {
+  display: flex; align-items: baseline; gap: 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #E87A2E;
+  margin-bottom: 18px;
+}
+.rkv2-card.is-beige .rkv2-card-head { color: #E87A2E; }
+.rkv2-card-head .rkv2-arrow { color: #fff; font-size: 11px; }
+.rkv2-card.is-beige .rkv2-card-head .rkv2-arrow { color: var(--cg-ink); }
+.rkv2-card-title {
+  font-size: 14px; font-weight: 500; color: #fff;
+  letter-spacing: 0.02em;
+}
+.rkv2-card.is-beige .rkv2-card-title { color: var(--cg-ink); }
+
+/* BUBBLE CHART */
+.rkv2-bubble {
+  display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px;
+  align-items: center; min-height: 340px;
+}
+.rkv2-bubble-stage {
+  position: relative; height: 340px;
+  display: flex; align-items: center; justify-content: center;
+}
+.rkv2-bubble-dot {
+  position: absolute; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 500; color: var(--cg-ink);
+  letter-spacing: -0.01em;
+}
+.rkv2-bubble-dot.is-primary { background: #DCD9D0; }
+.rkv2-bubble-dot.is-secondary { background: #A8C8DC; }
+.rkv2-bubble-legend { display: flex; flex-direction: column; gap: 6px; }
+.rkv2-bubble-legend-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #fff;
+  margin-bottom: 6px;
+}
+.rkv2-bubble-legend-item {
+  display: grid; grid-template-columns: 14px 1fr; gap: 10px;
+  align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.92); font-weight: 400;
+}
+.rkv2-bubble-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+/* HORIZONTAL BARS (year-over-year) */
+.rkv2-hbars { display: flex; flex-direction: column; gap: 24px; }
+.rkv2-hbar-row { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; }
+.rkv2-hbar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 600; color: #fff;
+  padding-top: 2px;
+}
+.rkv2-hbar-pairs { display: flex; flex-direction: column; gap: 8px; }
+.rkv2-hbar-pair {
+  display: grid; grid-template-columns: 1fr auto; gap: 14px;
+  align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.92);
+  font-variant-numeric: tabular-nums;
+}
+.rkv2-hbar-track {
+  height: 10px; border-radius: 999px;
+  background: rgba(255,255,255,0.10);
+}
+.rkv2-hbar-fill {
+  height: 100%; border-radius: 999px;
+}
+.rkv2-hbar-fill.is-prev { background: #A8C8DC; }
+.rkv2-hbar-fill.is-curr { background: #DCD9D0; }
+.rkv2-hbar-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; white-space: nowrap; }
+
+/* VERTICAL STACKED BARS (2024 vs 2025 with segments) */
+.rkv2-vstack {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  align-items: end; min-height: 230px;
+  padding-top: 6px;
+}
+.rkv2-vstack-col {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.rkv2-vstack-bar {
+  width: 100%; max-width: 86px;
+  display: flex; flex-direction: column-reverse;
+  border-radius: 4px 4px 0 0; overflow: hidden;
+  position: relative;
+}
+.rkv2-vstack-seg {
+  position: relative;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--cg-ink); font-weight: 500;
+  padding-top: 6px;
+  line-height: 1.2;
+  text-align: center;
+}
+.rkv2-vstack-seg.is-primary { background: #DCD9D0; }
+.rkv2-vstack-seg.is-secondary { background: #A8C8DC; }
+.rkv2-vstack-year {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 600; color: #fff;
+  letter-spacing: 0.04em;
+}
+.rkv2-vstack-total {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* SIDE CARD (single big KPI) */
+.rkv2-side {
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.rkv2-side-val {
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 300; line-height: 1;
+  color: #fff; letter-spacing: -0.02em;
+  margin: 18px 0 14px;
+}
+.rkv2-side-val .rkv2-unit { font-size: 0.32em; color: rgba(255,255,255,0.6); margin-left: 4px; vertical-align: 0.4em; font-weight: 400; }
+.rkv2-side-note {
+  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.68);
+}
+.rkv2-card.is-beige .rkv2-side-val { color: var(--cg-ink); }
+.rkv2-card.is-beige .rkv2-side-val .rkv2-unit { color: var(--cg-mid); }
+.rkv2-card.is-beige .rkv2-side-note { color: var(--cg-mid); }
+
+/* Sub-card variant: blue card hosting a stacked vertical chart */
+.rkv2-card.is-sub .rkv2-card-head { font-size: 9px; }
+.rkv2-card.is-sub .rkv2-card-title { font-size: 13px; }
+
+/* Hide the legacy generic chart when rich mode is on */
+.data-modal.is-rich #dm-chart,
+.data-modal.is-rich #dm-tag,
+.data-modal.is-rich #dm-title,
+.data-modal.is-rich #dm-value,
+.data-modal.is-rich #dm-sub,
+.data-modal.is-rich #dm-body,
+.data-modal.is-rich #dm-delta,
+.data-modal.is-rich .kpi-detail-clone { display: none !important; }
+
+@media (max-width: 900px) {
+  .rkv2-toprow { grid-template-columns: 1fr; }
+  .rkv2-subs { grid-template-columns: repeat(2, 1fr); }
+  .rkv2-bubble { grid-template-columns: 1fr; }
+  .rkv2-bubble-stage { height: 220px; }
+}
+@media (max-width: 600px) {
+  .rich-kpi { padding: 26px 22px 24px; }
+  .rkv2-card { padding: 22px 20px; }
+  .rkv2-subs { grid-template-columns: 1fr; }
+}
 /* Detail blocks (PDF-sourced) inside empresas/fases cards — shown only inside modal */
 .kpi-card .kpi-detail, .metric-card .kpi-detail { display: none; }
 .kpi-card[data-detail], .metric-card[data-detail],
@@ -3029,10 +3248,13 @@ function setLang(lang) {
   if (typeof applyGlossary === 'function') applyGlossary();
 }
 
-// ── STRIPE DISCS (hero) ───────────────────────────────────────────────────
-// Floating discs built from vertical parallel stripes — the geometric motif
-// from RS26_identidade_capa.pdf (3×3 grid of striped circles in flag colors).
-// Combines the visual identity of the cover with the floating motion of RS25.
+// ── BOLAS PORTADA · floating animation ───────────────────────────────────
+// Each disc obeys the brand spec for one ball
+//   (uploads/brand guidelines/Bolas Portada.pdf §"Construcción de cada bola"):
+//   13 vertical rounded-cap lines, strokeWidth = (D/13)·0.55,
+//   gap = (D/13)·0.45, color uniform per ball.
+// The 3×3 cover grid is the static spec; here we release those balls into
+// the hero so they drift, repel the cursor, and bounce off the edges.
 let _ballsStop = null;
 function initBalls() {
   if (_ballsStop) { _ballsStop(); _ballsStop = null; }
@@ -3048,51 +3270,76 @@ function initBalls() {
   ctx.scale(dpr, dpr);
 
   const W = hero.offsetWidth, H = hero.offsetHeight;
-  const palette = [
-    [46, 71, 145],   // navy
-    [251, 118, 34],  // orange
-    [14, 153, 216],  // cyan
-    [51, 182, 122],  // green
-    [204, 81, 44]    // rust
+
+  // The 6 unique colours from the cover grid (3 of the 9 positions repeat
+  // — those repeats appear in the floating field too, weighted by use).
+  const PALETTE = [
+    '#3AA6DC', // azul cielo      (used 2× in the cover grid)
+    '#4FB07A', // verde menta     (used 2×)
+    '#E87A2E', // naranja         (used 2×)
+    '#3A4A9E', // azul índigo
+    '#C24A2E', // terracota
+    '#3E6B4E'  // verde bosque
   ];
-  // Brand canvas always animates — María explicitly wants motion on phone too.
-  // (iOS Low Power Mode would otherwise freeze it via prefers-reduced-motion.)
-  const reduced = false;
-  const count = W < 600 ? 10 : W < 900 ? 14 : 18;
+
+  // Spec constants (per-ball geometry)
+  const LINE_COUNT = 13;
+  const STROKE_RATIO = 0.55;     // strokeWidth = (D/13) · 0.55
+  const ALPHA = 0.92;            // near-solid · still lets the title breathe
+
+  // Diameter range — bigger discs on wider viewports, all preserving the
+  // 13-line spec internally. Cover reference uses D ≈ 220 at 743px canvas.
+  const D_MIN = W < 600 ? 110 : 170;
+  const D_MAX = W < 600 ? 180 : 260;
+  // 12 on desktop → 2 of each of the 6 palette colours (shuffled + tiled below).
+  const count = W < 600 ? 6 : W < 900 ? 8 : 12;
+
+  // Colour order: shuffle, then repeat to fill count → guarantees every
+  // palette colour appears at least once even on the smallest viewports.
+  const colorOrder = [];
+  const shuffled = PALETTE.slice().sort(() => Math.random() - 0.5);
+  while (colorOrder.length < count) {
+    colorOrder.push(...shuffled.slice(0, Math.min(PALETTE.length, count - colorOrder.length)));
+  }
 
   const discs = [];
   for (let i = 0; i < count; i++) {
-    // Smaller discs on phones — full-size 140px reads as a colored slab on a 360px screen
-    const radius = W < 600 ? (18 + Math.random() * 42) : (44 + Math.random() * 96);
-    const c = palette[Math.floor(Math.random() * palette.length)];
-    const alpha = 0.78 + Math.random() * 0.18;            // stronger lines
-    const stripeWidth = 3;                                // thicker stripes
-    const gap = 1.6 + Math.random() * 1.4;                // tighter gaps
-    const stripeCount = Math.max(8, Math.floor((radius * 2) / (stripeWidth + gap)));
+    const diameter = D_MIN + Math.random() * (D_MAX - D_MIN);
+    const radius = diameter / 2;
     discs.push({
       x: Math.random() * W,
       y: Math.random() * H,
       r: radius,
-      stripeWidth, gap, stripeCount,
-      color: `rgba(${c[0]},${c[1]},${c[2]},${alpha.toFixed(3)})`,
-      vx: (Math.random() - 0.5) * 0.78,                   // bumped per request — a touch faster, still calm
+      d: diameter,
+      color: colorOrder[i],
+      vx: (Math.random() - 0.5) * 0.78,
       vy: (Math.random() - 0.5) * 0.54
     });
   }
 
+  // Draw one disc per spec: 13 vertical rounded-cap lines, line centres
+  // sampled at t = (i+0.5)/13, heights from the circle equation.
   function drawDisc(d) {
-    const totalSpan = d.stripeCount * d.stripeWidth + (d.stripeCount - 1) * d.gap;
-    const startX = d.x - totalSpan / 2;
-    const r2 = d.r * d.r;
-    ctx.fillStyle = d.color;
-    for (let i = 0; i < d.stripeCount; i++) {
-      const sx = startX + i * (d.stripeWidth + d.gap);
-      const off = sx + d.stripeWidth / 2 - d.x;
-      const o2 = off * off;
+    const sw = (d.d / LINE_COUNT) * STROKE_RATIO;
+    const effectiveR = d.r - sw / 2;
+    const r2 = effectiveR * effectiveR;
+    ctx.strokeStyle = d.color;
+    ctx.globalAlpha = ALPHA;
+    ctx.lineWidth = sw;
+    ctx.lineCap = 'round';
+    for (let i = 0; i < LINE_COUNT; i++) {
+      const t = (i + 0.5) / LINE_COUNT;
+      const xRel = (t - 0.5) * d.d;
+      const o2 = xRel * xRel;
       if (o2 >= r2) continue;
-      const h = 2 * Math.sqrt(r2 - o2);
-      ctx.fillRect(sx, d.y - h / 2, d.stripeWidth, h);
+      const halfH = Math.sqrt(r2 - o2);
+      const x = d.x + xRel;
+      ctx.beginPath();
+      ctx.moveTo(x, d.y - halfH);
+      ctx.lineTo(x, d.y + halfH);
+      ctx.stroke();
     }
+    ctx.globalAlpha = 1;
   }
 
   // Cursor repulsion — discs flee from the pointer when it comes close
@@ -3127,26 +3374,25 @@ function initBalls() {
       // Gentle damping so they settle back to baseline drift
       d.vx *= 0.985;
       d.vy *= 0.985;
-      // Clamp velocity so repulsion doesn't make them rocket off
       const vmag = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
       if (vmag > VMAX) { d.vx = (d.vx / vmag) * VMAX; d.vy = (d.vy / vmag) * VMAX; }
-      // Restore tiny drift if disc has stopped (keep the kaleidoscope alive)
+      // Baseline jitter so a disc that comes to rest doesn't stay frozen
       if (vmag < VMIN) {
         d.vx += (Math.random() - 0.5) * 0.18;
         d.vy += (Math.random() - 0.5) * 0.12;
       }
-      if (!reduced) { d.x += d.vx; d.y += d.vy; }
-      // bounce off edges (was wrap-around)
-      if (d.x - d.r < 0) { d.x = d.r;       d.vx = Math.abs(d.vx); }
-      if (d.x + d.r > W) { d.x = W - d.r;   d.vx = -Math.abs(d.vx); }
-      if (d.y - d.r < 0) { d.y = d.r;       d.vy = Math.abs(d.vy); }
-      if (d.y + d.r > H) { d.y = H - d.r;   d.vy = -Math.abs(d.vy); }
+      d.x += d.vx; d.y += d.vy;
+      // Bounce off edges
+      if (d.x - d.r < 0) { d.x = d.r;     d.vx = Math.abs(d.vx); }
+      if (d.x + d.r > W) { d.x = W - d.r; d.vx = -Math.abs(d.vx); }
+      if (d.y - d.r < 0) { d.y = d.r;     d.vy = Math.abs(d.vy); }
+      if (d.y + d.r > H) { d.y = H - d.r; d.vy = -Math.abs(d.vy); }
       drawDisc(d);
     });
     if (running) frame = requestAnimationFrame(draw);
   }
   function start() { if (!running) { running = true; frame = requestAnimationFrame(draw); } }
-  function stop() { running = false; if (frame) cancelAnimationFrame(frame); }
+  function stop()  { running = false; if (frame) cancelAnimationFrame(frame); }
 
   const io = new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop(), { threshold: 0 });
   io.observe(hero);
@@ -3241,9 +3487,313 @@ function _setNode(targetId, sourceEl) {
     while (clone.firstChild) target.appendChild(clone.firstChild);
   }
 }
+// ── RICH KPI v2 — data shapes (PILLAR_MODAL_SPEC.md) ─────────────────────
+// Numbers come from the printed PDF (uploads/final report/RS_CASTRO-GROUP.pdf).
+// Each entry follows the PillarModalData shape:
+//   pillarIdx, pillarName, label, headline { lead, value, unit, delta, deltaPositive }
+//   description, charts[] { type, title, data, legend?, side? }
+const RICH_KPI = {
+  energia: {
+    pillarIdx: '02.1', pillarName: 'Environmental', label: 'Energia',
+    headline: { lead: 'Consumo de energia', value: '1.999,4', unit: 'MWh', delta: '−12,6%', deltaPositive: true },
+    description: 'Em 2025, o consumo energético total do Castro Group totalizou 1.999,4 MWh, distribuído por três segmentos. A Operação sob gestão por terceiros representa a maior parcela (64,7%), seguida pela Operação CG (23,0%) e pela Construção (12,3%).',
+    charts: [
+      { type: 'bubble', title: 'Distribuição por Atividade · 2025',
+        bubbles: [
+          { label: 'Operação (Terceiros)', pct: 64.7, value: 1295.5, kind: 'primary' },
+          { label: 'Operação (Gestão CG)', pct: 23.0, value: 458.9,  kind: 'secondary' },
+          { label: 'Construção',           pct: 12.3, value: 245.0,  kind: 'secondary' }
+        ],
+        side: { type: 'kpi', title: 'Energia renovável', value: '16,6', unit: '%',
+                note: '5,8% contratos verdes (Garantias de Origem) + 10,8% produção fotovoltaica on-site.' }
+      },
+      { type: 'horizontalBars', title: 'Consumo por Atividade · MWh',
+        rows: [
+          { label: 'A', name: 'Construção',          prev: { year: 2024, value: 348.7,  intensity: '11,3 kWh/m²' }, curr: { year: 2025, value: 245.0,  intensity: '7,9 kWh/m²' } },
+          { label: 'B', name: 'Operação (Gestão CG)', prev: { year: 2024, value: 651.3,  intensity: '33,0 kWh/m²' }, curr: { year: 2025, value: 458.9,  intensity: '23,3 kWh/m²' } },
+          { label: 'C', name: 'Operação (Terceiros)', prev: { year: 2024, value: 1288.9, intensity: '134,5 kWh/m²' }, curr: { year: 2025, value: 1295.5, intensity: '135,2 kWh/m²' } }
+        ]
+      },
+      { type: 'subStacks', title: 'Consumo por Tipo · subatividades',
+        cards: [
+          { eyebrow: 'A. Construção', title: 'Eletricidade + Gasóleo',
+            cols: [
+              { year: 2024, total: '348,7 MWh', segments: [
+                { label: 'Eletricidade · 103,3', value: 103.3, kind: 'secondary' },
+                { label: 'Gasóleo · 245,4',      value: 245.4, kind: 'primary' }
+              ]},
+              { year: 2025, total: '245,0 MWh', segments: [
+                { label: 'Eletricidade · 140,1', value: 140.1, kind: 'secondary' },
+                { label: 'Gasóleo · 104,8',      value: 104.8, kind: 'primary' }
+              ]}
+            ]
+          },
+          { eyebrow: 'B. Op. (Gestão CG)', title: 'Eletricidade',
+            cols: [
+              { year: 2024, total: '651,3 MWh', segments: [
+                { label: 'Eletricidade · 651,3', value: 651.3, kind: 'primary' }
+              ]},
+              { year: 2025, total: '458,9 MWh', segments: [
+                { label: 'Eletricidade · 458,9', value: 458.9, kind: 'primary' }
+              ]}
+            ]
+          },
+          { eyebrow: 'C. Op. (Terceiros)', title: 'Eletricidade + Gás Natural',
+            cols: [
+              { year: 2024, total: '1.288,9 MWh', segments: [
+                { label: 'Eletricidade · 1.074,5', value: 1074.5, kind: 'secondary' },
+                { label: 'Gás Natural · 214,4',    value: 214.4,  kind: 'primary' }
+              ]},
+              { year: 2025, total: '1.295,5 MWh', segments: [
+                { label: 'Eletricidade · 1.081,1', value: 1081.1, kind: 'secondary' },
+                { label: 'Gás Natural · 214,4',    value: 214.4,  kind: 'primary' }
+              ]}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  agua: {
+    pillarIdx: '02.2', pillarName: 'Environmental', label: 'Água',
+    headline: { lead: 'Consumo de água', value: '13.348,2', unit: 'm³', delta: '−9,5%', deltaPositive: true },
+    description: 'Redução face a 2024 (14.747,3 m³). A Operação sob gestão por terceiros é a maior parcela (48,9%), seguida pela Construção (27,5%) e pela Operação CG (23,6%) — a fase de obra continua a pesar pela intensidade do SPARK e The Breeze.',
+    charts: [
+      { type: 'bubble', title: 'Distribuição por Atividade · 2025',
+        bubbles: [
+          { label: 'Operação (Terceiros)', pct: 48.9, value: 6525.0, kind: 'primary' },
+          { label: 'Construção',           pct: 27.5, value: 3668.2, kind: 'secondary' },
+          { label: 'Operação (Gestão CG)', pct: 23.6, value: 3155.0, kind: 'secondary' }
+        ],
+        side: { type: 'kpi', title: 'Água reutilizada', value: '0,0', unit: '%',
+                note: 'Sem capacidade instalada em 2025. A La Movida é o 1.º ativo da carteira com reservatório de águas pluviais; o SPARK incorporará o mesmo sistema.' }
+      },
+      { type: 'horizontalBars', title: 'Consumo por Atividade · m³',
+        rows: [
+          { label: 'A', name: 'Construção',          prev: { year: 2024, value: 3564.3, intensity: '0,1 m³/m²' }, curr: { year: 2025, value: 3668.2, intensity: '0,1 m³/m²' } },
+          { label: 'B', name: 'Operação (Gestão CG)', prev: { year: 2024, value: 4670.0, intensity: '0,2 m³/m²' }, curr: { year: 2025, value: 3155.0, intensity: '0,2 m³/m²' } },
+          { label: 'C', name: 'Operação (Terceiros)', prev: { year: 2024, value: 6513.0, intensity: '0,7 m³/m²' }, curr: { year: 2025, value: 6525.0, intensity: '0,7 m³/m²' } }
+        ]
+      }
+    ]
+  }
+};
+
+// Tiny DOM builder — no innerHTML, no parsing of untrusted strings.
+const NS_SVG = 'http://www.w3.org/2000/svg';
+function _el(tag, opts) {
+  opts = opts || {};
+  const isSvg = ['svg','circle','path','g','text','rect','line'].includes(tag);
+  const e = isSvg ? document.createElementNS(NS_SVG, tag) : document.createElement(tag);
+  if (opts.cls) e.setAttribute('class', opts.cls);
+  if (opts.attrs) for (const k in opts.attrs) e.setAttribute(k, opts.attrs[k]);
+  if (opts.style) for (const k in opts.style) e.style[k] = opts.style[k];
+  if (opts.text != null) e.textContent = String(opts.text);
+  if (opts.children) opts.children.forEach(c => c && e.appendChild(c));
+  return e;
+}
+
+// ─── Chart renderers (v2) ────────────────────────────────────────────────
+function _rkv2CardHead(title) {
+  return _el('div', { cls: 'rkv2-card-head', children: [
+    _el('span', { cls: 'rkv2-arrow', text: '▸' }),
+    _el('span', { cls: 'rkv2-card-title', text: title })
+  ]});
+}
+
+function _rkv2Bubble(chart) {
+  // Bubble area scales with sqrt(pct) so the visual area is proportional.
+  // Sizes capped so the largest bubble fits inside the 340px stage.
+  const stage = _el('div', { cls: 'rkv2-bubble-stage' });
+  const sizes = chart.bubbles.map(b => Math.min(70 + Math.sqrt(b.pct) * 20, 260));
+  // Primary bubble (largest, beige) anchors centre-left; secondaries float
+  // to the right with overlap that echoes the printed bubble diagram.
+  const positions = [
+    { left: '38%',  top: '50%', transform: 'translate(-50%, -50%)' },
+    { left: '74%',  top: '32%', transform: 'translate(-50%, -50%)' },
+    { left: '78%',  top: '74%', transform: 'translate(-50%, -50%)' }
+  ];
+  chart.bubbles.forEach((b, i) => {
+    const sz = sizes[i];
+    const dot = _el('div', {
+      cls: 'rkv2-bubble-dot ' + (b.kind === 'primary' ? 'is-primary' : 'is-secondary'),
+      style: Object.assign({
+        width: sz + 'px', height: sz + 'px'
+      }, positions[i] || {})
+    });
+    dot.textContent = b.pct.toFixed(1).replace('.', ',') + '%';
+    stage.appendChild(dot);
+  });
+  const legend = _el('div', { cls: 'rkv2-bubble-legend' });
+  legend.appendChild(_el('div', { cls: 'rkv2-bubble-legend-title', text: '▸ Distribuição por Atividade' }));
+  chart.bubbles.forEach(b => {
+    legend.appendChild(_el('div', { cls: 'rkv2-bubble-legend-item', children: [
+      _el('span', { cls: 'rkv2-bubble-legend-dot' }),
+      _el('span', { text: b.label + ' · ' + b.pct.toFixed(1).replace('.', ',') + '%' })
+    ]}));
+  });
+  return _el('div', { cls: 'rkv2-card', children: [
+    _rkv2CardHead(chart.title),
+    _el('div', { cls: 'rkv2-bubble', children: [stage, legend] })
+  ]});
+}
+
+function _rkv2HorizontalBars(chart) {
+  const wrap = _el('div', { cls: 'rkv2-hbars' });
+  const max = Math.max(...chart.rows.flatMap(r => [r.prev.value, r.curr.value]));
+  chart.rows.forEach(r => {
+    const fmt = v => v.toLocaleString('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const pairs = _el('div', { cls: 'rkv2-hbar-pairs' });
+    [r.prev, r.curr].forEach((p, idx) => {
+      const pct = (p.value / max) * 100;
+      pairs.appendChild(_el('div', { cls: 'rkv2-hbar-pair', children: [
+        _el('div', { cls: 'rkv2-hbar-track', children: [
+          _el('div', { cls: 'rkv2-hbar-fill ' + (idx === 0 ? 'is-prev' : 'is-curr'), style: { width: pct.toFixed(2) + '%' } })
+        ]}),
+        _el('div', { cls: 'rkv2-hbar-val', text: fmt(p.value) + ' MWh · ' + p.intensity + ' · ' + p.year })
+      ]}));
+    });
+    wrap.appendChild(_el('div', { cls: 'rkv2-hbar-row', children: [
+      _el('div', { cls: 'rkv2-hbar-label', text: r.label + '.' }),
+      pairs
+    ]}));
+    wrap.appendChild(_el('div', { cls: 'rkv2-bubble-legend-item', style: { gridColumn: '2 / 3', marginLeft: '42px', opacity: '0.7' }, children: [
+      _el('span', { text: r.name })
+    ]}));
+  });
+  return _el('div', { cls: 'rkv2-card', children: [
+    _rkv2CardHead(chart.title),
+    wrap
+  ]});
+}
+
+function _rkv2SubStacks(chart) {
+  const subs = _el('div', { cls: 'rkv2-subs' });
+  chart.cards.forEach(c => {
+    const colsWrap = _el('div', { cls: 'rkv2-vstack' });
+    // Determine global max across both years of this card for relative heights
+    const totals = c.cols.map(col => col.segments.reduce((s, x) => s + x.value, 0));
+    const maxTot = Math.max(...totals);
+    c.cols.forEach(col => {
+      const bar = _el('div', { cls: 'rkv2-vstack-bar', style: { height: '180px' } });
+      const totalThis = col.segments.reduce((s, x) => s + x.value, 0);
+      const barH = (totalThis / maxTot) * 180;
+      bar.style.height = barH + 'px';
+      col.segments.forEach(seg => {
+        const segH = (seg.value / totalThis) * barH;
+        bar.appendChild(_el('div', {
+          cls: 'rkv2-vstack-seg ' + (seg.kind === 'primary' ? 'is-primary' : 'is-secondary'),
+          style: { height: Math.max(segH, 18) + 'px' },
+          text: seg.label
+        }));
+      });
+      colsWrap.appendChild(_el('div', { cls: 'rkv2-vstack-col', children: [
+        bar,
+        _el('div', { cls: 'rkv2-vstack-year', text: String(col.year) }),
+        _el('div', { cls: 'rkv2-vstack-total', text: col.total })
+      ]}));
+    });
+    subs.appendChild(_el('div', { cls: 'rkv2-card is-sub', children: [
+      _rkv2CardHead(c.eyebrow + ' · ' + c.title),
+      colsWrap
+    ]}));
+  });
+  return subs;
+}
+
+function _rkv2Side(side) {
+  if (!side) return null;
+  const val = _el('div', { cls: 'rkv2-side-val', text: side.value });
+  val.appendChild(_el('span', { cls: 'rkv2-unit', text: side.unit }));
+  return _el('div', { cls: 'rkv2-card is-dark rkv2-side', children: [
+    _el('div', { children: [
+      _rkv2CardHead(side.title),
+      val
+    ]}),
+    _el('div', { cls: 'rkv2-side-note', text: side.note })
+  ]});
+}
+
+function renderRichKpi(d) {
+  const modal = document.getElementById('data-modal');
+  const dmEl = modal.querySelector('.data-modal');
+  const prev = dmEl.querySelector('.rich-kpi-slot');
+  if (prev) prev.remove();
+
+  // Eyebrow row
+  const eyebrowRow = _el('div', { cls: 'rkv2-pillarbar' });
+  const eyebrow = _el('div', { cls: 'rkv2-eyebrow' });
+  eyebrow.appendChild(_el('span', { cls: 'rkv2-bracket', text: '[' + d.pillarIdx + ']' }));
+  eyebrow.appendChild(document.createTextNode(d.pillarName + ' · ' + d.label));
+  eyebrowRow.appendChild(eyebrow);
+
+  // Headline: lead · value unit · delta
+  const h = d.headline;
+  const headline = _el('h3', { cls: 'rkv2-headline' });
+  headline.appendChild(document.createTextNode(h.lead + ' '));
+  headline.appendChild(_el('span', { cls: 'rkv2-sep', text: '·' }));
+  const num = _el('span', { cls: 'rkv2-num', text: ' ' + h.value });
+  num.appendChild(_el('span', { cls: 'rkv2-unit', text: ' ' + h.unit }));
+  headline.appendChild(num);
+  if (h.delta) {
+    headline.appendChild(_el('span', { cls: 'rkv2-sep', text: '·' }));
+    headline.appendChild(_el('span', { cls: 'rkv2-delta' + (h.deltaPositive ? ' is-positive' : ''), text: ' ' + h.delta }));
+  }
+
+  const desc = _el('p', { cls: 'rkv2-desc', text: d.description });
+
+  // Charts area
+  const chartsHost = _el('div');
+
+  d.charts.forEach((ch, idx) => {
+    if (ch.type === 'bubble') {
+      const bubbleCard = _rkv2Bubble(ch);
+      if (ch.side && ch.side.type === 'kpi') {
+        const sideCard = _rkv2Side(ch.side);
+        chartsHost.appendChild(_el('div', { cls: 'rkv2-toprow', children: [bubbleCard, sideCard] }));
+      } else {
+        chartsHost.appendChild(_el('div', { cls: 'rkv2-toprow is-single', children: [bubbleCard] }));
+      }
+    } else if (ch.type === 'horizontalBars') {
+      chartsHost.appendChild(_rkv2HorizontalBars(ch));
+    } else if (ch.type === 'subStacks') {
+      chartsHost.appendChild(_rkv2SubStacks(ch));
+    }
+  });
+
+  const root = _el('div', { cls: 'rich-kpi rich-kpi-slot' });
+  root.appendChild(eyebrowRow);
+  root.appendChild(headline);
+  root.appendChild(desc);
+  root.appendChild(chartsHost);
+
+  const closeBtn = dmEl.querySelector('.data-modal-close');
+  if (closeBtn) closeBtn.insertAdjacentElement('afterend', root);
+  else dmEl.appendChild(root);
+}
+
 function openDataModal(card) {
   const modal = document.getElementById('data-modal');
   if (!modal) return;
+  const dmEl = modal.querySelector('.data-modal');
+
+  // Rich-mode path: card declares its own data-rich="<kpi-id>" → render
+  // PDF-faithful composition (donut + side card + sub-cards) instead of
+  // the legacy generic chart. Falls back to legacy if id not registered.
+  const richId = card.getAttribute && card.getAttribute('data-rich');
+  if (richId && RICH_KPI[richId]) {
+    renderRichKpi(RICH_KPI[richId]);
+    dmEl.classList.add('is-rich');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+  dmEl.classList.remove('is-rich');
+  const rkSlot = dmEl.querySelector('.rich-kpi-slot');
+  if (rkSlot) rkSlot.remove();
+
   const tagEl   = card.querySelector('.kpi-tag, .metric-pill, .metric-tag-pill, .pf-detail-tag');
   const valEl   = card.querySelector('.metric-big, .kpi-num');
   const subEl   = card.querySelector('.metric-unit, .kpi-desc, .pf-detail-sub');

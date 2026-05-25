@@ -32,7 +32,11 @@
   --cg-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Offset for fixed nav (88px) so titles stay visible when jumping to anchors */
+  scroll-padding-top: 88px;
+}
 body {
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: var(--cg-putty);
@@ -45,13 +49,13 @@ body {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px; height: 60px;
+  padding: 0 48px; height: 88px;
   background: rgba(216, 213, 204, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cg-border);
 }
 .nav-left { display: flex; align-items: center; gap: 20px; }
-.nav-logo { height: 22px; width: auto; display: block; }
+.nav-logo { height: 67px; width: auto; display: block; }   /* matches index nav-logo (+40%) */
 .nav-sep { width: 1px; height: 18px; background: var(--cg-border); }
 .nav-wordmark {
   font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
@@ -78,7 +82,7 @@ nav {
 
 /* HEADER */
 .pf-header {
-  padding: 140px 80px 60px;
+  padding: 110px 80px 40px;
   background: var(--cg-putty);
   border-bottom: 1px solid var(--cg-border);
 }
@@ -122,7 +126,7 @@ nav {
 
 /* CATEGORY BANDS */
 .cat-band {
-  padding: 80px 80px 64px;
+  padding: 32px 80px 56px;
   position: relative;
 }
 .cat-band.operation    { background: var(--cg-bone); }
@@ -133,26 +137,47 @@ nav {
 .cat-band-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .cat-band.operation    .cat-band-eyebrow { color: var(--cg-green); }
 .cat-band.construction .cat-band-eyebrow { color: var(--cg-orange); }
 .cat-band.development  .cat-band-eyebrow { color: var(--cg-cyan); }
 .cat-band.landbank     .cat-band-eyebrow { color: var(--cg-rust); }
+.cat-band.city         { background: var(--cg-bone); }
+.cat-band.city + .cat-band.city { border-top: 1px solid var(--cg-border); }
+.cat-band.city .cat-band-eyebrow { color: var(--cg-navy); }
+
+/* Dual view switching: when document is in city mode, status sections hide; vice-versa. */
+body[data-pf-view="status"] .cat-band.city { display: none; }
+body[data-pf-view="city"]   .cat-band:not(.city):not(.pf-map-section) { display: none; }
+body[data-pf-view="city"]   .pf-jump a { opacity: 0.55; }
+body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
+
+/* Active city row in side list when in city mode */
+.pf-map__side-row.is-active-city {
+  background: var(--cg-navy);
+  color: #fff;
+}
+.pf-map__side-row.is-active-city .city-name,
+.pf-map__side-row.is-active-city .city-count { color: #fff; }
+.pf-map__side-row.is-active-city .city-meta  { color: rgba(255,255,255,0.7); }
 .cat-band h2 {
-  font-size: clamp(32px, 4vw, 56px);
+  font-size: clamp(20px, 2.2vw, 30px);
   font-weight: 300; line-height: 1.05; letter-spacing: -0.02em;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 .cat-band h2 strong { font-weight: 700; }
 .cat-band-meta {
   font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-  opacity: 0.6; margin-bottom: 40px;
+  opacity: 0.6; margin-bottom: 20px;
 }
 
-/* PROJECT GRID */
+/* PROJECT GRID — más denso, cards más compactos */
 .proj-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+}
+@media (max-width: 1180px) {
+  .proj-grid { grid-template-columns: repeat(3, 1fr); }
 }
 .proj-card {
   background: #fff;
@@ -181,7 +206,7 @@ nav {
 }
 .proj-cert-badge {
   position: absolute;
-  bottom: 10px; right: 10px;
+  bottom: 8px; right: 8px;
   height: 48px; width: auto;
   z-index: 3;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.12));
@@ -220,27 +245,27 @@ nav {
 .cat-band.landbank .proj-media-placeholder { background: rgba(255,255,255,0.04); }
 .cat-band.landbank .proj-media-placeholder::before { opacity: 1; }
 .proj-body {
-  padding: 22px 22px 24px;
-  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px 16px 18px;
+  display: flex; flex-direction: column; gap: 8px;
   flex: 1;
 }
 .proj-name {
-  font-size: 22px; font-weight: 600; line-height: 1.15;
+  font-size: 16px; font-weight: 600; line-height: 1.2;
   letter-spacing: -0.01em;
 }
 .proj-loc {
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
   opacity: 0.55;
 }
 .proj-attrs {
-  list-style: none; padding: 0; margin: 8px 0 0;
-  display: flex; flex-direction: column; gap: 6px;
-  font-size: 12px; line-height: 1.5;
+  list-style: none; padding: 0; margin: 6px 0 0;
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 11px; line-height: 1.45;
   opacity: 0.78;
 }
 .proj-attrs li {
-  display: grid; grid-template-columns: 100px 1fr;
-  gap: 12px;
+  display: grid; grid-template-columns: 78px 1fr;
+  gap: 10px;
 }
 .proj-attrs .key {
   font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
@@ -266,7 +291,7 @@ nav {
 
 /* MAP — Portugal continental · aviation-chart style, WGS84 coords */
 .pf-map-section {
-  padding: 96px 80px 80px;
+  padding: 20px 80px 48px;
   background: var(--cg-bone);
   border-bottom: 1px solid var(--cg-border);
 }
@@ -277,13 +302,13 @@ nav {
   margin-bottom: 14px;
 }
 .pf-map-section h2 {
-  font-size: clamp(32px, 4vw, 56px);
+  font-size: clamp(24px, 2.6vw, 36px);
   font-weight: 300; line-height: 1.05; letter-spacing: -0.02em;
-  color: var(--cg-ink); margin-bottom: 12px;
+  color: var(--cg-ink); margin-bottom: 10px;
 }
 .pf-map-section h2 strong { font-weight: 700; }
 .pf-map-section .pf-map-sub {
-  font-size: 13px; color: var(--cg-mid); margin-bottom: 48px;
+  font-size: 13px; color: var(--cg-mid); margin-bottom: 24px;
   max-width: 520px; line-height: 1.65;
 }
 .pf-mapwrap {
@@ -299,7 +324,8 @@ nav {
   border: 1px solid var(--cg-border);
   border-radius: 2px;
   padding: clamp(18px, 2.6vh, 36px);
-  max-width: 580px;
+  max-width: 540px;
+  max-height: calc(100vh - 220px);
   width: 100%;
   box-shadow: 0 1px 0 rgba(26,31,46,0.04), 0 32px 68px -32px rgba(26,31,46,0.22);
   overflow: hidden;
@@ -387,8 +413,68 @@ nav {
 }
 
 .pf-map__side {
-  display: grid; gap: 16px; align-content: center;
+  display: grid; gap: 14px; align-content: center;
 }
+
+/* CATEGORY CARDS (replace city list — 4 buttons proportional to map) */
+.pf-cat-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  background: #fff;
+  border: 1px solid var(--cg-border);
+  border-left: 3px solid var(--cg-border);
+  padding: 22px 24px;
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--cg-ink);
+  transition: border-color 0.2s var(--cg-ease), transform 0.2s var(--cg-ease), box-shadow 0.2s var(--cg-ease);
+  cursor: pointer;
+  position: relative;
+}
+.pf-cat-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 18px rgba(26,31,46,0.08);
+}
+.pf-cat-card.cat-op   { border-left-color: var(--cg-green); }
+.pf-cat-card.cat-con  { border-left-color: var(--cg-orange); }
+.pf-cat-card.cat-dev  { border-left-color: var(--cg-cyan); }
+.pf-cat-card.cat-land { border-left-color: var(--cg-rust); }
+.pf-cat-card.cat-op:hover   { border-color: var(--cg-green); }
+.pf-cat-card.cat-con:hover  { border-color: var(--cg-orange); }
+.pf-cat-card.cat-dev:hover  { border-color: var(--cg-cyan); }
+.pf-cat-card.cat-land:hover { border-color: var(--cg-rust); }
+.pf-cat-card .cat-num {
+  font-family: var(--cg-font-mono);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--cg-mid);
+  align-self: flex-start;
+  padding-top: 2px;
+}
+.pf-cat-card .cat-body {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pf-cat-card .cat-name {
+  font-size: 17px; font-weight: 600; line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+.pf-cat-card .cat-meta {
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cg-mid);
+}
+.pf-cat-card .cat-count {
+  font-family: var(--cg-font-mono);
+  font-size: 32px; font-weight: 400;
+  line-height: 1; letter-spacing: -0.02em;
+  color: var(--cg-ink);
+  min-width: 44px; text-align: right;
+}
+.pf-cat-card.cat-op   .cat-count { color: var(--cg-green); }
+.pf-cat-card.cat-con  .cat-count { color: var(--cg-orange); }
+.pf-cat-card.cat-dev  .cat-count { color: var(--cg-cyan); }
+.pf-cat-card.cat-land .cat-count { color: var(--cg-rust); }
 .pf-map__side-row {
   background: #fff; border: 1px solid var(--cg-border);
   padding: 24px 26px; border-radius: 2px;
@@ -422,7 +508,7 @@ nav {
 
 /* STICKY CATEGORY PILLS */
 .pf-jump {
-  position: sticky; top: 60px; z-index: 50;
+  position: sticky; top: 88px; z-index: 50;
   background: rgba(216, 213, 204, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--cg-border);
@@ -480,6 +566,57 @@ footer a {
 }
 footer a:hover { text-decoration: underline; }
 
+/* FLOATING ↑ MAP BUTTON */
+.pf-back-to-map {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px 12px 16px;
+  background: var(--cg-navy);
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(46, 71, 145, 0.35), 0 2px 6px rgba(0,0,0,0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.3s var(--cg-ease), transform 0.3s var(--cg-ease), visibility 0.3s var(--cg-ease), background 0.2s var(--cg-ease), gap 0.2s var(--cg-ease);
+}
+.pf-back-to-map.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.pf-back-to-map:hover {
+  background: var(--cg-ink);
+  gap: 14px;
+}
+.pf-back-to-map .arrow {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.2s var(--cg-ease);
+}
+.pf-back-to-map:hover .arrow {
+  transform: translateY(-2px);
+}
+@media (max-width: 600px) {
+  .pf-back-to-map {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 14px 10px 12px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   nav { padding: 0 32px; }
@@ -515,7 +652,7 @@ footer a:hover { text-decoration: underline; }
 }
 </style>
 </head>
-<body>
+<body data-pf-view="status">
 
 <nav>
   <div class="nav-left">
@@ -563,11 +700,11 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <!-- MAP — Portugal continental, dot density per city -->
-<section class="pf-map-section" aria-label="Distribuição geográfica do portfólio">
+<section class="pf-map-section" id="map" aria-label="Distribuição geográfica do portfólio">
   <div class="pf-map-inner">
     <p class="pf-map-eyebrow" data-pt="Onde estamos · 8 cidades" data-en="Where we are · 8 cities">Onde estamos · 8 cidades</p>
     <h2 data-pt="Portugal <strong>continental</strong>" data-en="Mainland <strong>Portugal</strong>">Portugal <strong>continental</strong></h2>
-    <p class="pf-map-sub" data-pt="23 ativos · 8 cidades · do Minho ao Algarve. O cluster maior está em Matosinhos (sede e Fuse Valley)." data-en="23 assets · 8 cities · from Minho to Algarve. The largest cluster is in Matosinhos (HQ and Fuse Valley).">23 ativos · 8 cidades · do Minho ao Algarve. O cluster maior está em Matosinhos (sede e Fuse Valley).</p>
+    <p class="pf-map-sub" data-pt="23 ativos · 8 cidades · do Minho ao Algarve." data-en="23 assets · 8 cities · from Minho to Algarve.">23 ativos · 8 cidades · do Minho ao Algarve.</p>
 
     <div class="pf-mapwrap">
       <div class="pf-map" id="pf-map">
@@ -578,22 +715,43 @@ footer a:hover { text-decoration: underline; }
         <svg id="portugal-svg" viewBox="0 0 300 400" aria-label="Mapa de Portugal continental" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
 
-      <aside class="pf-map__side" id="pf-map-side" aria-label="Cidades">
-        <!-- Filled by JS from the same ASSETS source as the map -->
+      <aside class="pf-map__side" id="pf-map-side" aria-label="Categorias">
+        <a href="#operacao" class="pf-cat-card cat-op">
+          <span class="cat-num">01</span>
+          <div class="cat-body">
+            <span class="cat-name" data-pt="Operação" data-en="Operation">Operação</span>
+            <span class="cat-meta" data-pt="Ativos em operação" data-en="Operating assets">Ativos em operação</span>
+          </div>
+          <span class="cat-count">10</span>
+        </a>
+        <a href="#construcao" class="pf-cat-card cat-con">
+          <span class="cat-num">02</span>
+          <div class="cat-body">
+            <span class="cat-name" data-pt="Construção" data-en="Construction">Construção</span>
+            <span class="cat-meta" data-pt="Ativos em construção" data-en="Under construction">Ativos em construção</span>
+          </div>
+          <span class="cat-count">4</span>
+        </a>
+        <a href="#desenvolvimento" class="pf-cat-card cat-dev">
+          <span class="cat-num">03</span>
+          <div class="cat-body">
+            <span class="cat-name" data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</span>
+            <span class="cat-meta" data-pt="Projetos em desenvolvimento" data-en="In development">Projetos em desenvolvimento</span>
+          </div>
+          <span class="cat-count">5</span>
+        </a>
+        <a href="#landbank" class="pf-cat-card cat-land">
+          <span class="cat-num">04</span>
+          <div class="cat-body">
+            <span class="cat-name">Landbank</span>
+            <span class="cat-meta" data-pt="Reserva fundiária" data-en="Land reserve">Reserva fundiária</span>
+          </div>
+          <span class="cat-count">4</span>
+        </a>
       </aside>
     </div>
   </div>
 </section>
-
-<!-- STICKY CATEGORY NAV -->
-<nav class="pf-jump" aria-label="Navegação por categoria">
-  <div class="pf-jump-inner">
-    <a href="#operacao" class="op"><span class="dot"></span><span data-pt="Operação" data-en="Operation">Operação</span><span class="count">· 10</span></a>
-    <a href="#construcao" class="con"><span class="dot"></span><span data-pt="Construção" data-en="Construction">Construção</span><span class="count">· 4</span></a>
-    <a href="#desenvolvimento" class="dev"><span class="dot"></span><span data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</span><span class="count">· 5</span></a>
-    <a href="#landbank" class="land"><span class="dot"></span>Landbank<span class="count">· 4</span></a>
-  </div>
-</nav>
 
 <!-- OPERAÇÃO -->
 <section class="cat-band operation" id="operacao">
@@ -617,11 +775,7 @@ footer a:hover { text-decoration: underline; }
             <li><span class="key" data-pt="Gestão" data-en="Management">Gestão</span><span>CG</span></li>
           </ul>
           <span class="proj-badge cert-emit" data-pt="LEED Gold emitido" data-en="LEED Gold issued">LEED Gold emitido</span>
-          <a href="https://www.usgbc.org/projects/la-movida" target="_blank" rel="noopener" class="proj-cert-link" data-pt="Ver no USGBC" data-en="View on USGBC">
-            <span data-pt="Ver no USGBC" data-en="View on USGBC">Ver no USGBC</span>
-            <span class="arrow">↗</span>
-          </a>
-          <img class="proj-cert-badge" src="uploads/leed/LEED_Gold-2026.svg" alt="LEED Gold" loading="lazy">
+          <img class="proj-cert-badge" src="uploads/leed/LEED_Gold-2026.svg" alt="LEED Gold" loading="lazy" onerror="this.style.display='none'">
         </div>
       </article>
 
@@ -964,6 +1118,12 @@ footer a:hover { text-decoration: underline; }
   <p><a href="index.html" data-pt="← Voltar ao relatório" data-en="← Back to report">← Voltar ao relatório</a></p>
 </footer>
 
+<!-- Floating ↑ Map button — reaparece después de pasar el mapa -->
+<a href="#map" class="pf-back-to-map" id="backToMap" aria-label="Voltar ao mapa">
+  <span class="arrow">↑</span>
+  <span data-pt="Mapa" data-en="Map">Mapa</span>
+</a>
+
 <script>
 // Language toggle via ?lang=en query param.
 (function() {
@@ -1221,10 +1381,11 @@ const PF_ASSETS = [
       g.appendChild(cT);
     }
 
-    const targetId = CITIES[cityName].anchor || 'operacao';
     g.addEventListener('click', () => {
-      const target = document.getElementById(targetId);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Map pin → switch to city view focused on that city
+      if (typeof window.setProjectsView === 'function') {
+        window.setProjectsView('city', cityName);
+      }
     });
     g.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
@@ -1232,8 +1393,10 @@ const PF_ASSETS = [
     host.appendChild(g);
   });
 
-  // Side list — built with safe DOM (no innerHTML)
-  if (sideEl) {
+  // Side list disabled — side panel now contains static category cards
+  // (Operação / Construção / Desenvolvimento / Landbank).
+  // City navigation is handled via map pins instead.
+  if (false && sideEl) {
     const sorted = cityNames
       .map(name => ({ name: name, count: (byCity[name] || []).length, anchor: CITIES[name].anchor }))
       .sort((a, b) => b.count - a.count);
@@ -1256,8 +1419,10 @@ const PF_ASSETS = [
       r.appendChild(countEl);
       r.appendChild(meta);
       r.addEventListener('click', () => {
-        const target = document.getElementById(row.anchor || 'operacao');
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Side row → switch to city view focused on that city
+        if (typeof window.setProjectsView === 'function') {
+          window.setProjectsView('city', row.name);
+        }
       });
       sideEl.appendChild(r);
     });
@@ -1274,6 +1439,166 @@ const PF_ASSETS = [
     }, { threshold: 0.25 });
     mapIO.observe(wrap);
   }
+})();
+
+// ============ DUAL VIEW (status ↔ cidade) ============
+// Default = status. Status section IDs (operacao, construcao, desenvolvimento,
+// landbank) are unchanged. City sections are built dynamically below; toggling
+// moves the same DOM cards between containers so nothing is duplicated.
+(function setupDualView() {
+  // City list mirrors CITIES from the map; order = North → South to feel
+  // continuous when the user lands on a city after a map click.
+  const CITY_ORDER = [
+    'Esposende', 'Braga', 'Maia', 'Matosinhos',
+    'Valongo', 'Vila Nova de Gaia', 'Vila Franca de Xira', 'Loulé'
+  ];
+  const slug = s => s.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  // 1) Tag every existing proj-card with its city + remember the grid it
+  //    came from, so we can put it back in status mode.
+  const cardsByCity = {};
+  document.querySelectorAll('.cat-band:not(.city) .proj-card').forEach(card => {
+    const locText = (card.querySelector('.proj-loc') || {}).textContent || '';
+    // proj-loc format: "Cidade, Distrito" — first segment is the city.
+    // Normalise "V. N. de Gaia" → "Vila Nova de Gaia".
+    let city = (locText.split(',')[0] || '').trim();
+    if (/^V\.?\s*N\.?\s*de Gaia/i.test(city)) city = 'Vila Nova de Gaia';
+    card.dataset.city = city;
+    card._originalGrid = card.parentElement;
+    (cardsByCity[city] = cardsByCity[city] || []).push(card);
+  });
+
+  // 2) Build a city section per city, hidden by the body[data-pf-view] rule.
+  const footer = document.querySelector('footer');
+  let cityIdx = 0;
+  CITY_ORDER.forEach(name => {
+    const cards = cardsByCity[name] || [];
+    if (!cards.length) return;
+    cityIdx++;
+
+    // Compute status breakdown for meta (matches operation/construction style)
+    const byStatus = { operacao: 0, construcao: 0, desenvolvimento: 0, landbank: 0 };
+    cards.forEach(c => {
+      const og = c._originalGrid && c._originalGrid.closest('.cat-band');
+      if (!og) return;
+      if (og.classList.contains('operation'))    byStatus.operacao++;
+      if (og.classList.contains('construction')) byStatus.construcao++;
+      if (og.classList.contains('development'))  byStatus.desenvolvimento++;
+      if (og.classList.contains('landbank'))     byStatus.landbank++;
+    });
+    const parts = [];
+    if (byStatus.operacao)       parts.push(byStatus.operacao + ' em operação');
+    if (byStatus.construcao)     parts.push(byStatus.construcao + ' em construção');
+    if (byStatus.desenvolvimento) parts.push(byStatus.desenvolvimento + ' em desenvolvimento');
+    if (byStatus.landbank)       parts.push(byStatus.landbank + ' landbank');
+
+    const section = document.createElement('section');
+    section.className = 'cat-band city';
+    section.id = 'city-' + slug(name);
+    section.dataset.cityName = name;
+    const inner = document.createElement('div');
+    inner.className = 'cat-band-inner';
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'cat-band-eyebrow';
+    eyebrow.textContent = 'Cidade · ' + String(cityIdx).padStart(2, '0');
+    const h2 = document.createElement('h2');
+    h2.innerHTML = 'Ativos em <strong>' + name + '</strong>';
+    const meta = document.createElement('p');
+    meta.className = 'cat-band-meta';
+    meta.textContent = cards.length + (cards.length === 1 ? ' ativo' : ' ativos') +
+      (parts.length ? ' · ' + parts.join(' · ') : '');
+    const grid = document.createElement('div');
+    grid.className = 'proj-grid';
+    grid.dataset.cityGrid = name;
+    inner.appendChild(eyebrow);
+    inner.appendChild(h2);
+    inner.appendChild(meta);
+    inner.appendChild(grid);
+    section.appendChild(inner);
+    footer.parentElement.insertBefore(section, footer);
+  });
+
+  // 3) View switcher — moves cards between containers.
+  function setProjectsView(view, focusCity) {
+    if (view === 'city') {
+      document.querySelectorAll('.proj-card').forEach(card => {
+        const target = document.querySelector(
+          '.cat-band.city [data-city-grid="' + (card.dataset.city || '').replace(/"/g,'\\"') + '"]'
+        );
+        if (target) target.appendChild(card);
+      });
+      document.body.setAttribute('data-pf-view', 'city');
+      // Mark the active city in the side list
+      document.querySelectorAll('.pf-map__side-row').forEach(r => {
+        r.classList.toggle('is-active-city', r.dataset.city === focusCity);
+      });
+      if (focusCity) {
+        const target = document.querySelector(
+          '.cat-band.city[data-city-name="' + focusCity.replace(/"/g,'\\"') + '"]'
+        );
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // status: put cards back into their original status grid
+      document.querySelectorAll('.proj-card').forEach(card => {
+        if (card._originalGrid) card._originalGrid.appendChild(card);
+      });
+      document.body.setAttribute('data-pf-view', 'status');
+      document.querySelectorAll('.pf-map__side-row').forEach(r => r.classList.remove('is-active-city'));
+    }
+  }
+  window.setProjectsView = setProjectsView;
+
+  // 4) Pf-jump pills (Operação / Construção / Desenvolvimento / Landbank)
+  //    → switch back to status view, then let the native anchor jump happen.
+  document.querySelectorAll('.pf-jump a').forEach(pill => {
+    pill.addEventListener('click', () => setProjectsView('status'));
+  });
+})();
+</script>
+
+<!-- Floating button visibility: aparece cuando el mapa queda completamente arriba -->
+<script>
+(function() {
+  const btn = document.getElementById('backToMap');
+  const mapSection = document.getElementById('map');
+  if (!btn || !mapSection) return;
+
+  let ticking = false;
+  function update() {
+    const rect = mapSection.getBoundingClientRect();
+    // Mostrar el botón cuando el mapa está mayoritariamente fuera del viewport (queda <80px visible en la parte alta)
+    const mostlyHidden = rect.bottom < 120;
+    if (mostlyHidden) {
+      btn.classList.add('is-visible');
+    } else {
+      btn.classList.remove('is-visible');
+    }
+    ticking = false;
+  }
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  // When user clicks any in-page anchor, force re-check after smooth-scroll settles
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    setTimeout(update, 80);
+    setTimeout(update, 400);
+    setTimeout(update, 900);
+  });
+  update();
+  // Disparo inicial + tras navegación por hash
+  update();
+  window.addEventListener('hashchange', () => setTimeout(update, 400));
 })();
 </script>
 </body>
