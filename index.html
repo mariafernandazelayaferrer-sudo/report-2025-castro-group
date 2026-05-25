@@ -20,7 +20,7 @@
 <meta name="twitter:title" content="Castro Group — Relatório de Sustentabilidade 2025">
 <meta name="twitter:description" content="A sua opinião conta · vote nas prioridades ESG 2030.">
 <meta name="twitter:image" content="https://castro-group.github.io/report-2025/assets/og/og-image.png">
-<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -5158,7 +5158,7 @@ window.addEventListener('load', () => {
   function paintId(n) { if (idEl) idEl.textContent = '#' + n; }
   function fetchCounter() {
     // counterapi.dev returns { count: N, ... } and increments on /up
-    return fetch('https://api.counterapi.dev/v1/castro-group/rs2025-final/up')
+    return fetch('https://api.counterapi.dev/v1/castro-group/rs2025-launch/up')
       .then(r => r.json())
       .then(data => {
         const n = data && (data.count || data.value);
