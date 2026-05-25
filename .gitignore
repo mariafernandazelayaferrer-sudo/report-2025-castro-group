@@ -9,3 +9,4 @@ uploads/references/videos/
 # Local
 .DS_Store
 *.log
+uploads/
