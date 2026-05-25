@@ -182,30 +182,6 @@ nav.over-dark .lang-btn.active { background: #fff; color: var(--cg-navy); }
 .nav-vote svg { width: 12px; height: 12px; }
 nav.over-dark .nav-vote { background: rgba(255,255,255,0.92); color: var(--cg-green); }
 
-/* Floating vote FAB · sits to the left of .back-to-top */
-.vote-fab {
-  position: fixed; right: 120px; bottom: 24px;
-  z-index: 300;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 18px; border-radius: 999px;
-  background: var(--cg-green); color: #fff;
-  border: 1px solid rgba(255,255,255,0.10);
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
-  text-transform: uppercase; text-decoration: none;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
-  opacity: 0; transform: translateY(16px);
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease, gap 0.2s ease;
-}
-.vote-fab.visible { opacity: 0.96; transform: translateY(0); pointer-events: auto; }
-.vote-fab:hover { background: #2A8E60; gap: 12px; }
-.vote-fab svg { width: 12px; height: 12px; }
-@media (max-width: 640px) {
-  .vote-fab { right: 70px; bottom: 14px; padding: 8px 14px; font-size: 10px; }
-}
-
 /* Big CTA at the end of Compromissos */
 .vote-cta {
   margin: 48px auto 0;
@@ -2141,9 +2117,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .ceo-grid, .hos-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
   .ceo-grid > div > div[style*="font-size:22px"],
   .hos-grid > div > div[style*="font-size:22px"] { font-size: 16px !important; padding-left: 18px !important; padding-right: 18px !important; }
-  /* Floating Vote FAB switches to orange to match the report's accent */
-  .vote-fab { background: var(--cg-orange); }
-  .vote-fab:hover { background: var(--cg-orange-deep); }
   .section { padding: 56px 20px; padding-right: 20px; }
   .hero-content { padding: 128px 20px 32px; } /* +32 to account for top rail */
   .hero-title { font-size: 36px !important; }
@@ -3967,12 +3940,6 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
 </style>
 
 <!-- ── BACK TO TOP ── -->
-<a class="vote-fab" id="voteFab" href="#opiniao" aria-label="Votar prioridades ESG">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M4 12l5 5L20 6"/>
-  </svg>
-  <span data-pt="Vote" data-en="Vote">Vote</span>
-</a>
 <button class="back-to-top" type="button" aria-label="Voltar ao topo" onclick="scrollToTopSmooth()">↑</button>
 
 <!-- ── CURSOR ORB ── -->
@@ -4214,18 +4181,9 @@ function scrollToTopSmooth() {
 }
 (function setupBackToTop() {
   const btn = document.querySelector('.back-to-top');
-  const fab = document.querySelector('.vote-fab');
-  if (!btn && !fab) return;
-  // Hide the vote FAB once the user is already inside the panel
-  // (no point pushing them to where they already are).
-  const opiniao = document.getElementById('opiniao');
+  if (!btn) return;
   function toggle() {
-    const past = window.scrollY > 400;
-    if (btn) btn.classList.toggle('visible', past);
-    if (fab) {
-      const inPanel = opiniao && (opiniao.getBoundingClientRect().top < window.innerHeight * 0.6);
-      fab.classList.toggle('visible', past && !inPanel);
-    }
+    btn.classList.toggle('visible', window.scrollY > 400);
   }
   window.addEventListener('scroll', toggle, { passive: true });
   toggle();
