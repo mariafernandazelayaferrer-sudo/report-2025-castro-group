@@ -2600,6 +2600,42 @@ html.lenis, html.lenis body { height: auto; }
 .opiniao-comments .op-comments-head { display: none; }
 .op-comments-ticker .op-ticker-meta { display: none; }
 
+/* Rewind button — resets the marquee animation so the first real comment
+   (always rendered at translateX(0)) is visible again. Positioned in the
+   former "EM CIRCULAÇÃO" slot, anchored to the original content band. */
+.op-ticker-rewind {
+  position: absolute;
+  top: -10px;
+  right: max(14px, calc(50vw - 600px));
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cg-bone);
+  color: var(--cg-ink);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  padding: 4px 10px 4px 8px;
+  font: 600 9.5px/1 'Inter', sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.op-ticker-rewind:hover {
+  background: var(--cg-ink);
+  color: #fff;
+  border-color: var(--cg-ink);
+}
+.op-ticker-rewind:active { transform: translateY(1px); }
+.op-ticker-rewind svg { width: 10px; height: 10px; flex: 0 0 auto; }
+
+/* Mobile: keep only the icon, hide the "Início" label */
+@media (max-width: 768px) {
+  .op-ticker-rewind { padding: 4px 7px; }
+  .op-ticker-rewind span { display: none; }
+}
+
 /* ============================================================================
    COMMENTS MARQUEE — Editorial newsstand ticker
    Horizontal pull-quote column feed, positioned above the comment form.
@@ -4138,6 +4174,16 @@ html.lenis, html.lenis body { height: auto; }
       <div class="op-comments-ticker is-empty" id="opCommentsTicker" aria-label="Recent stakeholder voices">
         <span class="op-ticker-flag" data-pt="Live · Vozes" data-en="Live · Voices">Live · Vozes</span>
         <span class="op-ticker-meta" data-pt="Em circulação" data-en="In rotation">Em circulação</span>
+        <button type="button" class="op-ticker-rewind" id="opTickerRewind"
+                aria-label="Voltar ao início do feed"
+                data-pt-aria="Voltar ao início do feed"
+                data-en-aria="Rewind to the start of the feed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="19 20 9 12 19 4 19 20" fill="currentColor" stroke="none"/>
+            <line x1="5" y1="19" x2="5" y2="5"/>
+          </svg>
+          <span data-pt="Início" data-en="Rewind">Início</span>
+        </button>
         <div class="op-ticker-viewport">
           <div class="op-comments-list" id="opCommentsList" aria-live="polite"></div>
         </div>
@@ -6259,6 +6305,19 @@ window.addEventListener('load', () => {
     // seamless infinite marquee. Track shift is calculated exactly so the
     // animation loop matches one full set of originals (pixel-perfect loop).
     const cmTicker = document.getElementById('opCommentsTicker');
+
+    // Rewind button — restarts the CSS animation from translateX(0) so the
+    // first (real) comment is immediately visible at the left edge again.
+    // Uses the classic "remove + force-reflow + reapply" trick.
+    const cmRewind = document.getElementById('opTickerRewind');
+    if (cmRewind) {
+      cmRewind.addEventListener('click', () => {
+        cmList.style.animation = 'none';
+        // Force a reflow so the browser registers the animation removal
+        void cmList.offsetWidth;
+        cmList.style.animation = '';
+      });
+    }
 
     // Empty-state skeleton: a single blank card (no text, no meta, no votes,
     // no time) that the marquee duplicates to fill the viewport. Keeps the
