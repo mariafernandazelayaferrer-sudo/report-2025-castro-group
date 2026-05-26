@@ -2762,10 +2762,15 @@ html.lenis, html.lenis body { height: auto; }
    keeping the rolling rhythm consistent across both states. */
 .op-comments-ticker .op-comment-card:first-child { border-left: 1px solid var(--cg-border); }
 
-/* Your own comment ("is-mine"): identified ONLY by the orange dot (the
-   --card-accent override below). No long border-left — that visually
-   extended past the text into the empty card area. The dot is enough. */
+/* Your own comment ("is-mine"): identified by the orange dot AND a 3px
+   left-edge accent line in the same color as the dot. The line is dynamic
+   via var(--card-accent), so it always matches the dot color — orange
+   for own comments, the nth-child cycle color for everyone else's. */
 .op-comments-ticker .op-comment-card.is-mine { --card-accent: var(--cg-orange); }
+.op-comments-ticker .op-comment-card.is-mine {
+  border-left: 3px solid var(--card-accent);
+  padding-left: 19px;        /* 19 + 3 border = same 22px visual inset */
+}
 .op-comments-ticker .op-comment-card.is-mine::before {
   width: 9px; height: 9px;   /* slightly larger than the cycle dot */
 }
@@ -2834,18 +2839,19 @@ html.lenis, html.lenis body { height: auto; }
   width: auto;
 }
 
-/* The comment body — Inter italic (matches the report's body font for
-   readability), sized to fit ~350 chars in the 340x340 square card */
+/* The comment body — Inter italic (matches the report's body font),
+   sized to fit ~500 chars in the 340x340 square card. Slightly tighter
+   line-height (1.45) so 12 lines comfortably fit the available area. */
 .op-comments-ticker .op-comment-text {
-  font: 400 13.5px/1.5 'Inter', sans-serif;
+  font: 400 13px/1.45 'Inter', sans-serif;
   font-style: italic;
   color: var(--cg-ink);
   margin: 0;
   position: relative;
   z-index: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 9;
-          line-clamp: 9;
+  -webkit-line-clamp: 12;
+          line-clamp: 12;
   -webkit-box-orient: vertical;
   overflow: hidden;
   letter-spacing: -0.005em;
@@ -4209,12 +4215,12 @@ html.lenis, html.lenis body { height: auto; }
                  data-pt-ph="Empresa / Função (opcional)" data-en-ph="Company / Role (optional)">
         </div>
         <textarea id="opCommentBody" class="op-comment-body"
-                  rows="3" maxlength="350" required
+                  rows="3" maxlength="500" required
                   placeholder="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
                   data-pt-ph="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
                   data-en-ph="Share your perspective on Castro Group's ESG priorities for 2030…"></textarea>
         <div class="op-comment-toolbar">
-          <span class="op-comment-counter" id="opCommentCounter">0 / 350</span>
+          <span class="op-comment-counter" id="opCommentCounter">0 / 500</span>
           <button type="submit" class="op-comment-publish" id="opCommentPublish" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -6408,9 +6414,9 @@ window.addEventListener('load', () => {
 
     function updateCounter() {
       const n = cmBody.value.length;
-      cmCounter.textContent = n + ' / 350';
-      cmCounter.classList.toggle('is-warn', n > 320);
-      cmPublish.disabled = n === 0 || n > 350;
+      cmCounter.textContent = n + ' / 500';
+      cmCounter.classList.toggle('is-warn', n > 450);
+      cmPublish.disabled = n === 0 || n > 500;
     }
 
     cmBody.addEventListener('input', updateCounter);
@@ -6421,7 +6427,7 @@ window.addEventListener('load', () => {
       const payload = {
         author:  cmName.value.trim().slice(0, 40) || null,
         role:    cmRole.value.trim().slice(0, 40) || null,
-        body:    body.slice(0, 350),
+        body:    body.slice(0, 500),
         ts:      Date.now(),
         visitor: state.visitorId ? String(state.visitorId) : null,
         votes:   state.votes.slice()
