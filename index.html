@@ -2594,6 +2594,11 @@ html.lenis, html.lenis body { height: auto; }
   [data-gsap-reveal] { opacity: 1; }
 }
 
+/* User request: hide the "Comentários [N]" head + "EM CIRCULAÇÃO" meta
+   so only the LIVE flag + ticker remain. Cleaner editorial strip. */
+.opiniao-comments .op-comments-head { display: none; }
+.op-comments-ticker .op-ticker-meta { display: none; }
+
 /* ============================================================================
    COMMENTS MARQUEE — Editorial newsstand ticker
    Horizontal pull-quote column feed, positioned above the comment form.
