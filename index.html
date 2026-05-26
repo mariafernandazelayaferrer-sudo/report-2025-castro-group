@@ -2690,18 +2690,18 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Cards inside ticker — square magazine tiles, fixed dimensions */
 .op-comments-ticker .op-comment-card {
-  flex: 0 0 300px;
-  width: 300px;
-  height: 300px;                /* SQUARE — rolls left as a uniform block */
+  flex: 0 0 340px;
+  width: 340px;
+  height: 340px;                /* SQUARE — rolls left as a uniform block */
   background: transparent;
   border: none;
   border-right: 1px solid var(--cg-border);
   border-radius: 0;
-  padding: 22px 26px 22px;
+  padding: 20px 22px;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
   overflow: hidden;
 }
@@ -2779,20 +2779,20 @@ html.lenis, html.lenis body { height: auto; }
   width: auto;
 }
 
-/* The comment body — serif italic pull-quote */
+/* The comment body — serif italic pull-quote, sized to fit ~350 chars */
 .op-comments-ticker .op-comment-text {
-  font: 400 17px/1.42 'Instrument Serif', serif;
+  font: 400 13.5px/1.42 'Instrument Serif', serif;
   font-style: italic;
   color: var(--cg-ink);
   margin: 0;
   position: relative;
   z-index: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
-          line-clamp: 5;
+  -webkit-line-clamp: 11;
+          line-clamp: 11;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
 }
 
 /* Vote chips inside ticker card — micro */
@@ -2819,16 +2819,17 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 768px) {
   .op-comments-ticker { padding: 28px 0 22px; }
   .op-comments-ticker .op-comment-card {
-    flex-basis: 250px;
-    width: 250px;
-    height: 250px;
-    padding: 20px 20px 20px;
+    flex-basis: 280px;
+    width: 280px;
+    height: 300px;
+    padding: 18px 20px;
   }
   .op-comments-ticker .op-comment-card.is-mine { padding-left: 17px; }
-  .op-comments-ticker .op-comment-card::before { font-size: 80px; left: 14px; }
-  .op-comments-ticker .op-comment-text { font-size: 15px; -webkit-line-clamp: 6; line-clamp: 6; }
-  .op-comments-ticker .op-comment-card.is-demo::after { top: 14px; right: 14px; font-size: 8px; }
-  .op-comments-ticker .op-comments-list { animation-duration: 55s; }
+  .op-comments-ticker .op-comment-text {
+    font-size: 12px;
+    -webkit-line-clamp: 12;
+            line-clamp: 12;
+  }
   .op-ticker-meta { display: none; }   /* keep only LIVE flag on small screens */
 }
 
@@ -4142,12 +4143,12 @@ html.lenis, html.lenis body { height: auto; }
                  data-pt-ph="Empresa / Função (opcional)" data-en-ph="Company / Role (optional)">
         </div>
         <textarea id="opCommentBody" class="op-comment-body"
-                  rows="3" maxlength="500" required
+                  rows="3" maxlength="350" required
                   placeholder="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
                   data-pt-ph="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
                   data-en-ph="Share your perspective on Castro Group's ESG priorities for 2030…"></textarea>
         <div class="op-comment-toolbar">
-          <span class="op-comment-counter" id="opCommentCounter">0 / 500</span>
+          <span class="op-comment-counter" id="opCommentCounter">0 / 350</span>
           <button type="submit" class="op-comment-publish" id="opCommentPublish" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -6238,7 +6239,7 @@ window.addEventListener('load', () => {
 
       // Card width and viewport for marquee math
       const isNarrow  = window.matchMedia('(max-width: 768px)').matches;
-      const cardW     = isNarrow ? 250 : 300;
+      const cardW     = isNarrow ? 280 : 340;
       const viewportEl = cmTicker ? cmTicker.querySelector('.op-ticker-viewport') : null;
       const viewportW = viewportEl ? viewportEl.offsetWidth : 1100;
 
@@ -6274,9 +6275,9 @@ window.addEventListener('load', () => {
 
     function updateCounter() {
       const n = cmBody.value.length;
-      cmCounter.textContent = n + ' / 500';
-      cmCounter.classList.toggle('is-warn', n > 450);
-      cmPublish.disabled = n === 0 || n > 500;
+      cmCounter.textContent = n + ' / 350';
+      cmCounter.classList.toggle('is-warn', n > 320);
+      cmPublish.disabled = n === 0 || n > 350;
     }
 
     cmBody.addEventListener('input', updateCounter);
@@ -6287,7 +6288,7 @@ window.addEventListener('load', () => {
       const payload = {
         author:  cmName.value.trim().slice(0, 40) || null,
         role:    cmRole.value.trim().slice(0, 40) || null,
-        body:    body.slice(0, 500),
+        body:    body.slice(0, 350),
         ts:      Date.now(),
         visitor: state.visitorId ? String(state.visitorId) : null,
         votes:   state.votes.slice()
