@@ -2706,52 +2706,39 @@ html.lenis, html.lenis body { height: auto; }
   overflow: hidden;
 }
 
-/* Skeleton card (empty state) — replaces the small dot with a big centered
-   color disc. No text, no badge: the dot IS the visual statement.
-   Each skeleton clone gets a different brand color via the nth-child cycle. */
-.op-comments-ticker .op-comment-card.is-skeleton::before {
-  width: 88px; height: 88px;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--card-accent) 14%, transparent);
-}
+/* Skeleton inherits the same tiny dot — no overrides needed.
+   Cards stay visually identical to real comments (just empty inside),
+   keeping the rolling rhythm consistent across both states. */
 .op-comments-ticker .op-comment-card:first-child { border-left: 1px solid var(--cg-border); }
 .op-comments-ticker .op-comment-card.is-mine {
   border-left: 3px solid var(--cg-orange);
   padding-left: 23px;
 }
 
-/* Color identity dot — replaces the old gray drop-quote.
-   Each card has --card-accent set by nth-child cycle or data-pillar override.
-   The dot itself is rendered via ::before below (with two sizes: small for
-   real comments, large+centered for the empty skeleton state). */
+/* Decorative color dot — small, minimal, free-cycling.
+   Each card gets one of the 5 brand colors based purely on position.
+   Color is NOT tied to the comment's vote — it's pure visual rhythm. */
 .op-comments-ticker .op-comment-card { --card-accent: var(--cg-navy); }
 .op-comments-ticker .op-comment-card:nth-child(5n+2) { --card-accent: var(--cg-orange); }
 .op-comments-ticker .op-comment-card:nth-child(5n+3) { --card-accent: var(--cg-cyan);   }
 .op-comments-ticker .op-comment-card:nth-child(5n+4) { --card-accent: var(--cg-green);  }
 .op-comments-ticker .op-comment-card:nth-child(5n+5) { --card-accent: var(--cg-rust);   }
 
-/* Real comments override the cycle with the pillar of their first vote */
-.op-comments-ticker .op-comment-card[data-pillar="amb"] { --card-accent: var(--cg-green); }
-.op-comments-ticker .op-comment-card[data-pillar="soc"] { --card-accent: var(--cg-cyan);  }
-.op-comments-ticker .op-comment-card[data-pillar="gov"] { --card-accent: var(--cg-orange);}
-
-/* The dot itself — default = small identifier dot for real comments */
+/* The decorative dot — tiny accent in the upper-left of every card */
 .op-comments-ticker .op-comment-card::before {
   content: '';
   position: absolute;
   display: block;
   border-radius: 50%;
   background: var(--card-accent);
-  width: 12px; height: 12px;
-  top: 26px; left: 26px;
+  width: 7px; height: 7px;
+  top: 22px; left: 22px;
   z-index: 1;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--card-accent) 12%, transparent);
 }
 
-/* Shift meta line so it clears the dot */
+/* Real-comment meta line shifts slightly so author text clears the dot */
 .op-comments-ticker .op-comment-card:not(.is-skeleton) .op-comment-meta {
-  padding-left: 22px;
+  padding-left: 16px;
 }
 
 /* Meta line — uppercase editorial tracking */
@@ -6169,14 +6156,6 @@ window.addEventListener('load', () => {
       if (mine)   cls += ' is-mine';
       if (c.demo) cls += ' is-demo';
       card.className = cls;
-
-      // Identity dot color — derived from the first vote's pillar (E/S/G)
-      // so the card visually anchors to the ESG theme. Skeletons + comments
-      // without votes fall through to the nth-child color cycle in CSS.
-      if (c.votes && c.votes.length) {
-        const p = pillarOf(c.votes[0]);
-        if (p) card.setAttribute('data-pillar', p);
-      }
 
       const meta = document.createElement('div');
       meta.className = 'op-comment-meta';
