@@ -32,7 +32,8 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp
+    getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp,
+    doc, runTransaction
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -48,7 +49,7 @@
   try {
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
-    window.fbApi = { db, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp };
+    window.fbApi = { db, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, doc, runTransaction };
     window.dispatchEvent(new CustomEvent('firebase-ready'));
   } catch (err) {
     console.warn('[firebase] init failed — falling back to localStorage:', err);
@@ -5921,8 +5922,40 @@ window.addEventListener('load', () => {
   // counter on every visit until we get a real one.
   const idEl = document.getElementById('op-visitor-id');
   function paintId(n) { if (idEl) idEl.textContent = '#' + n; }
-  function fetchCounter() {
-    // counterapi.dev returns { count: N, ... } and increments on /up
+  // Wait up to 3s for the Firebase ESM module to finish bootstrapping
+  // (resolves immediately if it's already ready). Used by fetchCounter
+  // so a cold visit doesn't race the SDK load.
+  function waitForFirebase(maxMs) {
+    return new Promise(resolve => {
+      if (window.fbApi && window.fbApi.runTransaction) return resolve(true);
+      const onReady = () => resolve(true);
+      window.addEventListener('firebase-ready', onReady, { once: true });
+      setTimeout(() => resolve(false), maxMs || 3000);
+    });
+  }
+
+  async function fetchCounter() {
+    // Preferred path: Firestore transaction — owns the data, atomic.
+    // Doc: meta/visitor-counter { count: N, updatedAt: timestamp }
+    const ready = await waitForFirebase(3000);
+    if (ready && window.fbApi && window.fbApi.runTransaction) {
+      try {
+        const { db, doc, runTransaction } = window.fbApi;
+        const ref = doc(db, 'meta', 'visitor-counter');
+        const n = await runTransaction(db, async (tx) => {
+          const snap = await tx.get(ref);
+          const next = (snap.exists() ? (snap.data().count || 0) : 0) + 1;
+          tx.set(ref, { count: next, updatedAt: new Date() }, { merge: true });
+          return next;
+        });
+        return n;
+      } catch (err) {
+        console.warn('[counter] Firestore transaction failed, falling back:', err);
+        // fall through to counterapi
+      }
+    }
+    // Fallback: counterapi.dev (legacy free service) — still works as a
+    // safety net if Firebase fails to load or rules block the write.
     return fetch('https://api.counterapi.dev/v1/castro-group/rs2025-public/up')
       .then(r => r.json())
       .then(data => {
