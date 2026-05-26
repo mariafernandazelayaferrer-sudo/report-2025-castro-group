@@ -32,9 +32,13 @@ Single-page sustainability report. Vanilla HTML/CSS/JS, no build step.
 
 ## Conventions
 - User input always lands in `textContent`, never `innerHTML`
-- New scroll/marquee features should respect `prefers-reduced-motion`
 - For full-bleed elements use negative margins `calc(50% - 50vw)` — body already has `overflow-x: hidden`
 - Use existing `animateCount`, `.fade-up`, `.stagger` patterns; the page has an IntersectionObserver that auto-applies them
+
+## Mobile gotchas (learned the hard way)
+- **Sticky `:hover` on touch**: any `:hover` rule with `animation-play-state: paused` etc. will freeze elements after a single tap on mobile (Safari iOS, Chrome Android). Wrap such rules in `@media (hover: hover) and (pointer: fine)` so they only apply to mouse pointers.
+- **`prefers-reduced-motion` is ON by default on many mobiles** (iOS Settings → Accessibility → Motion, Android equivalent). Only disable animations that are *purely decorative* (e.g. pulsing dots). Content-bearing animations like the comment ticker must keep running — disabling them leaves users staring at a frozen viewport thinking the site is broken.
+- LinkedIn caches OG previews for ~7 days. After updating `og:image`, use https://www.linkedin.com/post-inspector/ to force a re-scrape. Bumping `?v=N` in the image URL also works.
 
 ## Deploy
 - GitHub Pages from `main` branch root
