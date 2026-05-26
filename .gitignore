@@ -10,3 +10,4 @@ uploads/references/videos/
 .DS_Store
 *.log
 uploads/
+.claude.local.md
