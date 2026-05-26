@@ -125,7 +125,7 @@ nav {
   max-width: 1240px;
   margin: 0 auto;
   position: relative;
-  background: var(--cg-bone);
+  background: var(--cg-putty);    /* match the encabezamiento grey */
   border-bottom: 1px solid var(--cg-border);
 }
 .pf-summary::before {
@@ -225,10 +225,10 @@ nav {
   padding: 32px 80px 56px;
   position: relative;
 }
-.cat-band.operation    { background: var(--cg-bone); }
+.cat-band.operation    { background: var(--cg-putty); }
 .cat-band.construction { background: var(--cg-putty); }
 .cat-band.development  { background: var(--cg-putty-2); }
-.cat-band.landbank     { background: var(--cg-navy); color: #fff; }
+.cat-band.landbank     { background: var(--cg-putty); color: var(--cg-ink); }
 .cat-band-inner { max-width: 1240px; margin: 0 auto; }
 .cat-band-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
@@ -239,7 +239,7 @@ nav {
 .cat-band.construction .cat-band-eyebrow { color: var(--cg-orange); }
 .cat-band.development  .cat-band-eyebrow { color: var(--cg-cyan); }
 .cat-band.landbank     .cat-band-eyebrow { color: var(--cg-rust); }
-.cat-band.city         { background: var(--cg-bone); }
+.cat-band.city         { background: var(--cg-putty); }
 .cat-band.city + .cat-band.city { border-top: 1px solid var(--cg-border); }
 .cat-band.city .cat-band-eyebrow { color: var(--cg-navy); }
 
@@ -280,19 +280,21 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   border: 1px solid var(--cg-border);
   display: flex; flex-direction: column;
   overflow: hidden;
-  transition: transform 0.3s var(--cg-ease), box-shadow 0.3s var(--cg-ease),
-              background 0.25s var(--cg-ease);
-}
-.proj-card:hover { background: var(--cg-bone-hover, #ECEAE1); }
-.cat-band.landbank .proj-card {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.12);
-  color: #fff;
+  transition: transform 0.3s var(--cg-ease),
+              box-shadow 0.3s var(--cg-ease),
+              background 0.25s var(--cg-ease),
+              border-color 0.25s var(--cg-ease);
 }
 .proj-card:hover {
+  background: var(--cg-bone-hover, #ECEAE1);
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(26,31,46,0.10);
 }
+/* Hover border accent per category — picks up the cat-band parent color */
+.cat-band.operation    .proj-card:hover { border-color: var(--cg-green); }
+.cat-band.construction .proj-card:hover { border-color: var(--cg-orange); }
+.cat-band.development  .proj-card:hover { border-color: var(--cg-cyan); }
+.cat-band.landbank     .proj-card:hover { border-color: var(--cg-rust); }
 .proj-media {
   width: 100%; aspect-ratio: 4 / 3;
   background: var(--cg-bone);
@@ -301,13 +303,23 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
 }
 .proj-media > img {
   width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Subtle image zoom on card hover — keeps the PDF-style flat layout but
+   adds a small breath of interactivity. */
+.proj-card:hover .proj-media > img { transform: scale(1.04); }
 .proj-cert-badge {
   position: absolute;
   bottom: 8px; right: 8px;
-  height: 48px; width: auto;
+  height: 62px; width: auto;          /* +30% per María */
   z-index: 3;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.12));
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.35s var(--cg-ease);
+}
+.proj-card:hover .proj-cert-badge {
+  transform: scale(1.06);
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
 }
 .proj-cert-link {
   display: inline-flex; align-items: center; gap: 6px;
@@ -340,8 +352,6 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   background: var(--cg-rust);
   opacity: 0.92;
 }
-.cat-band.landbank .proj-media-placeholder { background: rgba(255,255,255,0.04); }
-.cat-band.landbank .proj-media-placeholder::before { opacity: 1; }
 .proj-body {
   padding: 16px 16px 18px;
   display: flex; flex-direction: column; gap: 8px;
@@ -383,14 +393,18 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
 .proj-badge.cert-tgt  { background: rgba(251,118,34,0.16); color: var(--cg-orange); }
 .proj-badge.cert-no   { background: rgba(107,114,128,0.16); color: var(--cg-mid); }
 .proj-badge.opr       { background: rgba(204,81,44,0.18); color: var(--cg-rust); }
-.cat-band.landbank .proj-attrs { opacity: 0.85; }
-.cat-band.landbank .proj-name  { color: #fff; }
-.cat-band.landbank .proj-loc   { color: rgba(255,255,255,0.55); }
+.proj-cert-status {
+  margin-top: 6px;
+  font-family: var(--cg-font-mono);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--cg-mid);
+}
 
 /* MAP — Portugal continental · aviation-chart style, WGS84 coords */
 .pf-map-section {
   padding: 20px 80px 48px;
-  background: var(--cg-bone);
+  background: var(--cg-putty);          /* match encabezamiento grey */
   border-bottom: 1px solid var(--cg-border);
 }
 .pf-map-inner { max-width: 1240px; margin: 0 auto; }
@@ -411,19 +425,19 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
 }
 .pf-mapwrap {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: clamp(32px, 4vw, 64px);
+  grid-template-columns: 2.2fr 1fr;
+  gap: clamp(32px, 4vw, 72px);
   align-items: stretch;
 }
 .pf-map {
   position: relative;
-  aspect-ratio: 5 / 7;
-  background: var(--cg-putty);
+  aspect-ratio: 5 / 6;                   /* más cuadrado para que el SVG quepa más alto */
+  background: var(--cg-bone);            /* cuadro · gris más claro per María */
   border: 1px solid var(--cg-border);
   border-radius: 2px;
-  padding: clamp(20px, 2.6vh, 40px);
-  max-width: 720px;
-  max-height: calc(100vh - 160px);
+  padding: clamp(10px, 1.5vh, 22px);     /* padding mínimo · el mapa toma todo el cuadro */
+  max-width: 1080px;
+  max-height: calc(100vh - 110px);
   width: 100%;
   box-shadow: 0 1px 0 rgba(26,31,46,0.04), 0 32px 68px -32px rgba(26,31,46,0.22);
   overflow: hidden;
@@ -514,65 +528,84 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   display: grid; gap: 14px; align-content: center;
 }
 
-/* CATEGORY CARDS (replace city list — 4 buttons proportional to map) */
+/* ── CATEGORY CARDS · bone fill, channel index bracketed (PDF-friendly) ──
+   Base = my tech redesign; toned down: keep [0X] brackets + left accent
+   bar (these mirror numbering present in the PDF report), drop the
+   calibration sweep + tick marks (felt console-y rather than editorial).
+*/
 .pf-cat-card {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 38px 1fr auto;
   align-items: center;
-  gap: 18px;
-  background: #fff;
+  gap: 16px;
+  background: var(--cg-bone);                     /* matches mapa · gris claro */
   border: 1px solid var(--cg-border);
-  border-left: 3px solid var(--cg-border);
-  padding: 22px 24px;
   border-radius: 2px;
+  padding: 20px 22px 20px 20px;
   text-decoration: none;
   color: var(--cg-ink);
-  transition: border-color 0.2s var(--cg-ease), transform 0.2s var(--cg-ease), box-shadow 0.2s var(--cg-ease);
   cursor: pointer;
   position: relative;
+  transition: background 0.2s var(--cg-ease),
+              border-color 0.25s var(--cg-ease),
+              transform 0.2s var(--cg-ease);
+}
+.pf-cat-card::before {
+  /* Left accent bar — subtle, accent color from category */
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--accent, var(--cg-border));
+  transition: width 0.22s var(--cg-ease);
 }
 .pf-cat-card:hover {
-  transform: translateX(4px);
-  box-shadow: 0 6px 18px rgba(26,31,46,0.08);
+  background: var(--cg-bone-hover);
+  border-color: var(--accent, var(--cg-ink));
+  transform: translateX(3px);
 }
-.pf-cat-card.cat-op   { border-left-color: var(--cg-green); }
-.pf-cat-card.cat-con  { border-left-color: var(--cg-orange); }
-.pf-cat-card.cat-dev  { border-left-color: var(--cg-cyan); }
-.pf-cat-card.cat-land { border-left-color: var(--cg-rust); }
-.pf-cat-card.cat-op:hover   { border-color: var(--cg-green); }
-.pf-cat-card.cat-con:hover  { border-color: var(--cg-orange); }
-.pf-cat-card.cat-dev:hover  { border-color: var(--cg-cyan); }
-.pf-cat-card.cat-land:hover { border-color: var(--cg-rust); }
+.pf-cat-card:hover::before { width: 5px; }
+
+.pf-cat-card.cat-op   { --accent: var(--cg-green); }
+.pf-cat-card.cat-con  { --accent: var(--cg-orange); }
+.pf-cat-card.cat-dev  { --accent: var(--cg-cyan); }
+.pf-cat-card.cat-land { --accent: var(--cg-rust); }
+
+/* [01] [02] [03] [04] — channel index, bracketed mono (same vocabulary
+   as the index .pf-cat-count which already uses brackets). */
 .pf-cat-card .cat-num {
   font-family: var(--cg-font-mono);
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 0.14em; color: var(--cg-mid);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--cg-mid);
   align-self: flex-start;
   padding-top: 2px;
+  white-space: nowrap;
 }
+.pf-cat-card .cat-num::before { content: '['; opacity: 0.55; margin-right: 1px; }
+.pf-cat-card .cat-num::after  { content: ']'; opacity: 0.55; margin-left: 1px; }
+.pf-cat-card:hover .cat-num   { color: var(--accent); }
+
 .pf-cat-card .cat-body {
   display: flex; flex-direction: column; gap: 4px;
+  min-width: 0;
 }
 .pf-cat-card .cat-name {
   font-size: 17px; font-weight: 600; line-height: 1.2;
   letter-spacing: -0.005em;
 }
 .pf-cat-card .cat-meta {
-  font-size: 10px; letter-spacing: 0.12em;
+  font-size: 10px; letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--cg-mid);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pf-cat-card .cat-count {
   font-family: var(--cg-font-mono);
-  font-size: 32px; font-weight: 400;
+  font-size: 32px; font-weight: 500;
   line-height: 1; letter-spacing: -0.02em;
-  color: var(--cg-ink);
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
   min-width: 44px; text-align: right;
 }
-.pf-cat-card.cat-op   .cat-count { color: var(--cg-green); }
-.pf-cat-card.cat-con  .cat-count { color: var(--cg-orange); }
-.pf-cat-card.cat-dev  .cat-count { color: var(--cg-cyan); }
-.pf-cat-card.cat-land .cat-count { color: var(--cg-rust); }
 .pf-map__side-row {
   background: #fff; border: 1px solid var(--cg-border);
   padding: 24px 26px; border-radius: 2px;
@@ -616,8 +649,7 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   max-width: 1240px; margin: 0 auto;
   display: flex; flex-wrap: wrap; gap: 8px;
 }
-/* Tech pills · square corners, mono numerics, bone gris fill — mirrors
-   index.html .kpi-card greys instead of plain white. */
+/* Tech pills · square corners, mono numerics, white fill (per María) */
 .pf-jump a {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 9px 14px;
@@ -625,7 +657,7 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   font-size: 10px; font-weight: 600;
   letter-spacing: 0.20em; text-transform: uppercase;
   color: var(--cg-ink); text-decoration: none;
-  background: var(--cg-bone);
+  background: #fff;
   border: 1px solid var(--cg-border);
   border-radius: 2px;
   transition: background 0.18s var(--cg-ease), color 0.18s var(--cg-ease),
@@ -650,7 +682,7 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
 .pf-jump a.dev .dot  { background: var(--cg-cyan); }
 .pf-jump a.land .dot { background: var(--cg-rust); }
 .pf-jump a:hover {
-  background: var(--cg-bone-hover, #ECEAE1);
+  background: #fafaf7;            /* slight off-white tint on hover */
   border-color: currentColor;
   transform: translateY(-1px);
 }
@@ -750,8 +782,25 @@ footer a:hover { text-decoration: underline; }
   nav { padding: 0 16px; height: 56px; }
   .nav-wordmark, .nav-sep { display: none; }
   .pf-header { padding: 96px 20px 36px; }
-  .pf-summary { grid-template-columns: 1fr; }
-  .pf-summary-item { border-right: none; border-bottom: 1px solid var(--cg-border); }
+  /* Summary stats row · single line of 5 like the index hero (per María) */
+  .pf-summary {
+    grid-template-columns: repeat(5, 1fr);
+    padding: 10px 12px 18px;
+    gap: 2px;
+    background: var(--cg-putty);
+  }
+  .pf-summary::before { left: 12px; right: 12px; }
+  .pf-summary-item {
+    padding: 12px 3px 6px 5px;
+    min-height: 78px;
+    border-right: none !important;
+    border-bottom: none;
+    text-align: left;
+  }
+  .pf-summary-item:first-child { padding-left: 5px; }
+  .pf-summary-num { font-size: 40px; letter-spacing: -0.04em; opacity: 0.55; }
+  .pf-summary-item:hover .pf-summary-num { transform: scale(1.15); }
+  .pf-summary-label { font-size: 6px; margin-top: 6px; letter-spacing: 0.06em; line-height: 1.15; }
   .pf-summary-item:last-child { border-bottom: none; }
   .pf-map-section { padding: 48px 20px 40px; }
   .pf-map-section h2 { font-size: 28px; }
@@ -763,6 +812,60 @@ footer a:hover { text-decoration: underline; }
   .proj-grid { grid-template-columns: 1fr; gap: 16px; }
   .proj-attrs li { grid-template-columns: 80px 1fr; gap: 8px; }
   footer { padding: 40px 20px 28px; }
+}
+
+/* ── SCROLL-TRIGGERED REVEAL · tech ease-out-quart curve ─────────────────
+   Elements drop into place line-by-line as the user scrolls — mirrors
+   the index.html reveal system for visual continuity. */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+.fade-up.stagger > *,
+.stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.stagger.visible > *,
+.stagger.visible > * { opacity: 1; transform: none; }
+.fade-up.stagger.visible > *:nth-child(1),
+.stagger.visible > *:nth-child(1) { transition-delay: 0.04s; }
+.fade-up.stagger.visible > *:nth-child(2),
+.stagger.visible > *:nth-child(2) { transition-delay: 0.10s; }
+.fade-up.stagger.visible > *:nth-child(3),
+.stagger.visible > *:nth-child(3) { transition-delay: 0.16s; }
+.fade-up.stagger.visible > *:nth-child(4),
+.stagger.visible > *:nth-child(4) { transition-delay: 0.22s; }
+.fade-up.stagger.visible > *:nth-child(5),
+.stagger.visible > *:nth-child(5) { transition-delay: 0.28s; }
+.fade-up.stagger.visible > *:nth-child(6),
+.stagger.visible > *:nth-child(6) { transition-delay: 0.34s; }
+.fade-up.stagger.visible > *:nth-child(7),
+.stagger.visible > *:nth-child(7) { transition-delay: 0.40s; }
+.fade-up.stagger.visible > *:nth-child(8),
+.stagger.visible > *:nth-child(8) { transition-delay: 0.46s; }
+.fade-up.stagger.visible > *:nth-child(9),
+.stagger.visible > *:nth-child(9) { transition-delay: 0.52s; }
+.fade-up.stagger.visible > *:nth-child(10),
+.stagger.visible > *:nth-child(10) { transition-delay: 0.58s; }
+.fade-up.stagger.visible > *:nth-child(n+11),
+.stagger.visible > *:nth-child(n+11) { transition-delay: 0.64s; }
+
+.fade-slide-l { opacity: 0; transform: translateX(-32px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-slide-r { opacity: 0; transform: translateX( 32px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-slide-l.visible,
+.fade-slide-r.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-up.stagger > *, .stagger > *,
+  .fade-slide-l, .fade-slide-r { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 </style>
 </head>
@@ -782,7 +885,7 @@ footer a:hover { text-decoration: underline; }
 
 <!-- HEADER -->
 <header class="pf-header">
-  <div class="pf-header-inner">
+  <div class="pf-header-inner fade-up stagger">
     <p class="pf-header-eyebrow" data-pt="Castro Group · Portfólio Completo" data-en="Castro Group · Full Portfolio">Castro Group · Portfólio Completo</p>
     <h1 data-pt="19 ativos<br><strong>+ 4 landbank</strong>" data-en="19 assets<br><strong>+ 4 landbank</strong>">19 ativos<br><strong>+ 4 landbank</strong></h1>
     <p class="pf-header-sub" data-pt="GFA total 257.050 m² distribuídos por 8 cidades em Portugal. 95,8% do GFA alinhado com a estratégia de certificação ambiental. Primeiro certificado LEED Gold emitido em 2025 (La Movida)." data-en="Total GFA of 257,050 m² across 8 Portuguese cities. 95.8% of GFA aligned with the environmental certification strategy. First LEED Gold certification issued in 2025 (La Movida).">GFA total 257.050 m² distribuídos por 8 cidades em Portugal. 95,8% do GFA alinhado com a estratégia de certificação ambiental. Primeiro certificado LEED Gold emitido em 2025 (La Movida).</p>
@@ -790,7 +893,7 @@ footer a:hover { text-decoration: underline; }
 </header>
 
 <!-- KPI STRIP -->
-<div class="pf-summary">
+<div class="pf-summary fade-up stagger">
   <div class="pf-summary-item">
     <div class="pf-summary-num">10</div>
     <div class="pf-summary-label" data-pt="Em operação" data-en="In operation">Em operação</div>
@@ -816,12 +919,12 @@ footer a:hover { text-decoration: underline; }
 <!-- MAP — Portugal continental, dot density per city -->
 <section class="pf-map-section" id="map" aria-label="Distribuição geográfica do portfólio">
   <div class="pf-map-inner">
-    <p class="pf-map-eyebrow" data-pt="Onde estamos · 8 cidades" data-en="Where we are · 8 cities">Onde estamos · 8 cidades</p>
-    <h2 data-pt="Portugal <strong>continental</strong>" data-en="Mainland <strong>Portugal</strong>">Portugal <strong>continental</strong></h2>
-    <p class="pf-map-sub" data-pt="23 ativos · 8 cidades · do Minho ao Algarve." data-en="23 assets · 8 cities · from Minho to Algarve.">23 ativos · 8 cidades · do Minho ao Algarve.</p>
+    <p class="pf-map-eyebrow fade-up" data-pt="Onde estamos · 8 cidades" data-en="Where we are · 8 cities">Onde estamos · 8 cidades</p>
+    <h2 class="fade-up" data-pt="Portugal <strong>continental</strong>" data-en="Mainland <strong>Portugal</strong>">Portugal <strong>continental</strong></h2>
+    <p class="pf-map-sub fade-up" data-pt="23 ativos · 8 cidades · do Minho ao Algarve." data-en="23 assets · 8 cities · from Minho to Algarve.">23 ativos · 8 cidades · do Minho ao Algarve.</p>
 
     <div class="pf-mapwrap">
-      <div class="pf-map" id="pf-map">
+      <div class="pf-map fade-slide-l" id="pf-map">
         <span class="pf-map__br-tr" aria-hidden="true"></span>
         <span class="pf-map__br-bl" aria-hidden="true"></span>
         <span class="pf-map__label">PORTUGAL CONTINENTAL<span class="sub">36.9°N — 42.2°N · 9.5°W — 6.2°W</span></span>
@@ -829,7 +932,7 @@ footer a:hover { text-decoration: underline; }
         <svg id="portugal-svg" viewBox="0 0 300 400" aria-label="Mapa de Portugal continental" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
 
-      <aside class="pf-map__side" id="pf-map-side" aria-label="Categorias">
+      <aside class="pf-map__side fade-slide-r stagger" id="pf-map-side" aria-label="Categorias">
         <a href="#operacao" class="pf-cat-card cat-op">
           <span class="cat-num">01</span>
           <div class="cat-body">
@@ -868,13 +971,13 @@ footer a:hover { text-decoration: underline; }
 </section>
 
 <!-- OPERAÇÃO -->
-<section class="cat-band operation" id="operacao">
+<section class="cat-band operation fade-up" id="operacao">
   <div class="cat-band-inner">
     <p class="cat-band-eyebrow" data-pt="Pilar de gestão · 01" data-en="Operating pillar · 01">Pilar de gestão · 01</p>
     <h2 data-pt="Ativos em <strong>operação</strong>" data-en="<strong>Operating</strong> assets">Ativos em <strong>operação</strong></h2>
     <p class="cat-band-meta">10 ativos · 5 com gestão CG · 5 sob gestão de terceiros</p>
 
-    <div class="proj-grid">
+    <div class="proj-grid stagger">
 
       <article class="proj-card">
         <div class="proj-media">
@@ -1024,13 +1127,13 @@ footer a:hover { text-decoration: underline; }
 </section>
 
 <!-- CONSTRUÇÃO -->
-<section class="cat-band construction" id="construcao">
+<section class="cat-band construction fade-up" id="construcao">
   <div class="cat-band-inner">
     <p class="cat-band-eyebrow" data-pt="Pilar de gestão · 02" data-en="Operating pillar · 02">Pilar de gestão · 02</p>
     <h2 data-pt="Ativos em <strong>construção</strong>" data-en="Assets under <strong>construction</strong>">Ativos em <strong>construção</strong></h2>
     <p class="cat-band-meta">4 ativos · GFA agregado 42.737 m²</p>
 
-    <div class="proj-grid">
+    <div class="proj-grid stagger">
       <article class="proj-card">
         <div class="proj-media"><img src="uploads/projects/spark.jpg" alt="SPARK" loading="lazy"></div>
         <div class="proj-body">
@@ -1042,6 +1145,7 @@ footer a:hover { text-decoration: underline; }
             <li><span class="key" data-pt="Gestão" data-en="Management">Gestão</span><span>CG</span></li>
           </ul>
           <span class="proj-badge cert-dev">LEED · WELL · WiredScore · SmartScore</span>
+          <div class="proj-cert-status" data-pt="Em desenvolvimento" data-en="In progress">Em desenvolvimento</div>
         </div>
       </article>
 
@@ -1091,13 +1195,13 @@ footer a:hover { text-decoration: underline; }
 </section>
 
 <!-- DESENVOLVIMENTO -->
-<section class="cat-band development" id="desenvolvimento">
+<section class="cat-band development fade-up" id="desenvolvimento">
   <div class="cat-band-inner">
     <p class="cat-band-eyebrow" data-pt="Pilar de gestão · 03" data-en="Operating pillar · 03">Pilar de gestão · 03</p>
     <h2 data-pt="Projetos em <strong>desenvolvimento</strong>" data-en="Projects in <strong>development</strong>">Projetos em <strong>desenvolvimento</strong></h2>
     <p class="cat-band-meta">5 projetos · GFA pipeline 183.355 m²</p>
 
-    <div class="proj-grid">
+    <div class="proj-grid stagger">
       <article class="proj-card">
         <div class="proj-media"><img src="uploads/projects/fuse valley.jpg" alt="Fuse Valley" loading="lazy"></div>
         <div class="proj-body">
@@ -1173,13 +1277,13 @@ footer a:hover { text-decoration: underline; }
 </section>
 
 <!-- LANDBANK -->
-<section class="cat-band landbank" id="landbank">
+<section class="cat-band landbank fade-up" id="landbank">
   <div class="cat-band-inner">
     <p class="cat-band-eyebrow">Landbank</p>
     <h2 data-pt="<strong>Reserva</strong> fundiária" data-en="<strong>Land</strong> reserve"><strong>Reserva</strong> fundiária</h2>
     <p class="cat-band-meta" data-pt="4 terrenos · 3 em Matosinhos · 1 em Alverca" data-en="4 plots · 3 in Matosinhos · 1 in Alverca">4 terrenos · 3 em Matosinhos · 1 em Alverca</p>
 
-    <div class="proj-grid">
+    <div class="proj-grid stagger">
       <article class="proj-card">
         <div class="proj-media"><div class="proj-media-placeholder" aria-hidden="true"></div></div>
         <div class="proj-body">
@@ -1706,6 +1810,20 @@ const PF_ASSETS = [
   document.addEventListener('mouseout', (e) => {
     if (e.target.closest && e.target.closest(hoverSel)) orb.classList.remove('hover');
   });
+})();
+
+// ── SCROLL-TRIGGERED REVEALS — fade-up, stagger, fade-slide-l/r ─────────
+(function initRevealsIO() {
+  const targets = document.querySelectorAll('.fade-up, .fade-slide-l, .fade-slide-r, .stagger');
+  if (!targets.length) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  targets.forEach(el => io.observe(el));
 })();
 </script>
 

@@ -379,6 +379,7 @@ nav.over-dark .nav-vote { background: rgba(255,255,255,0.92); color: var(--cg-gr
   justify-content: center;
   background: transparent; border: 0;
 }
+/* ── ESG PILLAR TILES · solid pill (PDF-faithful) ──────────────────────── */
 .esg-shortcut-tile {
   display: inline-flex; align-items: center; gap: 14px;
   padding: 14px 22px;
@@ -788,8 +789,50 @@ nav.over-dark .nav-vote { background: rgba(255,255,255,0.92); color: var(--cg-gr
 }
 
 /* ── ANIMATIONS ────────────────────────────────────────────────────────── */
-.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+/* Scroll-triggered reveal · tech ease-out-quart curve (sharp ramp + soft landing) */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* Stagger children when the parent enters viewport.
+   Six steps of 70ms feel like a console booting line-by-line. */
+.fade-up.stagger > *,
+.stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.stagger.visible > *,
+.stagger.visible > * { opacity: 1; transform: none; }
+.fade-up.stagger.visible > *:nth-child(1),
+.stagger.visible > *:nth-child(1) { transition-delay: 0.04s; }
+.fade-up.stagger.visible > *:nth-child(2),
+.stagger.visible > *:nth-child(2) { transition-delay: 0.12s; }
+.fade-up.stagger.visible > *:nth-child(3),
+.stagger.visible > *:nth-child(3) { transition-delay: 0.20s; }
+.fade-up.stagger.visible > *:nth-child(4),
+.stagger.visible > *:nth-child(4) { transition-delay: 0.28s; }
+.fade-up.stagger.visible > *:nth-child(5),
+.stagger.visible > *:nth-child(5) { transition-delay: 0.36s; }
+.fade-up.stagger.visible > *:nth-child(n+6),
+.stagger.visible > *:nth-child(n+6) { transition-delay: 0.44s; }
+
+/* Side-slide variants for grid items so the page feels less monotone */
+.fade-slide-l { opacity: 0; transform: translateX(-32px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-slide-r { opacity: 0; transform: translateX( 32px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-slide-l.visible,
+.fade-slide-r.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-up.stagger > *, .stagger > *,
+  .fade-slide-l, .fade-slide-r { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
 .stagger > * { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
 .stagger.visible > *:nth-child(1) { opacity:1;transform:none;transition-delay:0s }
 .stagger.visible > *:nth-child(2) { opacity:1;transform:none;transition-delay:0.07s }
@@ -2101,10 +2144,10 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .nav-vote span, .nav-pdf span { display: none; }   /* icon-only */
   .lang-toggle { padding: 2px; gap: 2px; }
   .lang-btn { padding: 4px 7px; font-size: 9px; letter-spacing: 0.06em; }
-  /* ESG pills — match the nav Vote pill size (compact, no eyebrow PILAR 0X) */
+  /* ESG pills mobile — match the nav VOTE pill compactness */
   .esg-shortcut-inner { padding: 20px 16px 20px; }
   .esg-shortcut-tile { padding: 7px 11px; gap: 6px; }
-  .esg-shortcut-pilar { display: none; }                 /* drop the "PILAR 0X" eyebrow on phones */
+  .esg-shortcut-pilar { display: none; }
   .esg-shortcut-name { font-size: 9px; letter-spacing: 0.08em; }
   .esg-shortcut-arrow { font-size: 10px; }
   .section { padding: 56px 20px; padding-right: 20px; }
@@ -2121,14 +2164,16 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     background: var(--cg-putty);
     position: relative;
     z-index: 3;
+    align-items: start;            /* all cells start at same top */
   }
   .hero-stats-row::before { left: 10px; right: 10px; }
   .hero-stat-cell {
     padding: 10px 2px 4px 4px;
     min-height: 78px;
+    justify-content: flex-start;   /* numbers anchor to top — same baseline across cells */
   }
   .hero-stat-cell:first-child { padding-left: 4px; }
-  .hero-stat-cell-val { font-size: 40px; letter-spacing: -0.04em; }
+  .hero-stat-cell-val { font-size: 40px; letter-spacing: -0.04em; line-height: 1; }
   .hero-stat-cell.active .hero-stat-cell-val,
   .hero-stat-cell:hover .hero-stat-cell-val { transform: scale(1.15); }
   .hero-stat-cell-label { font-size: 6px; margin-top: 6px; letter-spacing: 0.06em; line-height: 1.15; }
@@ -2152,11 +2197,12 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   .hos-grid > .hos-left,
   .hos-grid > .hos-right { display: contents !important; }
 
+  /* CEO mobile: photo LEFT, quote RIGHT (swapped per María 2026-05-26) */
   .ceo-grid {
-    grid-template-columns: 1fr 96px !important;
+    grid-template-columns: 96px 1fr !important;
     grid-template-areas:
-      "quote photo"
-      "quote name"
+      "photo quote"
+      "name  quote"
       "body  body" !important;
     gap: 14px 16px !important;
     align-items: start !important;
@@ -2176,22 +2222,23 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
   }
   .ceo-grid .ceo-body { grid-area: body; margin-top: 6px !important; font-size: 13px !important; }
 
+  /* HOS (Fernanda) mobile: photo RIGHT, quote LEFT (swapped per María 2026-05-26) */
   .hos-grid {
-    grid-template-columns: 96px 1fr !important;
+    grid-template-columns: 1fr 96px !important;
     grid-template-areas:
-      "photo quote"
-      "name  quote"
+      "quote photo"
+      "quote name"
       "body  body" !important;
     gap: 14px 16px !important;
     align-items: start !important;
   }
   .hos-photo { grid-area: photo; width: 96px !important; height: 96px !important; margin: 0 !important; }
-  .hos-namecard { grid-area: name; align-self: start; text-align: left !important; }
+  .hos-namecard { grid-area: name; align-self: start; text-align: right !important; }
   .hos-namecard .hos-eyebrow { margin-bottom: 4px !important; font-size: 8px !important; letter-spacing: 0.12em !important; }
   .hos-namecard .hos-name { font-size: 14px !important; line-height: 1.15 !important; }
   .hos-namecard .hos-role {
     font-size: 10px !important; margin-top: 2px !important;
-    display: flex !important; justify-content: flex-start !important;
+    display: flex !important; justify-content: flex-end !important;
   }
   .hos-grid .hos-quote {
     grid-area: quote;
@@ -2206,7 +2253,15 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     grid-area: body;
     margin-top: 6px !important;
     font-size: 13px !important;
-    text-align: left !important;   /* full-width body reads left in mobile */
+    text-align: right !important;
+  }
+
+  /* LinkedIn badge — explicit min-size so it doesn't shrink in flex containers */
+  .li-badge {
+    width: 16px !important; height: 16px !important;
+    min-width: 16px !important; min-height: 16px !important;
+    flex-shrink: 0 !important;
+    font-size: 8px !important;
   }
 
   /* Opiniao bolas — 3-column grid (smaller bolas, same label size) */
@@ -2223,9 +2278,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
     aspect-ratio: 1;
     padding: 6px;
   }
-  /* Back-to-top — orange like the desktop cursor-orb (per María) */
-  .back-to-top { background: var(--cg-orange) !important; color: #fff !important; }
-  .back-to-top:hover { background: var(--cg-orange-deep) !important; }
+  /* Back-to-top — keep the desktop navy/black look on mobile too (per María 2026-05-26) */
 
   /* Empresas / Fundos / Cidades grids stack */
   .kpi-row[style*="repeat(5"] { grid-template-columns: 1fr !important; }
@@ -2443,7 +2496,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
           <div class="ceo-name" style="font-size:20px;font-weight:400;">Paulo Castro</div>
           <div class="ceo-role" style="font-size:12px;color:var(--cg-mid);margin-top:4px;display:inline-flex;align-items:center;gap:8px;">
             <span data-pt="CEO, Castro Group" data-en="CEO, Castro Group">CEO, Castro Group</span>
-            <a href="https://www.linkedin.com/in/paulo-castro-75946a37/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:2px;background:var(--cg-navy);color:#fff;text-decoration:none;font-size:8px;font-weight:700;">in</a>
+            <a class="li-badge" href="https://www.linkedin.com/in/paulo-castro-75946a37/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;width:16px;height:16px;border-radius:2px;background:var(--cg-cyan);color:#fff;text-decoration:none;font-size:8px;font-weight:700;line-height:1;">in</a>
           </div>
         </div>
       </div>
@@ -2473,7 +2526,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
           <div class="hos-name" style="font-size:20px;font-weight:400;">Fernanda Zelaya</div>
           <div class="hos-role" style="font-size:12px;color:var(--cg-mid);margin-top:4px;display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;">
             <span data-pt="Head of Sustainability, Castro Group" data-en="Head of Sustainability, Castro Group">Head of Sustainability, Castro Group</span>
-            <a href="https://www.linkedin.com/in/mfzelaya/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:2px;background:var(--cg-cyan);color:#fff;text-decoration:none;font-size:8px;font-weight:700;">in</a>
+            <a class="li-badge" href="https://www.linkedin.com/in/mfzelaya/" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;width:16px;height:16px;border-radius:2px;background:var(--cg-cyan);color:#fff;text-decoration:none;font-size:8px;font-weight:700;line-height:1;">in</a>
           </div>
         </div>
       </div>
@@ -3558,7 +3611,7 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       <div>
         <div style="font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">Castro Group</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;">
-          <li><a href="https://castro-group.pt/en/" target="_blank" rel="noopener" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Website do Grupo ↗" data-en="Group Website ↗">Website do Grupo ↗</a></li>
+          <li><a href="https://castro-group.pt/en/" target="_blank" rel="noopener" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Website do Grupo" data-en="Group Website">Website do Grupo</a></li>
           <li><a href="uploads/final report/RS_CASTRO-GROUP.pdf" target="_blank" style="font-size:12px;color:rgba(255,255,255,0.55);text-decoration:none;" data-pt="Descarregar PDF" data-en="Download PDF">Descarregar PDF</a></li>
         </ul>
       </div>
@@ -4092,6 +4145,11 @@ function initBalls() {
     colorOrder.push(...shuffled.slice(0, Math.min(PALETTE.length, count - colorOrder.length)));
   }
 
+  // Phones use larger initial drift so the bolas start visibly flowing
+  // (no cursor to give them impulse on touch).
+  const isPhone = W < 600;
+  const VX0 = isPhone ? 1.1 : 0.78;
+  const VY0 = isPhone ? 0.85 : 0.54;
   const discs = [];
   for (let i = 0; i < count; i++) {
     const diameter = D_MIN + Math.random() * (D_MAX - D_MIN);
@@ -4102,8 +4160,8 @@ function initBalls() {
       r: radius,
       d: diameter,
       color: colorOrder[i],
-      vx: (Math.random() - 0.5) * 0.78,
-      vy: (Math.random() - 0.5) * 0.54
+      vx: (Math.random() - 0.5) * VX0,
+      vy: (Math.random() - 0.5) * VY0
     });
   }
 
@@ -4132,17 +4190,59 @@ function initBalls() {
     ctx.globalAlpha = 1;
   }
 
-  // Cursor repulsion — discs flee from the pointer when it comes close
+  // Cursor repulsion — discs flee from the pointer when it comes close.
+  // Touch devices: skip the repulsion entirely because tap → synthetic mousemove
+  // would punch the bolas around the tap point and feel jarring (per María).
   let mouseX = -9999, mouseY = -9999;
-  hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
-  hero.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (!isTouch) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
+    hero.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+  }
   const FORCE_R = W < 600 ? 110 : 180;
   const VMAX = 4.0;
-  const VMIN = 0.25;
+  // Phones: keep more energy in the system so the bolas never settle
+  // (touch can't push them back to life like a desktop cursor does).
+  const VMIN     = isPhone ? 0.70 : 0.25;
+  const DAMPING  = isPhone ? 0.996 : 0.992;
+  const JITTER_X = isPhone ? 0.55  : 0.32;
+  const JITTER_Y = isPhone ? 0.40  : 0.22;
+
+  // Hero stats spotlight · cell closest to a flying ball lights up.
+  // María: "los números macro tienen que estar unificados al movimiento de
+  // las bolas asi como en la version web" — on touch devices (no cursor),
+  // the bolas themselves drive which stat is "active".
+  const statsRow = document.getElementById('hero-stats-row');
+  const statCells = statsRow ? Array.from(statsRow.querySelectorAll('.hero-stat-cell')) : [];
+  let currentActive = -1;
+  let frameTick = 0;
+  function syncStatsSpotlight() {
+    if (!statCells.length) return;
+    // skip while the user is actively hovering (desktop) — :hover wins
+    if (!isTouch && hero.matches(':hover')) return;
+    const heroRect = hero.getBoundingClientRect();
+    let bestCell = -1, bestDist = Infinity;
+    for (let i = 0; i < statCells.length; i++) {
+      const r = statCells[i].getBoundingClientRect();
+      const cx = r.left + r.width / 2 - heroRect.left;
+      const cy = r.top + r.height / 2 - heroRect.top;
+      for (let j = 0; j < discs.length; j++) {
+        const dx = discs[j].x - cx;
+        const dy = discs[j].y - cy;
+        const dSq = dx * dx + dy * dy;
+        if (dSq < bestDist) { bestDist = dSq; bestCell = i; }
+      }
+    }
+    if (bestCell !== currentActive && bestCell >= 0) {
+      if (currentActive >= 0) statCells[currentActive].classList.remove('active');
+      statCells[bestCell].classList.add('active');
+      currentActive = bestCell;
+    }
+  }
 
   let frame = null, running = false;
   function draw() {
@@ -4162,14 +4262,14 @@ function initBalls() {
         }
       }
       // Gentle damping so they settle back to baseline drift
-      d.vx *= 0.992;
-      d.vy *= 0.992;
+      d.vx *= DAMPING;
+      d.vy *= DAMPING;
       const vmag = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
       if (vmag > VMAX) { d.vx = (d.vx / vmag) * VMAX; d.vy = (d.vy / vmag) * VMAX; }
       // Baseline jitter so a disc that comes to rest doesn't stay frozen
       if (vmag < VMIN) {
-        d.vx += (Math.random() - 0.5) * 0.32;
-        d.vy += (Math.random() - 0.5) * 0.22;
+        d.vx += (Math.random() - 0.5) * JITTER_X;
+        d.vy += (Math.random() - 0.5) * JITTER_Y;
       }
       d.x += d.vx; d.y += d.vy;
       // Bounce off edges
@@ -4179,6 +4279,8 @@ function initBalls() {
       if (d.y + d.r > H) { d.y = H - d.r; d.vy = -Math.abs(d.vy); }
       drawDisc(d);
     });
+    // Update the active stat cell every ~20 frames (≈3× per second)
+    if (++frameTick % 20 === 0) syncStatsSpotlight();
     if (running) frame = requestAnimationFrame(draw);
   }
   function start() { if (!running) { running = true; frame = requestAnimationFrame(draw); } }
