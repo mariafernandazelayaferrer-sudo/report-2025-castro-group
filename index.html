@@ -2593,6 +2593,236 @@ html.lenis, html.lenis body { height: auto; }
   .reading-progress-bar { transition: none; }
   [data-gsap-reveal] { opacity: 1; }
 }
+
+/* ============================================================================
+   COMMENTS MARQUEE — Editorial newsstand ticker
+   Horizontal pull-quote column feed, positioned above the comment form.
+   Aesthetic: broadsheet ticker × magazine pull-quote × FT rolling band.
+   ========================================================================= */
+.op-comments-ticker {
+  position: relative;
+  margin: 0 0 36px;
+  padding: 32px 0 26px;
+  border-top:    1px solid var(--cg-ink);
+  border-bottom: 1px solid var(--cg-border-soft);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(100% - 1px),
+      rgba(26, 31, 46, 0.025) 100%),
+    var(--cg-putty);
+}
+.op-comments-ticker.is-empty { display: none; }
+
+/* LIVE flag — top-left chip with pulsing dot */
+.op-ticker-flag {
+  position: absolute;
+  top: -12px; left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cg-ink);
+  color: #fff;
+  padding: 5px 12px 5px 10px;
+  font: 700 9.5px/1 'Inter', sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+.op-ticker-flag::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cg-orange);
+  box-shadow: 0 0 0 0 rgba(251, 118, 34, 0.65);
+  animation: opTickerPulse 1.6s ease-out infinite;
+}
+@keyframes opTickerPulse {
+  0%   { box-shadow: 0 0 0 0   rgba(251, 118, 34, 0.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(251, 118, 34, 0); }
+  100% { box-shadow: 0 0 0 0   rgba(251, 118, 34, 0); }
+}
+
+/* Right-side editorial label */
+.op-ticker-meta {
+  position: absolute;
+  top: -8px; right: 14px;
+  background: var(--cg-putty);
+  padding: 0 8px;
+  font: 500 10px/1 'Inter', sans-serif;
+  color: var(--cg-mid);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+/* Viewport — overflow hidden + edge fade mask */
+.op-ticker-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0%, #000 5%, #000 95%, transparent 100%);
+          mask-image: linear-gradient(90deg,
+    transparent 0%, #000 5%, #000 95%, transparent 100%);
+}
+
+/* The list IS the marquee track */
+.op-comments-ticker .op-comments-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  animation: opMarquee 70s linear infinite;
+  will-change: transform;
+}
+.op-comments-ticker:hover .op-comments-list,
+.op-comments-ticker:focus-within .op-comments-list {
+  animation-play-state: paused;
+}
+
+@keyframes opMarquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(var(--op-track-shift, -50%), 0, 0); }
+}
+
+/* Cards inside ticker — magazine columns, fixed dimensions */
+.op-comments-ticker .op-comment-card {
+  flex: 0 0 320px;
+  width: 320px;
+  min-height: 210px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--cg-border);
+  border-radius: 0;
+  padding: 8px 26px 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+}
+.op-comments-ticker .op-comment-card:first-child { border-left: 1px solid var(--cg-border); }
+.op-comments-ticker .op-comment-card.is-mine {
+  border-left: 3px solid var(--cg-orange);
+  padding-left: 23px;
+}
+
+/* Big drop-quote behind text */
+.op-comments-ticker .op-comment-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -16px; left: 18px;
+  font: italic 700 96px/1 'Instrument Serif', serif;
+  color: var(--cg-navy);
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Meta line — uppercase editorial tracking */
+.op-comments-ticker .op-comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  font: 600 10px/1.3 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  position: relative;
+  z-index: 1;
+}
+.op-comments-ticker .op-comment-author {
+  color: var(--cg-ink);
+  font-weight: 700;
+}
+.op-comments-ticker .op-comment-role-tag {
+  background: none;
+  padding: 0;
+  color: var(--cg-mid);
+  font-weight: 500;
+  border-radius: 0;
+}
+.op-comments-ticker .op-comment-role-tag::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--cg-border);
+}
+.op-comments-ticker .op-comment-time {
+  margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--cg-mid);
+  font-variant-numeric: tabular-nums;
+  width: auto;
+}
+
+/* The comment body — serif italic pull-quote */
+.op-comments-ticker .op-comment-text {
+  font: 400 17px/1.42 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--cg-ink);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+          line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: -0.005em;
+}
+
+/* Vote chips inside ticker card — micro */
+.op-comments-ticker .op-comment-votes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: auto 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--cg-border);
+  position: relative;
+  z-index: 1;
+}
+.op-comments-ticker .op-comment-vote-chip {
+  font-size: 9px;
+  padding: 2px 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 1px;
+}
+
+/* Mobile — narrower columns, slower */
+@media (max-width: 768px) {
+  .op-comments-ticker { padding: 28px 0 22px; }
+  .op-comments-ticker .op-comment-card {
+    flex-basis: 260px;
+    width: 260px;
+    padding: 8px 20px 10px;
+    min-height: 190px;
+  }
+  .op-comments-ticker .op-comment-card.is-mine { padding-left: 17px; }
+  .op-comments-ticker .op-comment-card::before { font-size: 80px; left: 14px; }
+  .op-comments-ticker .op-comment-text { font-size: 15px; }
+  .op-comments-ticker .op-comments-list { animation-duration: 55s; }
+  .op-ticker-meta { display: none; }   /* keep only LIVE flag on small screens */
+}
+
+/* Reduced motion — disable marquee, allow user-scroll */
+@media (prefers-reduced-motion: reduce) {
+  .op-comments-ticker .op-comments-list {
+    animation: none;
+    transform: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .op-comments-ticker .op-comment-card { scroll-snap-align: start; }
+  .op-ticker-flag::before { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -3867,6 +4097,19 @@ html.lenis, html.lenis body { height: auto; }
         <h3 class="op-comments-title" data-pt="Comentários" data-en="Comments">Comentários</h3>
         <span class="op-comments-count" id="opCommentsCount">0</span>
       </div>
+
+      <!-- ── EDITORIAL TICKER · horizontal feed of stakeholder voices ─── -->
+      <div class="op-comments-ticker is-empty" id="opCommentsTicker" aria-label="Recent stakeholder voices">
+        <span class="op-ticker-flag" data-pt="Live · Vozes" data-en="Live · Voices">Live · Vozes</span>
+        <span class="op-ticker-meta" data-pt="Em circulação" data-en="In rotation">Em circulação</span>
+        <div class="op-ticker-viewport">
+          <div class="op-comments-list" id="opCommentsList" aria-live="polite"></div>
+        </div>
+      </div>
+      <p class="op-comments-empty" id="opCommentsEmpty"
+         data-pt="Seja o primeiro a comentar."
+         data-en="Be the first to comment.">Seja o primeiro a comentar.</p>
+
       <form class="op-comment-form" id="opCommentForm" autocomplete="off">
         <div class="op-comment-row">
           <input type="text" id="opCommentName" class="op-comment-name"
@@ -3893,10 +4136,6 @@ html.lenis, html.lenis body { height: auto; }
           </button>
         </div>
       </form>
-      <div class="op-comments-list" id="opCommentsList" aria-live="polite"></div>
-      <p class="op-comments-empty" id="opCommentsEmpty"
-         data-pt="Seja o primeiro a comentar."
-         data-en="Be the first to comment.">Seja o primeiro a comentar.</p>
       <p class="op-comments-disclaimer"
          data-pt="Os comentários são públicos. Por favor, não inclua dados pessoais sensíveis."
          data-en="Comments are public. Please do not include sensitive personal data.">Os comentários são públicos. Por favor, não inclua dados pessoais sensíveis.</p>
@@ -5945,16 +6184,53 @@ window.addEventListener('load', () => {
     let backend = 'local';
     let currentList = loadLocalComments();
 
+    // Editorial ticker: paint cards + duplicate to fill viewport for a
+    // seamless infinite marquee. Track shift is calculated exactly so the
+    // animation loop matches one full set of originals (pixel-perfect loop).
+    const cmTicker = document.getElementById('opCommentsTicker');
+
     function paintList(list) {
       currentList = list;
       cmCount.textContent = list.length;
       while (cmList.firstChild) cmList.removeChild(cmList.firstChild);
+
       if (!list.length) {
         cmEmpty.classList.remove('is-hidden');
+        if (cmTicker) cmTicker.classList.add('is-empty');
         return;
       }
       cmEmpty.classList.add('is-hidden');
+      if (cmTicker) cmTicker.classList.remove('is-empty');
+
+      // Render the original set first
       list.forEach(c => cmList.appendChild(buildCommentCard(c)));
+
+      // Compute card width (matches CSS breakpoint) and how many duplicates
+      // we need so total track width > viewport × 2 (smooth wrap-around).
+      const isNarrow = window.matchMedia('(max-width: 768px)').matches;
+      const cardW = isNarrow ? 260 : 320;
+      const setW = list.length * cardW;
+      const viewportEl = cmTicker ? cmTicker.querySelector('.op-ticker-viewport') : null;
+      const viewportW = viewportEl ? viewportEl.offsetWidth : 1100;
+      const minTotalW = viewportW * 2;
+      const setsNeeded = Math.max(2, Math.ceil(minTotalW / setW));
+
+      // Append (setsNeeded - 1) clones so the loop is seamless
+      for (let s = 1; s < setsNeeded; s++) {
+        list.forEach(c => {
+          const clone = buildCommentCard(c);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.dataset.ghost = '1';
+          cmList.appendChild(clone);
+        });
+      }
+
+      // Pixel-exact shift so animation loops on one full set
+      cmList.style.setProperty('--op-track-shift', '-' + setW + 'px');
+
+      // Tempo scales with content: ~7s per card, floor 25s, ceiling 120s
+      const dur = Math.min(120, Math.max(25, list.length * 7));
+      cmList.style.animationDuration = dur + 's';
     }
 
     function updateCounter() {
