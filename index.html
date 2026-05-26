@@ -2729,9 +2729,15 @@ html.lenis, html.lenis body { height: auto; }
   animation: opMarquee 70s linear infinite;
   will-change: transform;
 }
-.op-comments-ticker:hover .op-comments-list,
-.op-comments-ticker:focus-within .op-comments-list {
-  animation-play-state: paused;
+/* Pause-on-hover only on devices that actually have a hover pointer
+   (mouse). On touch devices a tap creates "sticky hover" that would
+   freeze the marquee until you tap somewhere else — that's why the
+   ticker appeared not to roll on mobile. */
+@media (hover: hover) and (pointer: fine) {
+  .op-comments-ticker:hover .op-comments-list,
+  .op-comments-ticker:focus-within .op-comments-list {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes opMarquee {
