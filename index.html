@@ -2908,15 +2908,9 @@ html.lenis, html.lenis body { height: auto; }
   .op-ticker-meta { display: none; }   /* keep only LIVE flag on small screens */
 }
 
-/* Reduced motion — disable marquee, allow user-scroll */
+/* Reduced motion — keep the marquee rotating (it's content, not decoration)
+   but kill the LIVE-flag dot pulse since that one IS purely decorative. */
 @media (prefers-reduced-motion: reduce) {
-  .op-comments-ticker .op-comments-list {
-    animation: none;
-    transform: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-  .op-comments-ticker .op-comment-card { scroll-snap-align: start; }
   .op-ticker-flag::before { animation: none; }
 }
 </style>
