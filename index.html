@@ -23,7 +23,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
 <!-- ── FIREBASE FIRESTORE · live comments backend ─────────────────────────
      CDN ESM SDK. Exposes window.fbApi for the non-module comment code,
@@ -2761,9 +2761,13 @@ html.lenis, html.lenis body { height: auto; }
    Cards stay visually identical to real comments (just empty inside),
    keeping the rolling rhythm consistent across both states. */
 .op-comments-ticker .op-comment-card:first-child { border-left: 1px solid var(--cg-border); }
-.op-comments-ticker .op-comment-card.is-mine {
-  border-left: 3px solid var(--cg-orange);
-  padding-left: 23px;
+
+/* Your own comment ("is-mine"): identified ONLY by the orange dot (the
+   --card-accent override below). No long border-left — that visually
+   extended past the text into the empty card area. The dot is enough. */
+.op-comments-ticker .op-comment-card.is-mine { --card-accent: var(--cg-orange); }
+.op-comments-ticker .op-comment-card.is-mine::before {
+  width: 9px; height: 9px;   /* slightly larger than the cycle dot */
 }
 
 /* Decorative color dot — small, minimal, free-cycling.
@@ -2830,20 +2834,21 @@ html.lenis, html.lenis body { height: auto; }
   width: auto;
 }
 
-/* The comment body — serif italic pull-quote, sized to fit ~350 chars */
+/* The comment body — Inter italic (matches the report's body font for
+   readability), sized to fit ~350 chars in the 340x340 square card */
 .op-comments-ticker .op-comment-text {
-  font: 400 13.5px/1.42 'Instrument Serif', serif;
+  font: 400 13.5px/1.5 'Inter', sans-serif;
   font-style: italic;
   color: var(--cg-ink);
   margin: 0;
   position: relative;
   z-index: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 11;
-          line-clamp: 11;
+  -webkit-line-clamp: 9;
+          line-clamp: 9;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  letter-spacing: 0;
+  letter-spacing: -0.005em;
 }
 
 /* Vote chips inside ticker card — micro */
@@ -2875,7 +2880,7 @@ html.lenis, html.lenis body { height: auto; }
     height: 300px;
     padding: 18px 20px;
   }
-  .op-comments-ticker .op-comment-card.is-mine { padding-left: 17px; }
+  /* .is-mine on mobile: same dot-only treatment as desktop */
   .op-comments-ticker .op-comment-text {
     font-size: 12px;
     -webkit-line-clamp: 12;
