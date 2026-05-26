@@ -6236,46 +6236,39 @@ window.addEventListener('load', () => {
 
       const usingDemos = !list.length;
 
-      // Render the original set first
-      if (usingDemos) {
-        cmList.appendChild(buildSkeletonCard());
-      } else {
-        list.forEach(c => cmList.appendChild(buildCommentCard(c)));
-      }
-
-      // For marquee math we treat the originals as a "logical set" of 1
-      // (skeleton mode) or list.length (real comments). renderLength drives
-      // both the loop duplication and the pixel-exact track shift below.
-      const renderLength = usingDemos ? 1 : list.length;
-      const renderList = usingDemos ? [null] : list;
-
-      // Compute card width (matches CSS breakpoint) and how many duplicates
-      // we need so total track width > viewport × 2 (smooth wrap-around).
-      const isNarrow = window.matchMedia('(max-width: 768px)').matches;
-      const cardW = isNarrow ? 250 : 300;
-      const setW = renderLength * cardW;
+      // Card width and viewport for marquee math
+      const isNarrow  = window.matchMedia('(max-width: 768px)').matches;
+      const cardW     = isNarrow ? 250 : 300;
       const viewportEl = cmTicker ? cmTicker.querySelector('.op-ticker-viewport') : null;
       const viewportW = viewportEl ? viewportEl.offsetWidth : 1100;
-      const minTotalW = viewportW * 2;
-      const setsNeeded = Math.max(2, Math.ceil(minTotalW / setW));
 
-      // Append (setsNeeded - 1) clones so the loop is seamless
-      for (let s = 1; s < setsNeeded; s++) {
-        renderList.forEach(c => {
-          const clone = usingDemos ? buildSkeletonCard() : buildCommentCard(c);
-          clone.setAttribute('aria-hidden', 'true');
-          clone.dataset.ghost = '1';
-          cmList.appendChild(clone);
-        });
+      // Render real comments ONCE each (no duplication), then pad the track
+      // with skeleton cards so the marquee wrap happens inside the skeleton
+      // zone (visually invisible because all skeletons look identical).
+      let realCount = 0;
+      if (!usingDemos) {
+        list.forEach(c => cmList.appendChild(buildCommentCard(c)));
+        realCount = list.length;
       }
 
-      // Pixel-exact shift so animation loops on one full set
-      cmList.style.setProperty('--op-track-shift', '-' + setW + 'px');
+      // Skeletons needed so the "empty zone" is wider than the viewport →
+      // guarantees the wrap-around always lands inside a skeleton stretch.
+      // Floor 10 in skeleton-only mode (so even an empty ticker keeps rolling).
+      const skeletonsNeeded = Math.max(10, Math.ceil(viewportW * 2.5 / cardW));
+      for (let i = 0; i < skeletonsNeeded; i++) {
+        cmList.appendChild(buildSkeletonCard());
+      }
 
-      // Tempo scales with content (skeleton mode = single set, fast pace)
-      const dur = usingDemos
-        ? 22                                          // empty: snappy loop
-        : Math.min(120, Math.max(25, renderLength * 7));
+      // Full track width (real ones + skeletons). The animation translates
+      // by exactly this amount, then resets — but the user only sees the
+      // skeleton zone at the moment of reset, so the snap is invisible.
+      const totalCards = realCount + skeletonsNeeded;
+      const trackW     = totalCards * cardW;
+      cmList.style.setProperty('--op-track-shift', '-' + trackW + 'px');
+
+      // Tempo ~5s per card → calm editorial drift. The real comment crosses
+      // the viewport once per full loop; skeletons fill the rest of the time.
+      const dur = Math.max(20, Math.round(totalCards * 5));
       cmList.style.animationDuration = dur + 's';
     }
 
