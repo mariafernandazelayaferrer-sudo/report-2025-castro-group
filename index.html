@@ -2601,7 +2601,12 @@ html.lenis, html.lenis body { height: auto; }
    ========================================================================= */
 .op-comments-ticker {
   position: relative;
-  margin: 0 0 36px;
+  /* Full-bleed breakout — escapes the .opiniao-inner 1240px container
+     so the ticker spans the entire viewport width. Wider visible band
+     → 1-2 extra cards peek in at each edge. */
+  margin-left:  calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: 36px;
   padding: 32px 0 26px;
   border-top:    1px solid var(--cg-ink);
   border-bottom: 1px solid var(--cg-border-soft);
@@ -2615,10 +2620,12 @@ html.lenis, html.lenis body { height: auto; }
 }
 .op-comments-ticker.is-empty { display: none; }
 
-/* LIVE flag — top-left chip with pulsing dot */
+/* LIVE flag — top-left chip with pulsing dot (positioned in viewport-edge
+   margins, not the original container, since the ticker is now full-bleed) */
 .op-ticker-flag {
   position: absolute;
-  top: -12px; left: 14px;
+  top: -12px;
+  left: max(14px, calc(50vw - 600px));
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -2647,7 +2654,8 @@ html.lenis, html.lenis body { height: auto; }
 /* Right-side editorial label */
 .op-ticker-meta {
   position: absolute;
-  top: -8px; right: 14px;
+  top: -8px;
+  right: max(14px, calc(50vw - 600px));
   background: var(--cg-putty);
   padding: 0 8px;
   font: 500 10px/1 'Inter', sans-serif;
@@ -2657,13 +2665,14 @@ html.lenis, html.lenis body { height: auto; }
   z-index: 2;
 }
 
-/* Viewport — overflow hidden + edge fade mask */
+/* Viewport — overflow hidden + subtler edge fade mask
+   Narrower fade zone (3%) so the cards at the edges show more content */
 .op-ticker-viewport {
   overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg,
-    transparent 0%, #000 5%, #000 95%, transparent 100%);
+    transparent 0%, #000 3%, #000 97%, transparent 100%);
           mask-image: linear-gradient(90deg,
-    transparent 0%, #000 5%, #000 95%, transparent 100%);
+    transparent 0%, #000 3%, #000 97%, transparent 100%);
 }
 
 /* The list IS the marquee track */
@@ -6267,9 +6276,9 @@ window.addEventListener('load', () => {
       const trackW     = totalCards * cardW;
       cmList.style.setProperty('--op-track-shift', '-' + trackW + 'px');
 
-      // Tempo ~5s per card → calm editorial drift. The real comment crosses
-      // the viewport once per full loop; skeletons fill the rest of the time.
-      const dur = Math.max(20, Math.round(totalCards * 5));
+      // Tempo ~3.5s per card → brisk editorial drift. Real comment still
+      // crosses the viewport once per loop, just ~30% faster than before.
+      const dur = Math.max(18, Math.round(totalCards * 3.5));
       cmList.style.animationDuration = dur + 's';
     }
 
