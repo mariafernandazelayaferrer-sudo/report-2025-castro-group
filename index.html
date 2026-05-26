@@ -24,6 +24,37 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- ── FIREBASE FIRESTORE · live comments backend ─────────────────────────
+     CDN ESM SDK. Exposes window.fbApi for the non-module comment code,
+     then dispatches 'firebase-ready' so the listener can attach.
+     Security rules live in Firestore Console (see commit message).        -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBAGtGmcYf9j12lipe5Zw28VcQ3UT9MKq0",
+    authDomain: "report-2025-7f49a.firebaseapp.com",
+    projectId: "report-2025-7f49a",
+    storageBucket: "report-2025-7f49a.firebasestorage.app",
+    messagingSenderId: "780330845977",
+    appId: "1:780330845977:web:30d5dcf9a1fc36c0c2a788",
+    measurementId: "G-H2EHJZDTJS"
+  };
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    window.fbApi = { db, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp };
+    window.dispatchEvent(new CustomEvent('firebase-ready'));
+  } catch (err) {
+    console.warn('[firebase] init failed — falling back to localStorage:', err);
+  }
+</script>
+
 <style>
 /* ── WEB TYPOGRAPHY ─────────────────────────────────────────────────────
    Print/PDF: Helvetica Neue (licensed via print partner Monotype).
@@ -1560,6 +1591,197 @@ nav.over-dark .nav-vote { background: rgba(255,255,255,0.92); color: var(--cg-gr
   font-size: 11px; color: var(--cg-mid); font-style: italic;
 }
 .opiniao-submit-hint.is-ok { color: var(--cg-green); font-style: normal; font-weight: 600; }
+
+/* ── COMMENTS · live board (localStorage now, Firestore-ready) ──────────
+   Tone: editorial conversation — soft cards on bone, mono timestamps,
+   accent border-left when the visitor authored the comment.
+*/
+.opiniao-comments {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--cg-border);
+  max-width: 760px;
+  margin-left: auto; margin-right: auto;
+}
+.op-comments-head {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 18px;
+}
+.op-comments-title {
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--cg-ink);
+  margin: 0;
+}
+.op-comments-count {
+  font-family: var(--cg-font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px; font-weight: 500;
+  color: var(--cg-mid);
+  letter-spacing: 0.04em;
+}
+.op-comments-count::before { content: '['; opacity: 0.55; margin-right: 1px; }
+.op-comments-count::after  { content: ']'; opacity: 0.55; margin-left: 1px; }
+
+.op-comment-form {
+  background: var(--cg-bone);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  padding: 16px 18px 14px;
+  margin-bottom: 28px;
+  display: grid; gap: 10px;
+}
+.op-comment-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.op-comment-name, .op-comment-role {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  color: var(--cg-ink);
+  transition: border-color 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
+}
+.op-comment-name:focus, .op-comment-role:focus,
+.op-comment-body:focus {
+  outline: none;
+  border-color: var(--cg-orange);
+  background: #fff;
+}
+.op-comment-body {
+  font-family: inherit;
+  font-size: 13px; line-height: 1.5;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  color: var(--cg-ink);
+  resize: vertical;
+  min-height: 78px;
+  transition: border-color 0.2s var(--cg-ease), background 0.2s var(--cg-ease);
+}
+.op-comment-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.op-comment-counter {
+  font-family: var(--cg-font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px; color: var(--cg-mid);
+  letter-spacing: 0.04em;
+}
+.op-comment-counter.is-warn { color: var(--cg-orange); }
+.op-comment-publish {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--cg-orange);
+  background: var(--cg-orange); color: #fff;
+  font-family: inherit;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s var(--cg-ease),
+              transform 0.2s var(--cg-ease),
+              opacity 0.2s var(--cg-ease);
+}
+.op-comment-publish:hover:not(:disabled) {
+  background: var(--cg-orange-deep);
+  transform: translateY(-1px);
+}
+.op-comment-publish:disabled {
+  background: var(--cg-border-mid);
+  border-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.op-comment-publish svg { width: 13px; height: 13px; }
+
+.op-comments-list {
+  display: grid; gap: 12px;
+}
+.op-comment-card {
+  background: var(--cg-bone);
+  border: 1px solid var(--cg-border);
+  border-radius: 2px;
+  padding: 14px 18px 16px;
+  position: relative;
+  animation: opCommentAppear 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.op-comment-card.is-mine {
+  border-left: 3px solid var(--cg-orange);
+  padding-left: 16px;
+}
+.op-comment-meta {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: 8px; margin-bottom: 8px;
+}
+.op-comment-author {
+  font-size: 13px; font-weight: 600; color: var(--cg-ink);
+  letter-spacing: -0.005em;
+}
+.op-comment-role-tag {
+  font-family: var(--cg-font-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cg-mid);
+}
+.op-comment-time {
+  font-family: var(--cg-font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px; color: var(--cg-mid);
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+.op-comment-votes {
+  display: inline-flex; gap: 4px;
+  margin-bottom: 8px;
+}
+.op-comment-vote-chip {
+  display: inline-block;
+  font-family: var(--cg-font-mono, 'JetBrains Mono', monospace);
+  font-size: 8.5px; font-weight: 600;
+  letter-spacing: 0.10em;
+  padding: 3px 7px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.04);
+  color: var(--cg-mid);
+}
+.op-comment-vote-chip.cv-amb { background: rgba(51,182,122,0.14); color: var(--cg-green); }
+.op-comment-vote-chip.cv-soc { background: rgba(14,153,216,0.14); color: var(--cg-cyan); }
+.op-comment-vote-chip.cv-gov { background: rgba(251,118,34,0.14); color: var(--cg-orange); }
+.op-comment-text {
+  font-size: 13.5px; line-height: 1.55;
+  color: var(--cg-ink);
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+@keyframes opCommentAppear {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.op-comments-empty {
+  font-size: 12px; font-style: italic;
+  color: var(--cg-mid);
+  text-align: center;
+  padding: 24px 0;
+  margin: 0;
+}
+.op-comments-empty.is-hidden { display: none; }
+.op-comments-disclaimer {
+  font-size: 10px; color: var(--cg-mid);
+  text-align: center;
+  margin-top: 16px;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 640px) {
+  .opiniao-comments { margin-top: 48px; padding-top: 36px; }
+  .op-comment-row { grid-template-columns: 1fr; gap: 8px; }
+  .op-comment-form { padding: 14px; }
+  .op-comments-title { font-size: 11px; }
+  .op-comment-time { margin-left: 0; width: 100%; }
+}
 
 .opiniao-credits {
   margin-top: 40px; padding-top: 22px;
@@ -3588,6 +3810,51 @@ nav, .section, .hero-content, .chapter-band, footer { padding-right: 128px; }
       <p class="opiniao-submit-hint" id="opSubmitHint" data-pt="Vote em pelo menos uma categoria para submeter." data-en="Vote in at least one category to submit.">Vote em pelo menos uma categoria para submeter.</p>
     </div>
 
+    <!-- ── COMMENTS · live board ─────────────────────────────────────────
+         Right now uses localStorage so the visitor sees their own comments
+         persisted + can read previous entries from any session on the same
+         browser. Swap renderComments() / saveComment() with a Firestore
+         onSnapshot listener to make it real-time across all visitors. -->
+    <div class="opiniao-comments fade-up">
+      <div class="op-comments-head">
+        <h3 class="op-comments-title" data-pt="Comentários" data-en="Comments">Comentários</h3>
+        <span class="op-comments-count" id="opCommentsCount">0</span>
+      </div>
+      <form class="op-comment-form" id="opCommentForm" autocomplete="off">
+        <div class="op-comment-row">
+          <input type="text" id="opCommentName" class="op-comment-name"
+                 maxlength="40"
+                 placeholder="Nome (opcional)"
+                 data-pt-ph="Nome (opcional)" data-en-ph="Name (optional)">
+          <input type="text" id="opCommentRole" class="op-comment-role"
+                 maxlength="40"
+                 placeholder="Empresa / Função (opcional)"
+                 data-pt-ph="Empresa / Função (opcional)" data-en-ph="Company / Role (optional)">
+        </div>
+        <textarea id="opCommentBody" class="op-comment-body"
+                  rows="3" maxlength="500" required
+                  placeholder="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
+                  data-pt-ph="Partilhe a sua perspetiva sobre as prioridades ESG do Castro Group para 2030…"
+                  data-en-ph="Share your perspective on Castro Group's ESG priorities for 2030…"></textarea>
+        <div class="op-comment-toolbar">
+          <span class="op-comment-counter" id="opCommentCounter">0 / 500</span>
+          <button type="submit" class="op-comment-publish" id="opCommentPublish" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+            <span data-pt="Publicar" data-en="Publish">Publicar</span>
+          </button>
+        </div>
+      </form>
+      <div class="op-comments-list" id="opCommentsList" aria-live="polite"></div>
+      <p class="op-comments-empty" id="opCommentsEmpty"
+         data-pt="Seja o primeiro a comentar."
+         data-en="Be the first to comment.">Seja o primeiro a comentar.</p>
+      <p class="op-comments-disclaimer"
+         data-pt="Os comentários são públicos. Por favor, não inclua dados pessoais sensíveis."
+         data-en="Comments are public. Please do not include sensitive personal data.">Os comentários são públicos. Por favor, não inclua dados pessoais sensíveis.</p>
+    </div>
+
     <p class="opiniao-credits" data-pt="Os votos são guardados no seu navegador (localStorage). Para visualização agregada da opinião de todos os stakeholders, contacte <strong>sustainability@castro-group.pt</strong>.<br>Painel inspirado em <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios." data-en="Votes are stored locally in your browser. For aggregated stakeholder data, contact <strong>sustainability@castro-group.pt</strong>.<br>Panel inspired by <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios.">Os votos são guardados no seu navegador (localStorage). Para visualização agregada da opinião de todos os stakeholders, contacte <strong>sustainability@castro-group.pt</strong>.<br>Painel inspirado em <strong>Negócios Sustentabilidade 2030</strong> — Jornal de Negócios.</p>
   </div>
 </section>
@@ -5520,6 +5787,224 @@ window.addEventListener('load', () => {
   });
   renderVotesCount();
   updateSubmit();
+
+  // ── COMMENTS · live board ──────────────────────────────────────────────
+  // Backend: Firestore (real-time cross-user) with localStorage fallback.
+  const COMMENTS_KEY = 'cg-opiniao-comments-2025';
+  const COMMENTS_COLLECTION = 'comments';
+
+  // localStorage is the fallback when Firestore is unreachable (offline,
+  // ad-blocker, etc.). It also seeds the UI before Firestore connects so
+  // the page never shows an empty flash.
+  function loadLocalComments() {
+    try {
+      const raw = localStorage.getItem(COMMENTS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+  function persistLocalComments(list) {
+    try { localStorage.setItem(COMMENTS_KEY, JSON.stringify(list)); }
+    catch { /* quota or private mode — silent fail */ }
+  }
+  function addLocalComment(c) {
+    const list = loadLocalComments();
+    list.unshift(c);
+    if (list.length > 200) list.length = 200;
+    persistLocalComments(list);
+    return list;
+  }
+
+  function timeAgo(ts) {
+    const d = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if (d < 60)     return (currentLang === 'en' ? 'just now' : 'agora');
+    if (d < 3600)   return Math.floor(d / 60)  + (currentLang === 'en' ? ' min ago' : ' min');
+    if (d < 86400)  return Math.floor(d / 3600)+ (currentLang === 'en' ? ' h ago'   : ' h');
+    if (d < 604800) return Math.floor(d / 86400) + (currentLang === 'en' ? ' d ago' : ' d');
+    return new Date(ts).toLocaleDateString(currentLang === 'en' ? 'en-GB' : 'pt-PT');
+  }
+  function pillarOf(themeId) {
+    if (themeId.charAt(0) === 'E') return 'amb';
+    if (themeId.charAt(0) === 'S') return 'soc';
+    if (themeId.charAt(0) === 'G') return 'gov';
+    return null;
+  }
+
+  const cmForm    = document.getElementById('opCommentForm');
+  const cmName    = document.getElementById('opCommentName');
+  const cmRole    = document.getElementById('opCommentRole');
+  const cmBody    = document.getElementById('opCommentBody');
+  const cmCounter = document.getElementById('opCommentCounter');
+  const cmPublish = document.getElementById('opCommentPublish');
+  const cmList    = document.getElementById('opCommentsList');
+  const cmCount   = document.getElementById('opCommentsCount');
+  const cmEmpty   = document.getElementById('opCommentsEmpty');
+
+  if (cmForm && cmBody && cmList) {
+
+    // Build a comment card via DOM API (no innerHTML — user input always
+    // lands inside textContent, never parsed as markup).
+    function buildCommentCard(c) {
+      const mine = c.visitor && state.visitorId && c.visitor === String(state.visitorId);
+      const card = document.createElement('article');
+      card.className = 'op-comment-card' + (mine ? ' is-mine' : '');
+
+      const meta = document.createElement('div');
+      meta.className = 'op-comment-meta';
+
+      const author = document.createElement('span');
+      author.className = 'op-comment-author';
+      author.textContent = c.author || (currentLang === 'en' ? 'Anonymous' : 'Anônimo');
+      meta.appendChild(author);
+
+      if (c.role) {
+        const role = document.createElement('span');
+        role.className = 'op-comment-role-tag';
+        role.textContent = c.role;
+        meta.appendChild(role);
+      }
+
+      const time = document.createElement('time');
+      time.className = 'op-comment-time';
+      time.dateTime = new Date(c.ts).toISOString();
+      time.textContent = timeAgo(c.ts);
+      meta.appendChild(time);
+
+      card.appendChild(meta);
+
+      if (c.votes && c.votes.length) {
+        const votes = document.createElement('div');
+        votes.className = 'op-comment-votes';
+        c.votes.forEach(v => {
+          const p = pillarOf(v);
+          if (!p) return;
+          const chip = document.createElement('span');
+          chip.className = 'op-comment-vote-chip cv-' + p;
+          chip.textContent = v;
+          votes.appendChild(chip);
+        });
+        if (votes.children.length) card.appendChild(votes);
+      }
+
+      const body = document.createElement('p');
+      body.className = 'op-comment-text';
+      body.textContent = c.body;
+      card.appendChild(body);
+
+      return card;
+    }
+
+    // Current backend mode. Starts on 'local' (no network calls), upgrades
+    // to 'firestore' once the ESM module finishes loading.
+    let backend = 'local';
+    let currentList = loadLocalComments();
+
+    function paintList(list) {
+      currentList = list;
+      cmCount.textContent = list.length;
+      while (cmList.firstChild) cmList.removeChild(cmList.firstChild);
+      if (!list.length) {
+        cmEmpty.classList.remove('is-hidden');
+        return;
+      }
+      cmEmpty.classList.add('is-hidden');
+      list.forEach(c => cmList.appendChild(buildCommentCard(c)));
+    }
+
+    function updateCounter() {
+      const n = cmBody.value.length;
+      cmCounter.textContent = n + ' / 500';
+      cmCounter.classList.toggle('is-warn', n > 450);
+      cmPublish.disabled = n === 0 || n > 500;
+    }
+
+    cmBody.addEventListener('input', updateCounter);
+    cmForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = cmBody.value.trim();
+      if (!body) return;
+      const payload = {
+        author:  cmName.value.trim().slice(0, 40) || null,
+        role:    cmRole.value.trim().slice(0, 40) || null,
+        body:    body.slice(0, 500),
+        ts:      Date.now(),
+        visitor: state.visitorId ? String(state.visitorId) : null,
+        votes:   state.votes.slice()
+      };
+      cmPublish.disabled = true;
+      try {
+        if (backend === 'firestore' && window.fbApi) {
+          const { db, collection, addDoc, serverTimestamp } = window.fbApi;
+          await addDoc(collection(db, COMMENTS_COLLECTION), {
+            author:    payload.author,
+            role:      payload.role,
+            body:      payload.body,
+            visitor:   payload.visitor,
+            votes:     payload.votes,
+            createdAt: serverTimestamp()
+          });
+          // Real-time listener will repaint — no manual call needed.
+        } else {
+          paintList(addLocalComment(payload));
+        }
+        cmBody.value = '';
+      } catch (err) {
+        console.warn('[comments] write failed, falling back to local:', err);
+        paintList(addLocalComment(payload));
+        cmBody.value = '';
+      } finally {
+        updateCounter();
+      }
+    });
+
+    // Cross-tab updates while we're in local mode.
+    window.addEventListener('storage', (e) => {
+      if (e.key === COMMENTS_KEY && backend === 'local') paintList(loadLocalComments());
+    });
+
+    // First paint with whatever localStorage has — avoids empty flash.
+    updateCounter();
+    paintList(currentList);
+
+    // Upgrade to Firestore once the module signals it's ready.
+    function attachFirestore() {
+      if (!window.fbApi) return;
+      const { db, collection, query, orderBy, limit, onSnapshot } = window.fbApi;
+      const q = query(
+        collection(db, COMMENTS_COLLECTION),
+        orderBy('createdAt', 'desc'),
+        limit(200)
+      );
+      onSnapshot(q, (snap) => {
+        backend = 'firestore';
+        const list = snap.docs.map(doc => {
+          const d = doc.data();
+          // createdAt may be null briefly for the just-written doc (server
+          // hasn't stamped it yet); fall back to the client timestamp.
+          const ts = d.createdAt && d.createdAt.toMillis
+            ? d.createdAt.toMillis()
+            : (d.ts || Date.now());
+          return {
+            id:      doc.id,
+            author:  d.author || null,
+            role:    d.role || null,
+            body:    d.body || '',
+            visitor: d.visitor || null,
+            votes:   Array.isArray(d.votes) ? d.votes : [],
+            ts:      ts
+          };
+        });
+        paintList(list);
+      }, (err) => {
+        // Permission denied / network — stay on local mode.
+        console.warn('[comments] snapshot error, staying local:', err);
+        backend = 'local';
+        paintList(loadLocalComments());
+      });
+    }
+
+    if (window.fbApi) attachFirestore();
+    else window.addEventListener('firebase-ready', attachFirestore, { once: true });
+  }
 })();
 
 // ── PTC HOVER SYNC · hover a year in the chart or table highlights both ──

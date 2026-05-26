@@ -407,7 +407,7 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
   background: var(--cg-putty);          /* match encabezamiento grey */
   border-bottom: 1px solid var(--cg-border);
 }
-.pf-map-inner { max-width: 1240px; margin: 0 auto; }
+.pf-map-inner { max-width: 1680px; margin: 0 auto; }
 .pf-map-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--cg-orange);
@@ -425,19 +425,19 @@ body[data-pf-view="city"]   .pf-jump a:hover { opacity: 1; }
 }
 .pf-mapwrap {
   display: grid;
-  grid-template-columns: 2.2fr 1fr;
-  gap: clamp(32px, 4vw, 72px);
+  grid-template-columns: 3.6fr 1fr;
+  gap: clamp(36px, 4vw, 88px);
   align-items: stretch;
 }
 .pf-map {
   position: relative;
-  aspect-ratio: 5 / 6;                   /* más cuadrado para que el SVG quepa más alto */
+  aspect-ratio: 4 / 5;                   /* wider para acomodar +45% */
   background: var(--cg-bone);            /* cuadro · gris más claro per María */
   border: 1px solid var(--cg-border);
   border-radius: 2px;
-  padding: clamp(10px, 1.5vh, 22px);     /* padding mínimo · el mapa toma todo el cuadro */
-  max-width: 1080px;
-  max-height: calc(100vh - 110px);
+  padding: clamp(6px, 1vh, 14px);        /* padding mínimo · el mapa toma todo el cuadro */
+  max-width: 1570px;                     /* +45% sobre los 1080 originales */
+  max-height: calc(100vh - 80px);
   width: 100%;
   box-shadow: 0 1px 0 rgba(26,31,46,0.04), 0 32px 68px -32px rgba(26,31,46,0.22);
   overflow: hidden;
